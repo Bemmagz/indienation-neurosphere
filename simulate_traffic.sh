@@ -4,6 +4,6 @@ TARGET_HOST=127.0.0.1
 while true; do
     TIMESTAMP=$(date +"%Y-%m-%dT%H:%M:%S")
     echo -e "GET /simulate?time=$TIMESTAMP HTTP/1.1\r\nHost: localhost\r\n\r\n" | nc $TARGET_HOST $TARGET_PORT
-    echo -e "\033[1;33m[SIMULATE] GET request @ $TIMESTAMP\033[0m"
+    echo "[SIMULATE] GET request @ $TIMESTAMP"
     sleep 1
 done

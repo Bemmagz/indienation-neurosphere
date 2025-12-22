@@ -6,7 +6,4 @@ nohup: ignoring input
  * Running on http://127.0.0.1:9999
  * Running on http://10.26.211.196:9999
 [33mPress CTRL+C to quit[0m
-127.0.0.1 - - [22/Dec/2025 08:48:36] "GET /simulate?time=2025-12-22T08:48:36 HTTP/1.1" 200 -
-127.0.0.1 - - [22/Dec/2025 08:48:37] "GET /simulate?time=2025-12-22T08:48:37 HTTP/1.1" 200 -
-127.0.0.1 - - [22/Dec/2025 08:48:38] "GET /simulate?time=2025-12-22T08:48:38 HTTP/1.1" 200 -
-127.0.0.1 - - [22/Dec/2025 08:48:40] "GET /simulate?time=2025-12-22T08:48:40 HTTP/1.1" 200 -
+127.0.0.1 - - [22/Dec/2025 08:49:03] "GET /simulate?time=2025-12-22T08:49:03 HTTP/1.1" 200 -
