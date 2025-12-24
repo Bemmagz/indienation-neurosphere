@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroSphere | Global Sovereign Ledger</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onclick="enableAudio()">
+    <div id="splash-screen" class="overlay-full">
+        <div class="bloom-logo bloom-anim">NEUROSPHERE</div>
+        <div class="loader-bar"></div>
+        <p>Syncing Global Ledger: 100T ENPE...</p>
+    </div>
+
+    <div id="reg-page" class="overlay-full hidden">
+        <div class="cyber-card neon-glow">
+            <h2>AKTIVASI IDENTITY TM</h2>
+            <p>Klaim 1,000,000 LUV untuk Kedaulatan Anda</p>
+            <input type="text" id="id-input" placeholder="Nama Identitas...">
+            <button onclick="startSovereignty()">AKTIVASI SEKARANG</button>
+        </div>
+    </div>
+
+    <div id="social-app" class="hidden">
+        <header class="cyber-header">
+            <div class="ledger-counter">Supply: <span id="enpe-counter">100,000,000,000,000</span> ENPE</div>
+            <div id="user-tag" class="gold-text"></div>
+        </header>
+
+        <div id="map-container" class="hidden">
+            <canvas id="sovereign-map"></canvas>
+            <div class="map-overlay">LIVE GLOBAL NODES: 1,000,000 LUV HOLDERS</div>
+        </div>
+
+        <main class="cosmic-feed"></main>
+
+        <div id="qr-anchor" class="qr-float">
+            <canvas id="canvas-qr"></canvas>
+            <span>IDENTITY WALLET</span>
+        </div>
+
+        <div class="input-bar">
+            <input type="text" id="post-input" placeholder="Tuliskan mandat kedaulatan...">
+            <button onclick="sendPost()">KIRIM</button>
+            <button id="map-toggle" onclick="toggleMap()" class="hidden">🗺️ MAP</button>
+        </div>
+    </div>
+
+    <audio id="bg-atmos" loop><source src="https://assets.mixkit.co/sfx/preview/mixkit-deep-space-wind-1153.mp3" type="audio/mpeg"></audio>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <script src="app.js"></script>
+    <script src="social_engine.js"></script>
+</body>
+</html>
