@@ -1,52 +1,39 @@
-import Head from "next/head";
-import { useEffect } from "react";
-import QRCode from "qrcode";
+import { useEffect, useState } from "react";
+export default function Dashboard() {
+  const [status, setStatus] = useState({});
+  const [byteProgress, setByteProgress] = useState(0);
 
-export default function Home() {
   useEffect(() => {
-    const el = document.getElementById("enpe-counter");
-    let count = 99999999999900;
-    setInterval(() => {
-      count += Math.floor(Math.random() * 10);
-      el.innerText = count.toLocaleString();
-    }, 1000);
+    const fetchStatus = async () => {
+      const res = await fetch("/api/sync-status");
+      const data = await res.json();
+      setStatus(data);
+    };
+    fetchStatus();
+    const interval = setInterval(fetchStatus, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
-    const feed = document.querySelector(".cosmic-feed");
-    for (let i = 0; i < 50; i++) {
-      const p = document.createElement("div");
-      p.style.width = "2px";
-      p.style.height = "2px";
-      p.style.background = "#0ff";
-      p.style.position = "absolute";
-      p.style.top = Math.random() * window.innerHeight + "px";
-      p.style.left = Math.random() * window.innerWidth + "px";
-      p.style.opacity = Math.random();
-      feed.appendChild(p);
-    }
-
-    const audio = document.getElementById("bg-atmos");
-    audio.volume = 0.3;
-    audio.play();
-
-    const canvas = document.getElementById("canvas-qr");
-    QRCode.toCanvas(canvas, JSON.stringify({ id: "User-1234", val: "100T" }), {
-      width: 120,
-      color: { dark: "#ffcc00", light: "#0000" },
-    });
+  useEffect(() => {
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress = progress < 100 ? progress + 1 : 100;
+      setByteProgress(progress);
+    }, 200);
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <div>
-      <Head>
-        <title>NEUROSPHERE OSI</title>
-    <link rel="manifest" href="/manifest.json" />
-      </Head>
-      <h1>NEUROSPHERE</h1>
-      <p>Syncing Global Ledger: 100T ENPE...</p>
-      <div id="enpe-counter"></div>
-      <canvas id="canvas-qr"></canvas>
-      <div className="cosmic-feed"></div>
-      <audio id="bg-atmos" src="/bg-atmos.mp3" loop />
+    <div className="cyberpunk-dashboard">
+      <h1>NeuroSphere OSI v3</h1>
+      <p>ENPE Supply: {status.enpe}</p>
+      <p>LUV Status: {status.luv}</p>
+      <p>Sync Status: {status.status}</p>
+      <p>Guardian: {status.guardian}</p>
+      <p>Last Commit: {status.last_commit}</p>
+      <div className="byte-progress">
+        <div className="bar" style={{ width: `${byteProgress}%` }} />
+      </div>
     </div>
   );
 }
