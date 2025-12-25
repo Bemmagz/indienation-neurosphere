@@ -1,37 +1,47 @@
-import { useEffect,useState } from "react";
-export default function Dashboard(){
-  const [status,setStatus]=useState({});
-  const [byteProgress,setByteProgress]=useState(0);
+import Head from 'next/head';
+import { useEffect, useState } from 'react';
 
-  useEffect(()=>{
-    const fetchStatus=async()=>{setStatus(await (await fetch("/api/sync-status")).json());};
-    fetchStatus();
-    const interval=setInterval(fetchStatus,3000);
-    return ()=>clearInterval(interval);
-  },[]);
+export default function Home() {
+  const [counter, setCounter] = useState(100000000000119);
 
-  useEffect(()=>{
-    let p=0;
-    const interval=setInterval(()=>{
-      p=p<100?p+1:100;
-      setByteProgress(p);
-    },200);
-    return ()=>clearInterval(interval);
-  },[]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCounter(prev => prev + Math.floor(Math.random() * 5));
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <div className="cyberpunk-dashboard">
-      <h1>🛰️ NeuroSphere OSI Cyberpunk Monitor</h1>
-      <p>ENPE Supply: {status.enpe}</p>
-      <p>LUV Status: {status.luv}</p>
-      <p>Sync Status: {status.status}</p>
-      <p>Guardian: {status.guardian}</p>
-      <p>Last Commit: {status.last_commit}</p>
-      <p>Total Posts: {status.total_posts}</p>
-      <div className="byte-progress">
-        <div className="bar" style={{width:`${byteProgress}%`}}></div>
-      </div>
-      <p>Progress Byte: {byteProgress}%</p>
+    <div className="neurosphere-root">
+      <Head>
+        <title>NEUROSPHERE OSI | Sovereign Hub</title>
+        <link rel="manifest" href="/manifest.json" />
+      </Head>
+      
+      <main>
+        <div className="grid-overlay"></div>
+        <header>
+          <h1 className="glitch-text">NEUROSPHERE</h1>
+          <p className="status-bar">STATUS: SOVEREIGN | SYNC: ACTIVE</p>
+        </header>
+
+        <section className="ledger-box">
+          <h2>GLOBAL LEDGER (ENPE)</h2>
+          <div className="counter">{counter.toLocaleString()}</div>
+        </section>
+
+        <section className="neural-grid">
+          {/* Placeholder untuk Diagram Grafis Futuristik */}
+          <div className="pulse-circle"></div>
+          <p>Scanning Neural Nodes... Verified</p>
+        </section>
+
+        <div className="identity-qr">
+          <canvas id="canvas-qr"></canvas>
+        </div>
+      </main>
+
+      <script src="/app.js"></script>
     </div>
   );
 }
