@@ -39,6 +39,7 @@ export default function Home() {
     <div>
       <Head>
         <title>NEUROSPHERE OSI</title>
+    <link rel="manifest" href="/manifest.json" />
       </Head>
       <h1>NEUROSPHERE</h1>
       <p>Syncing Global Ledger: 100T ENPE...</p>
