@@ -1,4 +1,5 @@
-body { background: #0a0a0a; color: #0ff; font-family: 'Courier New', monospace; }
-.cyberpunk-dashboard h1 { color: #ff00ff; text-shadow: 0 0 10px #ff00ff; }
-.byte-progress { background: #111; width: 100%; height: 20px; margin-top: 10px; border-radius: 5px; }
-.byte-progress .bar { height: 100%; background: linear-gradient(90deg, #0ff, #f0f); transition: width 0.2s; }
+body{background:#0a0a0a;color:#0ff;font-family:'Courier New',monospace;margin:0;padding:20px;}
+.cyberpunk-dashboard h1{color:#ff00ff;text-shadow:0 0 20px #ff00ff,0 0 40px #0ff;}
+.cyberpunk-dashboard p{margin:5px 0;color:#0ff;}
+.byte-progress{background:#111;width:100%;height:25px;margin:10px 0;border-radius:10px;overflow:hidden;}
+.byte-progress .bar{height:100%;background:linear-gradient(90deg,#0ff,#f0f);transition:width 0.2s;}
