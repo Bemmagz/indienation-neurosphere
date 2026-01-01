@@ -1,16 +1,21 @@
-from flask import Flask, request, jsonify
+from flask import Flask, render_template, request
+from datetime import datetime
+import os
 
 app = Flask(__name__)
+DB_PATH = os.path.join(os.path.dirname(__file__), 'DATA_PENDAFTAR_LUV.txt')
 
 @app.route('/')
 def home():
-    return "NeuroGateway Online!"
+    return render_template('index.html')
 
-@app.route('/simulate')
-def simulate():
-    timestamp = request.args.get('time', '')
-    print(f"[SIMULATE] GET request received at {timestamp}")
-    return jsonify({"status": "ok", "time": timestamp})
+@app.route('/claim')
+def claim():
+    user_ip = request.remote_addr
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    with open(DB_PATH, 'a') as f:
+        f.write(f"KLAIM: {timestamp} | IP: {user_ip} | Status: Mandat 20 Des Valid\n")
+    return "<h1>Klaim Berhasil!</h1><p>Data Anda telah tercatat dalam sistem kedaulatan Bemmagz. Reward 1 Juta LUV akan segera diproses.</p><a href='/'>Kembali</a>"
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=9999)
+if __name__ == "__main__":
+    app.run(port=9999, host='0.0.0.0')

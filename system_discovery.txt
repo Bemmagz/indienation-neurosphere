@@ -1,0 +1,202 @@
+--- DIRECTORY MAP ---
+.
+├── DATA_PENDAFTAR_ASLI
+├── DATA_PENDAFTAR_LUV.txt
+├── MODULES
+│   └── tokenomics.py
+├── PUBLIC_AUDIT.txt
+├── PUBLIC_URL.txt
+├── ai_layer.log
+├── auto_live.sh
+├── auto_live_serveo.sh
+├── bridge_manifest.json
+├── cloudflare.log
+├── cloudflare_tunnel.log
+├── cloudflared.log
+├── direct_launch.sh
+├── discovery_part_aa
+├── discovery_part_ab
+├── discovery_part_ac
+├── discovery_part_ad
+├── discovery_part_ae
+├── final_deploy.sh
+├── flask.log
+├── flask_error.log
+├── logs
+│   ├── ai_layer.log
+│   ├── cloudflare_tunnel.log
+│   ├── cloudflared.log
+│   ├── neuro_gateway.log
+│   └── watchdog.log
+├── monitor_bytes.sh
+├── neuro_gateway.log
+├── neuro_gateway.py
+├── neuro_pulse.sh
+├── neuro_stream.sh
+├── neurosphere_ai_discovery.sh
+├── neurosphere_discovery.sh
+├── run_neuro_tunnel.sh
+├── run_neurosphere_all.sh
+├── serveo.log
+├── simulate_traffic.sh
+├── sovereign_deploy.sh
+├── system_discovery.txt
+└── templates
+    └── index.html
+
+5 directories, 39 files
+--- CORE LOGIC SNIPPETS ---
+./MODULES/tokenomics.py:        "symbol": "ENPE", # [cite: 2025-12-20]
+./MODULES/tokenomics.py:        "donation": 0, # ENPE TIDAK DONASI [cite: 2025-12-20]
+./MODULES/tokenomics.py:    "LUV_COIN": {
+./MODULES/tokenomics.py:        "reward_1M": "1% for 1M People (1M LUV/person)", # [cite: 2025-12-20]
+./MODULES/tokenomics.py:        "lock": {"founder": "3 Years", "others": "2 Years"} # [cite: 2025-12-20]
+./neuro_gateway.py:DB_PATH = os.path.join(os.path.dirname(__file__), 'DATA_PENDAFTAR_LUV.txt')
+./neuro_gateway.py:    return "<h1>Klaim Berhasil!</h1><p>Data Anda telah tercatat dalam sistem kedaulatan Bemmagz. Reward 1 Juta LUV akan segera diproses.</p><a href='/'>Kembali</a>"
+./.git/hooks/fsmonitor-watchman.sample:		output_result($o->{clock}, @{$o->{files}});
+./.git/hooks/fsmonitor-watchman.sample:	my ($clockid, @files) = @_;
+./.git/hooks/fsmonitor-watchman.sample:	# print $fh "$clockid\n@files\n";
+./.git/hooks/fsmonitor-watchman.sample:	print $clockid;
+./.git/hooks/fsmonitor-watchman.sample:sub watchman_clock {
+./.git/hooks/fsmonitor-watchman.sample:	my $response = qx/watchman clock "$git_work_tree"/;
+./.git/hooks/fsmonitor-watchman.sample:	die "Failed to get clock id on '$git_work_tree'.\n" .
+./.git/hooks/fsmonitor-watchman.sample:		my $o = watchman_clock();
+./.git/hooks/fsmonitor-watchman.sample:		output_result($o->{clock}, ("/"));
+./.git/hooks/fsmonitor-watchman.sample:		$last_update_token = $o->{clock};
+./.git/hooks/update.sample:# An example hook script to block unannotated tags from entering.
+./neuro_stream.sh:    echo -e "LUV DONATION POOL : 15% [OPEN]"
+./neuro_stream.sh:    echo -e "ENPE SUPPLY      : 100T [LOCKED]"
+./neuro_pulse.sh:    echo " [MANDAT] ENPE Supply    : 100 Triliun [cite: 2025-12-20]"
+./neuro_pulse.sh:    echo " [MANDAT] LUV Reward     : 1% Founder -> 1M People [cite: 2025-12-20]"
+./auto_live.sh:termux-wake-lock
+./auto_live.sh:echo "💰 MANDAT: 100T ENPE | 1% LUV Reward OPEN"
+./auto_live.sh:echo "🛡️ SECURITY: AI Bots Blocked | Bemmagz Auth"
+./templates/index.html:        .val { display: block; font-size: 1.1rem; color: var(--gold); font-weight: bold; }
+./templates/index.html:            display: block; 
+./templates/index.html:            display: inline-block;
+./templates/index.html:        .lock-notice { 
+./templates/index.html:                <span class="val">100T ENPE</span>
+./templates/index.html:                <span class="val">IND-EUR</span>
+./templates/index.html:                <span class="val">1,000,000 LUV</span>
+./templates/index.html:        <p style="font-size: 0.8rem; line-height: 1.5;">Distribusi 1% LUV untuk 1 Juta pendaftar pertama sedang berlangsung sesuai Mandat 20 Desember.</p>
+./templates/index.html:        <a href="/claim" class="btn-claim">KLAIM LUV REWARD SEKARANG</a>
+./templates/index.html:        <div class="lock-notice">
+./sovereign_deploy.sh:termux-wake-lock
+./sovereign_deploy.sh:cat << 'HTML' > $WORKDIR/templates/index.html
+./sovereign_deploy.sh:        .val { display: block; font-size: 1.5rem; color: var(--gold); font-weight: bold; }
+./sovereign_deploy.sh:        .btn { background: var(--gold); color: black; border: none; padding: 1rem 2rem; font-weight: bold; cursor: pointer; text-decoration: none; border-radius: 5px; transition: 0.3s; display: inline-block; }
+./sovereign_deploy.sh:        .lock-info { color: #ff4444; font-size: 0.7rem; margin-top: 1.5rem; border: 1px solid #ff4444; padding: 5px; }
+./sovereign_deploy.sh:            <div><span class="val">100T</span><span class="label">Total ENPE</span></div>
+./sovereign_deploy.sh:            <div><span class="val">1M LUV</span><span class="label">Reward/Person</span></div>
+./sovereign_deploy.sh:        <p>Status: Distribusi 1% LUV untuk 1 Juta Orang Aktif.</p>
+./sovereign_deploy.sh:        <a href="#" class="btn">KLAIM LUV REWARD</a>
+./sovereign_deploy.sh:        <div class="lock-info">
+./sovereign_deploy.sh:HTML
+./direct_launch.sh:cat << 'HTML' > $WORKDIR/templates/index.html
+./direct_launch.sh:        .val { display: block; font-size: 1.5rem; color: var(--gold); font-weight: bold; }
+./direct_launch.sh:        .btn { background: var(--gold); color: black; border: none; padding: 1rem 2rem; font-weight: bold; cursor: pointer; text-decoration: none; border-radius: 5px; transition: 0.3s; display: inline-block; }
+./direct_launch.sh:        .lock-info { color: #ff4444; font-size: 0.7rem; margin-top: 1.5rem; border: 1px solid #ff4444; padding: 5px; }
+./direct_launch.sh:            <div><span class="val">100T</span><span class="label">Total ENPE</span></div>
+./direct_launch.sh:            <div><span class="val">1M LUV</span><span class="label">Reward/Person</span></div>
+./direct_launch.sh:        <p>Status: Distribusi 1% LUV untuk 1 Juta Orang Aktif.</p>
+./direct_launch.sh:        <a href="#" class="btn">KLAIM LUV REWARD</a>
+./direct_launch.sh:        <div class="lock-info">
+./direct_launch.sh:HTML
+./direct_launch.sh:echo "💰 ASSET: 100T ENPE | 1% LUV Reward"
+./final_deploy.sh:DATABASE="$WORKDIR/DATA_PENDAFTAR_LUV.txt"
+./final_deploy.sh:cat << 'HTML' > $WORKDIR/templates/index.html
+./final_deploy.sh:        .val { display: block; font-size: 1.5rem; color: var(--gold); font-weight: bold; }
+./final_deploy.sh:        .btn { background: var(--gold); color: black; border: none; padding: 1rem 2rem; font-weight: bold; cursor: pointer; text-decoration: none; border-radius: 5px; display: inline-block; }
+./final_deploy.sh:        .lock-info { color: #ff4444; font-size: 0.7rem; margin-top: 1.5rem; }
+./final_deploy.sh:            <div><span class="val">100T</span><span class="label">Total ENPE</span></div>
+./final_deploy.sh:            <div><span class="val">1M LUV</span><span class="label">Reward/Person</span></div>
+./final_deploy.sh:        <a href="/claim" class="btn">KLAIM 1 JUTA LUV</a>
+./final_deploy.sh:        <div class="lock-info">MANDAT 20 DESEMBER: ASSETS LOCKED 2-3 YEARS</div>
+./final_deploy.sh:HTML
+./final_deploy.sh:DB_PATH = os.path.join(os.path.dirname(__file__), 'DATA_PENDAFTAR_LUV.txt')
+./final_deploy.sh:    return "<h1>Klaim Berhasil!</h1><p>Data Anda telah tercatat dalam sistem kedaulatan Bemmagz. Reward 1 Juta LUV akan segera diproses.</p><a href='/'>Kembali</a>"
+./neurosphere_ai_discovery.sh:TMP="$PROJECT/.tmp_ai_discovery"
+./neurosphere_ai_discovery.sh:mkdir -p "$TMP"
+./neurosphere_ai_discovery.sh:grep -RInE "ENPE|LUV|TM|IND-EUR|wallet|balance|claim|airdrop|lock|audit" . \
+./neurosphere_ai_discovery.sh:  > "$TMP/all_files.txt"
+./neurosphere_ai_discovery.sh:  | awk -F: '{print $1}' | sort -u > "$TMP/used_files.txt"
+./neurosphere_ai_discovery.sh:comm -23 "$TMP/all_files.txt" "$TMP/used_files.txt" >> "$OUT" 2>/dev/null
+./neurosphere_ai_discovery.sh:rm -rf "$TMP"
+./neurosphere_discovery.sh:TMP=".discovery_tmp"
+./neurosphere_discovery.sh:mkdir -p "$TMP"
+./neurosphere_discovery.sh:  ! -path "./.git/*" > "$TMP/all_files.txt"
+./neurosphere_discovery.sh:  --exclude-dir=.git | awk -F: '{print $1}' | sort -u > "$TMP/used_files.txt"
+./neurosphere_discovery.sh:comm -23 <(sort "$TMP/all_files.txt") <(sort "$TMP/used_files.txt") >> "$OUT"
+./neurosphere_discovery.sh:rm -rf "$TMP"
+./discovery_part_aa:./DATA_PENDAFTAR_LUV.txt
+./discovery_part_aa:        "symbol": "ENPE", # [cite: 2025-12-20]
+./discovery_part_aa:        "donation": 0, # ENPE TIDAK DONASI [cite: 2025-12-20]
+./discovery_part_aa:    "LUV_COIN": {
+./discovery_part_aa:        "reward_1M": "1% for 1M People (1M LUV/person)", # [cite: 2025-12-20]
+./discovery_part_aa:        "lock": {"founder": "3 Years", "others": "2 Years"} # [cite: 2025-12-20]
+./discovery_part_aa:DB_PATH = os.path.join(os.path.dirname(__file__), 'DATA_PENDAFTAR_LUV.txt')
+./discovery_part_aa:    return "<h1>Klaim Berhasil!</h1><p>Data Anda telah tercatat dalam sistem kedaulatan Bemmagz. Reward 1 Juta LUV akan segera diproses.</p><a href='/'>Kembali</a>"
+./discovery_part_aa:    echo -e "LUV DONATION POOL : 15% [OPEN]"
+./discovery_part_aa:    echo -e "ENPE SUPPLY      : 100T [LOCKED]"
+./discovery_part_aa:    echo " [MANDAT] ENPE Supply    : 100 Triliun [cite: 2025-12-20]"
+./discovery_part_aa:    echo " [MANDAT] LUV Reward     : 1% Founder -> 1M People [cite: 2025-12-20]"
+./discovery_part_ab:termux-wake-lock
+./discovery_part_ab:echo "💰 MANDAT: 100T ENPE | 1% LUV Reward OPEN"
+./discovery_part_ab:echo "🛡️ SECURITY: AI Bots Blocked | Bemmagz Auth"
+./discovery_part_ac:termux-wake-lock
+./discovery_part_ac:cat << 'HTML' > $WORKDIR/templates/index.html
+./discovery_part_ac:        .val { display: block; font-size: 1.5rem; color: var(--gold); font-weight: bold; }
+./discovery_part_ac:        .btn { background: var(--gold); color: black; border: none; padding: 1rem 2rem; font-weight: bold; cursor: pointer; text-decoration: none; border-radius: 5px; transition: 0.3s; display: inline-block; }
+./discovery_part_ac:        .lock-info { color: #ff4444; font-size: 0.7rem; margin-top: 1.5rem; border: 1px solid #ff4444; padding: 5px; }
+./discovery_part_ac:            <div><span class="val">100T</span><span class="label">Total ENPE</span></div>
+./discovery_part_ac:            <div><span class="val">1M LUV</span><span class="label">Reward/Person</span></div>
+./discovery_part_ac:        <p>Status: Distribusi 1% LUV untuk 1 Juta Orang Aktif.</p>
+./discovery_part_ac:        <a href="#" class="btn">KLAIM LUV REWARD</a>
+./discovery_part_ac:        <div class="lock-info">
+./discovery_part_ac:HTML
+./discovery_part_ac:cat << 'HTML' > $WORKDIR/templates/index.html
+./discovery_part_ac:        .val { display: block; font-size: 1.5rem; color: var(--gold); font-weight: bold; }
+./discovery_part_ac:        .btn { background: var(--gold); color: black; border: none; padding: 1rem 2rem; font-weight: bold; cursor: pointer; text-decoration: none; border-radius: 5px; transition: 0.3s; display: inline-block; }
+./discovery_part_ac:        .lock-info { color: #ff4444; font-size: 0.7rem; margin-top: 1.5rem; border: 1px solid #ff4444; padding: 5px; }
+./discovery_part_ac:            <div><span class="val">100T</span><span class="label">Total ENPE</span></div>
+./discovery_part_ac:            <div><span class="val">1M LUV</span><span class="label">Reward/Person</span></div>
+./discovery_part_ac:        <p>Status: Distribusi 1% LUV untuk 1 Juta Orang Aktif.</p>
+./discovery_part_ac:        <a href="#" class="btn">KLAIM LUV REWARD</a>
+./discovery_part_ac:        <div class="lock-info">
+./discovery_part_ac:HTML
+./discovery_part_ad:echo "💰 ASSET: 100T ENPE | 1% LUV Reward"
+./discovery_part_ad:DATABASE="$WORKDIR/DATA_PENDAFTAR_LUV.txt"
+./discovery_part_ad:cat << 'HTML' > $WORKDIR/templates/index.html
+./discovery_part_ad:        .val { display: block; font-size: 1.5rem; color: var(--gold); font-weight: bold; }
+./discovery_part_ad:        .btn { background: var(--gold); color: black; border: none; padding: 1rem 2rem; font-weight: bold; cursor: pointer; text-decoration: none; border-radius: 5px; display: inline-block; }
+./discovery_part_ad:        .lock-info { color: #ff4444; font-size: 0.7rem; margin-top: 1.5rem; }
+./discovery_part_ad:            <div><span class="val">100T</span><span class="label">Total ENPE</span></div>
+./discovery_part_ad:            <div><span class="val">1M LUV</span><span class="label">Reward/Person</span></div>
+./discovery_part_ad:        <a href="/claim" class="btn">KLAIM 1 JUTA LUV</a>
+./discovery_part_ad:        <div class="lock-info">MANDAT 20 DESEMBER: ASSETS LOCKED 2-3 YEARS</div>
+./discovery_part_ad:HTML
+./discovery_part_ad:DB_PATH = os.path.join(os.path.dirname(__file__), 'DATA_PENDAFTAR_LUV.txt')
+./discovery_part_ad:    return "<h1>Klaim Berhasil!</h1><p>Data Anda telah tercatat dalam sistem kedaulatan Bemmagz. Reward 1 Juta LUV akan segera diproses.</p><a href='/'>Kembali</a>"
+./discovery_part_ad:TMP="$PROJECT/.tmp_ai_discovery"
+./discovery_part_ad:mkdir -p "$TMP"
+./discovery_part_ad:grep -RInE "ENPE|LUV|TM|IND-EUR|wallet|balance|claim|airdrop|lock|audit" . \
+./discovery_part_ae:  > "$TMP/all_files.txt"
+./discovery_part_ae:  | awk -F: '{print $1}' | sort -u > "$TMP/used_files.txt"
+./discovery_part_ae:comm -23 "$TMP/all_files.txt" "$TMP/used_files.txt" >> "$OUT" 2>/dev/null
+./discovery_part_ae:rm -rf "$TMP"
+./discovery_part_ae:TMP=".discovery_tmp"
+./discovery_part_ae:mkdir -p "$TMP"
+./discovery_part_ae:  ! -path "./.git/*" > "$TMP/all_files.txt"
+./discovery_part_ae:  --exclude-dir=.git | awk -F: '{print $1}' | sort -u > "$TMP/used_files.txt"
+./discovery_part_ae:comm -23 <(sort "$TMP/all_files.txt") <(sort "$TMP/used_files.txt") >> "$OUT"
+./discovery_part_ae:rm -rf "$TMP"
+./discovery_part_ae:./DATA_PENDAFTAR_LUV.txt
+./PUBLIC_AUDIT.txt:ENPE TOTAL SUPPLY : 100T
+./PUBLIC_AUDIT.txt:LUV DISTRIBUTION  : 1,000,000 / PERSON
+./bridge_manifest.json:    "ENPE": "100T",
+./bridge_manifest.json:    "LUV": "1,000,000",
+./bridge_manifest.json:    "IND-EUR": "STABLE"
+--- CLOUD STATUS ---
+origin	https://github.com/Bemmagz/indienation-neurosphere.git (fetch)
+origin	https://github.com/Bemmagz/indienation-neurosphere.git (push)
+49.2.0

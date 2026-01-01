@@ -1,0 +1,200 @@
+
+echo -e "\033[1;32m[STEP 0] Verifikasi Environment & Directory\033[0m"
+cd "$WORKDIR" || { echo "[FATAL] Direktori $WORKDIR tidak ada"; exit 1; }
+source ~/neuroenv/bin/activate
+echo -e "[OK] Environment aktif: $VIRTUAL_ENV"
+echo -e "[OK] Direktori kerja: $(pwd)"
+
+### ====== 1. Bersihkan proses lama ======
+echo -e "\033[1;32m[STEP 1] Bersihkan proses lama\033[0m"
+pkill -9 python3 2>/dev/null
+pkill -9 cloudflared 2>/dev/null
+sleep 1
+echo "[OK] Proses lama dibersihkan"
+
+### ====== 2. Jalankan NeuroGateway (Flask) ======
+echo -e "\033[1;32m[STEP 2] Jalankan NeuroGateway (Flask)\033[0m"
+nohup python3 "$WORKDIR/neuro_gateway.py" > "$LOG_FLASK" 2>&1 &
+FLASK_PID=$!
+sleep 2
+ps -p $FLASK_PID >/dev/null || { echo "[FATAL] Flask gagal start"; exit 1; }
+echo "[OK] Flask RUNNING (PID $FLASK_PID)"
+
+### ====== 3. Jalankan Cloudflare Tunnel ======
+echo -e "\033[1;32m[STEP 3] Jalankan Cloudflare Tunnel\033[0m"
+# Pastikan login sudah dilakukan: cloudflared login
+nohup cloudflared tunnel --url http://127.0.0.1:$PORT --no-autoupdate > "$LOG_CF" 2>&1 &
+CF_PID=$!
+sleep 2
+
+# Tunggu tunnel muncul
+LINK=""
+echo "[INFO] Menunggu Cloudflare Tunnel aktif..."
+while [ -z "$LINK" ]; do
+    LINK=$(grep -o 'https://[-0-9a-z]*\.trycloudflare.com' "$LOG_CF" | head -n 1)
+    sleep 2
+done
+echo -e "[OK] Tunnel aktif: \033[1;34m$LINK\033[0m"
+
+### ====== 4. Tampilkan Dashboard Awal ======
+echo -e "\033[1;32m===============================================================\033[0m"
+echo -e "GATEWAY LINK : \033[1;34m$LINK\033[0m"
+echo -e "GITHUB SYNC  : \033[1;32m[ CONNECTED ]\033[0m main -> main"
+echo -e "TOKENOMICS   : \033[1;32m[ LOCKED ]\033[0m 15% Donation Pool OPEN"
+echo -e "DATA FOLDER  : $WORKDIR/DATA_PENDAFTAR_ASLI"
+echo -e "\033[1;32m===============================================================\033[0m"
+
+echo -e "\033[1;33mDASHBOARD AKTIVITAS (Menunggu Klaim...)\033[0m"
+echo -e "\033[1;30m(Tekan CTRL+C untuk keluar monitoring)\033[0m"
+
+### ====== 5. Monitoring traffic byte-per-byte ======
+tail -F "$LOG_CF" | while IFS= read -r line; do
+    TIMESTAMP=$(date +"%Y-%m-%dT%H:%M:%S")
+    if echo "$line" | grep -E "GET |POST "; then
+        METHOD=$(echo "$line" | awk '{print $6}')
+        PATH=$(echo "$line" | awk '{print $7}')
+        echo -e "\033[1;34m[$TIMESTAMP]\033[0m \033[1;32m$METHOD\033[0m $PATH"
+        echo "$line" | hexdump -C | head -n 5
+        echo "---------------------------------------------------"
+    fi
+done &
+
+### ====== 6. Simulasi traffic opsional ======
+cat << 'EOF' > "$SIMULATE_SCRIPT"
+#!/data/data/com.termux/files/usr/bin/bash
+TARGET_PORT=9999
+TARGET_HOST=127.0.0.1
+while true; do
+    TIMESTAMP=$(date +"%Y-%m-%dT%H:%M:%S")
+    echo -e "GET /simulate?time=$TIMESTAMP HTTP/1.1\r\nHost: localhost\r\n\r\n" | nc $TARGET_HOST $TARGET_PORT
+    echo -e "\033[1;33m[SIMULATE] GET request @ $TIMESTAMP\033[0m"
+    sleep 1
+done
+EOF
+
+chmod +x "$SIMULATE_SCRIPT"
+nohup "$SIMULATE_SCRIPT" > /dev/null 2>&1 &
+
+echo -e "\033[1;32m[INFO] NeuroSphere environment is LIVE and monitoring...\033[0m"
+
+---- FILE: ./run_neuro_tunnel.sh ----
+#!/data/data/com.termux/files/usr/bin/bash
+
+# ====== Path dasar ======
+WORKDIR="$HOME/indienation-neurosphere"
+CERT_PATH="$WORKDIR/cert.pem"
+LOG_CF="$WORKDIR/cloudflare.log"
+TUNNEL_NAME="neuro-tunnel"
+
+# ====== Step 1: Login Cloudflare jika perlu ======
+if [ ! -f "$CERT_PATH" ]; then
+    echo -e "\033[1;33m[INFO] Origin cert tidak ditemukan. Login ke Cloudflare...\033[0m"
+    cloudflared tunnel login
+    echo -e "\033[1;32m[INFO] Login selesai. Pastikan cert.pem tersimpan di $CERT_PATH\033[0m"
+fi
+
+# ====== Step 2: Set Environment Variable ======
+export TUNNEL_ORIGIN_CERT="$CERT_PATH"
+echo -e "\033[1;32m[INFO] TUNNEL_ORIGIN_CERT = $TUNNEL_ORIGIN_CERT\033[0m"
+
+# ====== Step 3: Jalankan Tunnel ======
+echo -e "\033[1;33m[INFO] Menjalankan Cloudflare Tunnel: $TUNNEL_NAME ...\033[0m"
+nohup cloudflared tunnel run "$TUNNEL_NAME" > "$LOG_CF" 2>&1 &
+CF_PID=$!
+sleep 3
+
+# ====== Step 4: Tunggu link tunnel aktif ======
+LINK=""
+echo -e "\033[1;33m[INFO] Menunggu Cloudflare Tunnel aktif...\033[0m"
+while [ -z "$LINK" ]; do
+    LINK=$(grep -o 'https://[-0-9a-z]*\.trycloudflare.com' "$LOG_CF" | head -n 1)
+    sleep 2
+done
+
+echo -e "\033[1;32m[OK] Tunnel aktif: \033[1;34m$LINK\033[0m"
+echo -e "\033[1;32m[INFO] Tunnel PID: $CF_PID\033[0m"
+
+---- FILE: ./auto_live.sh ----
+#!/data/data/com.termux/files/usr/bin/bash
+
+# 1. Konfigurasi Identitas Bemmagz
+WORKDIR="$HOME/indienation-neurosphere"
+PORT=9999
+LOG_CF="$WORKDIR/cloudflare.log"
+LOG_FLASK="$WORKDIR/flask.log"
+
+echo "[1/6] Mengunci Jalur Kedaulatan Bemmagz..."
+cd $WORKDIR
+termux-wake-lock
+pkill -9 python3
+pkill -9 cloudflared
+
+# 2. Perbaikan Git (Anti-403)
+git remote set-url origin https://github.com/Bemmagz/indienation-neurosphere.git
+git config --global user.email "Bemmagz@gmail.com"
+git config --global user.name "Bemmagz"
+
+# 3. Cek Sertifikat Cloudflare
+if [ ! -f ~/.cloudflared/cert.pem ]; then
+    echo "[!] Sertifikat tidak ditemukan. Silahkan login di browser yang akan terbuka..."
+    cloudflared tunnel login
+fi
+
+# 4. Jalankan NeuroGateway (Flask)
+echo "[2/6] Membangkitkan NeuroGateway..."
+source ~/neuroenv/bin/activate
+nohup python3 neuro_gateway.py > $LOG_FLASK 2>&1 &
+
+# 5. Jalankan Cloudflare Tunnel
+echo "[3/6] Membuka Terowongan Cloudflare..."
+# Hapus tunnel lama jika ada agar tidak konflik
+cloudflared tunnel delete neuro-tunnel > /dev/null 2>&1
+cloudflared tunnel create neuro-tunnel > /dev/null 2>&1
+nohup cloudflared tunnel run neuro-tunnel > $LOG_CF 2>&1 &
+
+# 6. Tunggu Link Aktif
+echo "[4/6] Menunggu Link Cloudflare Aktif..."
+LINK=""
+while [ -z "$LINK" ]; do
+    LINK=$(grep -o 'https://[-0-9a-z]*\.trycloudflare.com' $LOG_CF | head -n 1)
+    sleep 2
+done
+
+echo "==========================================="
+echo "🌍 GATEWAY LIVE: $LINK"
+echo "💰 MANDAT: 100T ENPE | 1% LUV Reward OPEN"
+echo "🛡️ SECURITY: AI Bots Blocked | Bemmagz Auth"
+echo "==========================================="
+
+# 7. Push Otomatis ke GitHub
+echo "[5/6] Sinkronisasi ke GitHub Bemmagz..."
+git add .
+git commit -m "Auto-Live: Mandat 20 Dec Secured & Tunnel Active"
+git push origin main
+
+echo "[6/6] MONITORING BYTES (CTRL+C untuk berhenti)"
+tail -f $LOG_CF
+
+---- FILE: ./auto_live_serveo.sh ----
+#!/data/data/com.termux/files/usr/bin/bash
+
+WORKDIR="$HOME/indienation-neurosphere"
+PORT=9999
+LOG_FLASK="$WORKDIR/flask.log"
+LOG_TUNNEL="$WORKDIR/serveo.log"
+
+echo "[1/5] Membersihkan proses lama..."
+pkill -9 python3
+pkill -9 ssh
+rm -f $LOG_FLASK $LOG_TUNNEL
+
+echo "[2/5] Menjalankan NeuroGateway..."
+cd $WORKDIR
+source ~/neuroenv/bin/activate
+nohup python3 neuro_gateway.py > $LOG_FLASK 2>&1 &
+
+echo "[3/5] Membuka tunnel Serveo..."
+nohup ssh -R 80:localhost:$PORT serveo.net > $LOG_TUNNEL 2>&1 &
+
+echo "[4/5] Menunggu link publik Serveo..."
+LINK=""

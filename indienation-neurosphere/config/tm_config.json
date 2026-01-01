@@ -1,0 +1,16 @@
+{
+  "project_name": "NeuroSphere",
+  "identity_system": "Sovereign ID via NFT TM",
+  "biometric_access": false,
+  "trademark_feature": "Forehead QR Transaction & Identity",
+  "assets": {
+    "ENPE": "E Coin (100 Trillion)",
+    "LUV": "Lovely Coin (Social Distribution)",
+    "IND_EUR": "Indienation Coin (Stable)"
+  },
+  "allocations": {
+    "pioneer_distribution": "1% for 1 Million People (1M LUV each)",
+    "keys_of_kindness": "15% (Team/Dev move to Donation Pool)",
+    "reserve_operational": "10% (Open for use)"
+  }
+}

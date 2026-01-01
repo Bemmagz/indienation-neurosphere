@@ -1,0 +1,3 @@
+CURRENT_VERSION: INITIAL_DESIGN_V1 (No Biometrics)
+BACKUP_VERSION: BIOMETRIC_DESIGN_HIDDEN
+ACTION: Rollback can be executed by reverting to version history.

@@ -1,0 +1,9 @@
+{
+  "name": "NeuroSphere Sovereign Identity",
+  "description": "Living Value Identity NFT",
+  "attributes": [
+    {"trait_type": "ENPE_Metadata", "value": "hash_algorithm"},
+    {"trait_type": "LUV_Metadata", "value": "1000000"},
+    {"trait_type": "Stable_Metadata", "value": "IND-EUR"}
+  ]
+}
