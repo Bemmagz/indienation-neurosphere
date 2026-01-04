@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEUROSPHERE | AUTHORITATIVE NODE</title>
+    <style>
+        :root { --neon-pink: #ff00ff; --neon-blue: #00ffff; --dark-bg: #05050a; }
+        body { margin: 0; background: var(--dark-bg); color: var(--neon-blue); font-family: 'Orbitron', monospace; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { border: 2px solid var(--neon-blue); padding: 30px; background: #000; width: 480px; box-shadow: 0 0 30px var(--neon-blue); position: relative; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid var(--neon-pink); color: #fff; box-sizing: border-box; font-family: inherit; }
+        .btn { width: 100%; padding: 15px; border: none; cursor: pointer; font-weight: bold; text-transform: uppercase; margin-top: 10px; font-family: inherit; }
+        .btn-claim { background: var(--neon-pink); color: #fff; }
+        .status-msg { font-size: 10px; text-align: center; margin-top: 10px; color: var(--neon-pink); }
+        #cert-ui { display: none; text-align: center; border: 4px double var(--neon-blue); padding: 20px; }
+    </style>
+</head>
+<body>
+    <div id="app" class="container">
+        <h1 style="text-align:center; letter-spacing:5px;">NEUROSPHERE</h1>
+        <div id="main-ui">
+            <p style="text-align:center; font-size:10px;">SENTINEL AUTHENTICATION REQUIRED</p>
+            <input type="text" id="alias" placeholder="IDENTITY ALIAS">
+            <input type="email" id="email" placeholder="SECURE EMAIL">
+            <button class="btn btn-claim" id="claim-btn" onclick="executeClaim()">INITIALIZE GENESIS</button>
+            <div id="status" class="status-msg"></div>
+        </div>
+
+        <div id="cert-ui">
+            <div id="cert-serial" style="font-size:10px; color:var(--neon-pink);"></div>
+            <h2 style="color:#fff;">GENESIS HOLDER</h2>
+            <div id="cert-name" style="font-size:22px; margin:15px 0;"></div>
+            <div style="border:1px solid #333; padding:10px; margin:10px 0; color:#fff;">1,000,000 LUV</div>
+            <div id="cert-sig" style="font-size:7px; color:#555; word-break:break-all;"></div>
+            <button class="btn" style="background:#fff; color:#000; margin-top:20px;" onclick="window.print()">PRINT SOVEREIGN PROOF</button>
+        </div>
+    </div>
+
+    <script>
+        async function executeClaim() {
+            const alias = document.getElementById('alias').value;
+            const email = document.getElementById('email').value;
+            const status = document.getElementById('status');
+            const btn = document.getElementById('claim-btn');
+
+            if(!alias || !email) return alert("All fields are mandatory.");
+
+            btn.disabled = true;
+            status.innerText = "COMMUNICATING WITH LEDGER...";
+
+            try {
+                // FETCH RIIL KE API BACKEND
+                const response = await fetch('/api/claim', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ alias, email })
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) throw new Error(result.error || "Ledger Rejected Request");
+
+                // TRANSISI KE SERTIFIKAT JIKA SUKSES
+                document.getElementById('main-ui').style.display = 'none';
+                document.getElementById('cert-ui').style.display = 'block';
+                document.getElementById('cert-name').innerText = alias.toUpperCase();
+                document.getElementById('cert-serial').innerText = "SEQUENCE: " + result.sequenceId;
+                document.getElementById('cert-sig').innerText = "SIGNATURE: " + result.signature;
+
+            } catch (err) {
+                status.innerText = "ERROR: " + err.message;
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

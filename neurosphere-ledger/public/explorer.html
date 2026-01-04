@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroSphere Explorer - Ledger Audit</title>
+    <style>
+        body { font-family: 'Courier New', monospace; background: #000; color: #00ff00; padding: 20px; }
+        .search-box { margin-bottom: 20px; border: 1px solid #00ff00; padding: 10px; width: 100%; background: #111; color: #00ff00; }
+        .transaction-card { border-bottom: 1px solid #004400; padding: 15px; margin-bottom: 10px; }
+        .label { color: #888; font-size: 0.8rem; }
+        .value { color: #fff; font-size: 1rem; margin-bottom: 5px; }
+        .highlight { color: #00ff00; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>NEUROSPHERE EXPLORER</h1>
+    <p>Auditing Technology Money Manifestations (LUV, ENPE, IND-EUR)</p>
+    
+    <input type="text" id="search" class="search-box" placeholder="Cari berdasarkan Alias atau Sequence ID...">
+    
+    <div id="explorer-list"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const _supabase = supabase.createClient(
+            'https://yyzymgkdpqevkuhowjci.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5enltZ2tkcHFldmt1aG93amNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzODgyMDQsImV4cCI6MjA4MTk2NDIwNH0.hk3M39domZHQXjlG8i7ikGhxEFThqtO1RQaEzc65_1Y'
+        );
+
+        async function fetchClaims() {
+            const { data, error } = await _supabase.from('ledger').select('*').order('created_at', { ascending: false });
+            if (error) return;
+            renderList(data);
+        }
+
+        function renderList(items) {
+            const list = document.getElementById('explorer-list');
+            list.innerHTML = items.map(item => `
+                <div class="transaction-card">
+                    <div class="label">IDENTITY ALIAS</div>
+                    <div class="value highlight">${item.alias}</div>
+                    <div class="label">SEQUENCE ID (GENESIS)</div>
+                    <div class="value">${item.sequence_id}</div>
+                    <div class="label">MANIFESTATION</div>
+                    <div class="value">1,000,000 LUV (Locked)</div>
+                    <div class="label">TIMESTAMP</div>
+                    <div class="value">${new Date(item.created_at).toLocaleString()}</div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('search').addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase();
+            // Logika filter sederhana bisa ditambahkan di sini
+        });
+
+        fetchClaims();
+    </script>
+</body>
+</html>

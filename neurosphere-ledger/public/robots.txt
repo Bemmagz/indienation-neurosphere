@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Allow: /explorer.html
+Allow: /verify.html
+Sitemap: https://neurosphere-ledger.vercel.app/sitemap.xml
