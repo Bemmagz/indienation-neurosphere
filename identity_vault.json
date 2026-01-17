@@ -1,0 +1,19 @@
+{
+  "identity": {
+    "handle": "FOUNDER-01",
+    "id": 1,
+    "email": "bemmagz@gmail.com",
+    "sequence_id": "TM-GEN-F69870"
+  },
+  "assets": {
+    "ENPE": 100000000000000,
+    "LUV": 1000000000123,
+    "IND-EUR": "UNLIMITED"
+  },
+  "karma": {
+    "streak": 1,
+    "total_days": 1
+  },
+  "status": "SOVEREIGN_VALIDATED",
+  "notarized_at": "2026-01-15"
+}

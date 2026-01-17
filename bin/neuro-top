@@ -1,0 +1,35 @@
+#!/bin/bash
+NC='\033[0m'
+BOLD='\033[1m'
+
+while true; do
+    clear
+    ROOT_DIR="/data/data/com.termux/files/home/indienation-neurosphere"
+    KARMA_FILE="$ROOT_DIR/state/karma.jsonl"
+    LEDGER="$ROOT_DIR/state/ledger.json"
+    
+    # Hitung Karma
+    POINTS=$(jq -s 'map(.points) | add' "$KARMA_FILE" 2>/dev/null || echo 0)
+    
+    # Hitung Total TM (ENPE + LUV) - Logic: Mencari transaksi masuk untuk ID ini
+    # Ini simulasi kalkulasi balance sederhana dari ledger
+    BAL_ENPE=$(grep -o "ENPE" "$LEDGER" | wc -l | awk '{print $1 * 100}')
+    BAL_LUV=$(grep -o "LUV" "$LEDGER" | wc -l | awk '{print $1 * 5}')
+
+    # Determine Aura
+    if [ "$POINTS" -ge 50 ]; then AURA="GOLDEN RADIANCE"; COL="\033[1;33m"; else AURA="CYAN STEADY"; COL="\033[0;36m"; fi
+    
+    echo -e "${COL}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "  ${BOLD}NEUROSPHERE REAL-TIME DASHBOARD${NC}          [ v1.0-STABLE ]"
+    echo -e "${COL}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "  NODE ID      : ${BOLD}NeuroID#001${NC}"
+    echo -e "  AURA STATUS  : ${COL}${AURA}${NC}"
+    echo -e "  KARMA POINTS : \033[0;32m${POINTS} Pts${NC}"
+    echo -e "  TOTAL TM     : \033[1;35m$((BAL_ENPE + BAL_LUV)) units${NC} (ENPE: $BAL_ENPE | LUV: $BAL_LUV)"
+    echo -e "${COL}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "  ${BOLD}LATEST NETWORK PULSE:${NC}"
+    tail -n 3 "$ROOT_DIR/state/node.log" 2>/dev/null | cut -c1-60 || echo "Waiting for logs..."
+    echo -e "${COL}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "  [ Press CTRL+C to exit dashboard ]"
+    sleep 2
+done

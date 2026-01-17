@@ -1,0 +1,30 @@
+#!/bin/bash
+ROOT_DIR="/data/data/com.termux/files/home/indienation-neurosphere"
+PY_FILE="$ROOT_DIR/core/neurosphere_guard_node.py"
+LOG_FILE="$ROOT_DIR/state/node.log"
+BACKUP_SCRIPT="$ROOT_DIR/bin/neuro_backup.sh"
+
+echo -e "\033[0;35m[SYSTEM] Booting Sovereign Guard with Auto-Backup Daemon...\033[0m"
+
+pkill -f "neurosphere_guard_node.py" > /dev/null 2>&1
+sleep 1
+
+nohup bash -c "
+LAST_BACKUP=0
+while true; do
+    PORT=5002
+    while lsof -i :\$PORT >/dev/null 2>&1; do PORT=\$((PORT + 1)); done
+    
+    # Logic Auto-Backup (setiap 1 jam / 3600 detik)
+    CURRENT_TIME=\$(date +%s)
+    if [ \$((CURRENT_TIME - LAST_BACKUP)) -ge 3600 ]; then
+        bash \"$BACKUP_SCRIPT\" >> \"$LOG_FILE\" 2>&1
+        LAST_BACKUP=\$CURRENT_TIME
+    fi
+
+    export PORT=\$PORT
+    python3 \"$PY_FILE\" >> \"$LOG_FILE\" 2>&1
+    sleep 2
+done" > /dev/null 2>&1 &
+
+echo -e "\033[0;32m[SUCCESS] Guard Node & Auto-Backup are now SYNCED.\033[0m"
