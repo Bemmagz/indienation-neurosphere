@@ -1,0 +1,8 @@
+{
+    "timestamp": 1768725984.3516252,
+    "tx_id": "TX-CRITICAL-001",
+    "action": "CRITICAL_LOCK",
+    "amount": 150000000,
+    "reason": "Policy Threshold Exceeded",
+    "integrity_hash": "12e7004b07fa0820e84d7bf8bcaddad58f51aaf84bcfc686e9d5f6f03e47d8de"
+}

@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-01-18T13:29:22.096194",
+  "tx_id": "TX_HARD_001",
+  "action": "KYC_VERIFIED",
+  "amount": 5000000,
+  "currency": "ENPE",
+  "details": {
+    "kyc_level": 2,
+    "action": "TRANSFER_ALLOWED"
+  },
+  "hash": "fa155f1acdc980f8"
+}

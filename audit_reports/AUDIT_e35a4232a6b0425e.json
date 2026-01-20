@@ -1,0 +1,44 @@
+{
+  "audit_id": "AUDIT_e35a4232a6b0425e",
+  "tx_id": "TX-VELOCITY-001",
+  "generated_at": "2026-01-18T12:47:19.063126",
+  "policy_applied": {
+    "THRESHOLD_FREE": 100000,
+    "THRESHOLD_GUARD": 1000000,
+    "THRESHOLD_CRITICAL": 100000000,
+    "TIMEOUT_REVERT": 900,
+    "ANALYTIC_SPIKE": 10,
+    "ZERO_VALUE_ESCAPE": true
+  },
+  "actions_taken": [
+    {
+      "action": "GLOBAL_FREEZE",
+      "parameters": {
+        "scope": "ALL_ASSETS",
+        "duration": "INDEFINITE",
+        "reason": "Velocity spike detected"
+      },
+      "message": "All assets frozen pending investigation",
+      "zero_value_escape": true
+    }
+  ],
+  "audit_trail": [
+    {
+      "rule": "VELOCITY_SPIKE",
+      "triggered": true,
+      "timestamp": "2026-01-18T12:47:19.063034"
+    }
+  ],
+  "legal_metadata": {
+    "jurisdiction": "INDIE NATION DIGITAL SOVEREIGNTY",
+    "compliance": [
+      "GDPR",
+      "FATF",
+      "LOCAL_REGULATIONS"
+    ],
+    "admissible_in_court": true,
+    "retention_period_years": 7,
+    "chain_of_custody": true
+  },
+  "integrity_hash": "e35a4232a6b0425e2d2e2c4d4c8117a26f7425273974198d046fe2f39e087e83bc4f9a654c12d2e5728b6793162e5c024d0b13bc11a0b4b1d0fd1613ef9ba2aa"
+}

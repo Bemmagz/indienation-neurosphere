@@ -1,0 +1,20 @@
+{
+    "nft_id": "NFT-TM-ARMIR-1768726345",
+    "owner_identity": "ARMIRO_CHIEF_001",
+    "tm_contents": {
+        "enpe_native": 5000000.0,
+        "luv_social": 19999995.0,
+        "stable_anchor": 3000000.0
+    },
+    "security": {
+        "protocol": "Zero-Value-Escape",
+        "timeout_rule": "60s_FAST",
+        "trademark": "Forehead-Identity-QR"
+    },
+    "evolution": {
+        "stage": "Living Value Identity",
+        "minted_at": "2026-01-18T15:52:25.343310",
+        "last_relay": "2026-01-18T15:53:56.186108"
+    },
+    "dna_hash": "753f3df1a5be054bf56729d72878ca7d8e810de6a90c296e36b429a9e4b38cc8"
+}

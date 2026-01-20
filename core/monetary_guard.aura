@@ -1,0 +1,40 @@
+# NEUROSPHERE PROTOCOL SPECIFICATION v1.0
+# Namespace: MonetaryGuard.Lua.Gate
+
+define Protocol "Sovereign-Return" {
+    attribute time_window = 900s; # 15 Menit
+    attribute critical_threshold = 100000000; # 100 Juta ENPE
+
+    rule validate_flow(tx) {
+        # Check 1: Cryptographic Integrity
+        require(tx.signature.type == "POST-QUANTUM-DILITHIUM");
+        require(tx.owner_class == "REGISTERED_OWNER");
+
+        # Check 2: AI Risk Assessment (Neuralang)
+        let risk_score = Neuralang.analyze(tx.behavior, tx.entropy);
+
+        # Check 3: Deterministic Execution (Auralang)
+        match tx.amount {
+            case < 100000 =>
+                action.execute_instant();
+
+            case 100000 .. critical_threshold =>
+                action.escrow_pending(time_window);
+                require_auth(level: 2, method: "SOFT_BIO");
+
+            case > critical_threshold =>
+                action.escrow_pending(time_window);
+                action.trigger_alert("CRITICAL_LOCK");
+                require_auth(level: 3, method: "FULL_KYC_BIO");
+        }
+
+        # Check 4: Anti-Circumvention (The 1.000, 1.000 pattern)
+        if (GlobalStats.recent_velocity(tx.sender) > 100) {
+            action.freeze_all_and_revert();
+        }
+    }
+
+    on timeout(time_window) {
+        action.auto_revert_to_source(tx.amount, tx.origin);
+    }
+}

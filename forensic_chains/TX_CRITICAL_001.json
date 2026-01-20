@@ -1,0 +1,7 @@
+{
+  "timestamp": "2026-01-18T13:41:02.273760",
+  "tx_id": "TX_CRITICAL_001",
+  "action": "CRITICAL_LOCK",
+  "amount": 150000000,
+  "hash": "edd22562f4719f7e"
+}

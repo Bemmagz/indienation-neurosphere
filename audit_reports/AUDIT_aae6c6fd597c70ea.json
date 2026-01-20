@@ -1,0 +1,75 @@
+{
+  "audit_id": "AUDIT_aae6c6fd597c70ea",
+  "tx_id": "TX-POLICY-001",
+  "generated_at": "2026-01-18T12:47:19.060641",
+  "policy_applied": {
+    "THRESHOLD_FREE": 100000,
+    "THRESHOLD_GUARD": 1000000,
+    "THRESHOLD_CRITICAL": 100000000,
+    "TIMEOUT_REVERT": 900,
+    "ANALYTIC_SPIKE": 10,
+    "ZERO_VALUE_ESCAPE": true
+  },
+  "actions_taken": [
+    {
+      "action": "ESCROW_LOCK",
+      "parameters": {
+        "timeout_seconds": 900,
+        "auto_revert": true,
+        "revert_to": "user_enterprise"
+      },
+      "message": "Transaction locked in escrow for 900s",
+      "zero_value_escape": true
+    },
+    {
+      "action": "REQUIRE_ESCALATION",
+      "parameters": {
+        "level": "LEVEL_3",
+        "methods": [
+          "VIDEO_KYC",
+          "FACE_RECOGNITION",
+          "SOURCE_OF_FUNDS"
+        ]
+      },
+      "message": "Escalation to LEVEL_3 required",
+      "legal_requirement": true
+    },
+    {
+      "action": "FORENSIC_AUDIT",
+      "parameters": {
+        "grade": "LEGAL_GRADE",
+        "scope": [
+          "transaction_logs",
+          "ip_address",
+          "device_fingerprint",
+          "kyc_documents",
+          "video_recordings",
+          "blockchain_proof"
+        ],
+        "retention_years": 7,
+        "chain_of_custody": true
+      },
+      "message": "Initiating LEGAL_GRADE forensic audit",
+      "legal_admissible": true
+    }
+  ],
+  "audit_trail": [
+    {
+      "rule": "CRITICAL_AMOUNT",
+      "triggered": true,
+      "timestamp": "2026-01-18T12:47:19.060437"
+    }
+  ],
+  "legal_metadata": {
+    "jurisdiction": "INDIE NATION DIGITAL SOVEREIGNTY",
+    "compliance": [
+      "GDPR",
+      "FATF",
+      "LOCAL_REGULATIONS"
+    ],
+    "admissible_in_court": true,
+    "retention_period_years": 7,
+    "chain_of_custody": true
+  },
+  "integrity_hash": "aae6c6fd597c70ea7d8eb7105afbcc07927e9950c5364fdf175b413c0e8ca2b2ddaf87846e98117309537f57110bf2a4d2d5e180620f449851a45f7a4c43683f"
+}

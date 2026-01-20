@@ -1,19 +1,12 @@
-# 🌐 NeuroSphere: Living Value Identity Ecosystem
+# NeuroSphere Monetary Guard System (NMG)
+## Official Whitepaper & Engineering Blueprint
 
-Welcome to the **indienation-neurosphere** core repository. This is the engine of a new economic language: **Technology Money (TM)**.
+NMG adalah arsitektur keamanan asset-aware untuk sistem uang digital NFT-TM.
+Status: Phase 1 - Infrastructure Setup
 
-## 🏛️ Economic Architecture
-- **ENPE (E Coin)**: Native Engine - 100 Trillion Supply.
-- **LUV (Lovely Coin)**: Social Distribution - 1M LUV for 1 Million People.
-- **IND-EUR**: Stable Value Anchor.
+### Core Principles:
+- **Neuralang**: AI-Probabilistic Risk Assessment.
+- **Auralang**: Deterministic Rule Engine (Sovereign Return).
+- **Escrow TM**: High-Fidelity Value Container.
 
-## 🛡️ Governance & Lock Status
-- **Founder Allocation**: Locked for 3 Years.
-- **General Assets**: Locked for 2 Years.
-- **Donation & Disaster Pools**: 15% OPEN for immediate humanitarian response.
-
-## 🧬 Living Value Identity (LVI)
-Identity is not just data; it is an evolution. Our NFTs carry metadata that evolves visually (Aura & Color) based on social reputation and contribution.
-
----
-*Authorized by Founder-01 (Obsidian-Aura Status)*
+*Refer to docs/whitepaper_draft.md for full technical details.*

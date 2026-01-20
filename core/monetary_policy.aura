@@ -1,0 +1,20 @@
+# NEUROSPHERE SOVEREIGN POLICY v2.1
+# OBJECTIVE: ZERO-VALUE-ESCAPE
+
+PROTOCOL MonetaryGuard {
+    SET THRESHOLD_FREE = 100000
+    SET THRESHOLD_GUARD = 1000000
+    SET THRESHOLD_CRITICAL = 100000000
+    SET TIMEOUT_REVERT = 900s
+
+    FLOW evaluate(tx) {
+        IF tx.amount > THRESHOLD_CRITICAL {
+            DO action.escrow_lock(TIMEOUT_REVERT)
+            DO action.require_escalation(LEVEL_3)
+            LOG action.forensic_audit(LEGAL_GRADE)
+        }
+        IF tx.velocity > ANALYTIC_SPIKE {
+            DO action.global_freeze()
+        }
+    }
+}

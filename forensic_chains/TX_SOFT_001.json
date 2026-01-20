@@ -1,0 +1,7 @@
+{
+  "timestamp": "2026-01-18T13:41:00.270100",
+  "tx_id": "TX_SOFT_001",
+  "action": "SOFT_LOCK",
+  "amount": 250000,
+  "hash": "42b65aafc1dc0a66"
+}

@@ -1,0 +1,38 @@
+{
+  "chain_id": "neurosphere_immune_v3",
+  "created_at": "2026-01-18T12:47:09.806078",
+  "entries": [
+    {
+      "timestamp": "2026-01-18T12:47:09.802973",
+      "tx_id": "GENESIS",
+      "action": "CHAIN_INITIALIZED",
+      "amount": 0.0,
+      "currency": "SYSTEM",
+      "reason": "Neurosphere Forensic Chain Initialization",
+      "previous_hash": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "integrity_hash": "f7610ce7c1fe0e1dbe53b5bf3c349f64b889cfd5618aa30e8e8dc8bfc93ee28b8634e16e2c0007bd3377c5e805591ba8192170bfafea758d6c3c008bb5eccab6"
+    },
+    {
+      "timestamp": "2026-01-18T12:47:09.804516",
+      "tx_id": "TX_CRITICAL_001",
+      "action": "CRITICAL_LOCK_ESCROW",
+      "amount": 150000000,
+      "currency": "ENPE",
+      "reason": "CRITICAL: Amount 150,000,000 > 100M | Awaiting KYC Level 3",
+      "previous_hash": "f7610ce7c1fe0e1dbe53b5bf3c349f64b889cfd5618aa30e8e8dc8bfc93ee28b8634e16e2c0007bd3377c5e805591ba8192170bfafea758d6c3c008bb5eccab6",
+      "integrity_hash": "569519cc661c7f329e4325d3bc4b4f62f75445f578d250bc83b7acd7e8dff2f7314ac0d7c722d8f5a48a171ee56f42ee00a748723ffc31dc07367a00114fa722"
+    },
+    {
+      "timestamp": "2026-01-18T12:47:09.805788",
+      "tx_id": "TX_CRITICAL_001",
+      "action": "KYC_VERIFIED_TRANSFER",
+      "amount": 150000000,
+      "currency": "ENPE",
+      "reason": "KYC Level 3 verified successfully",
+      "previous_hash": "569519cc661c7f329e4325d3bc4b4f62f75445f578d250bc83b7acd7e8dff2f7314ac0d7c722d8f5a48a171ee56f42ee00a748723ffc31dc07367a00114fa722",
+      "integrity_hash": "85627799cb88d35d406df167ff274584970130af6ed93c745be0e23f5197f63327d3d6656fe997b1b7db31fda24fcb8f34ef1f991d81ce4b4eee47b5338a84a7"
+    }
+  ],
+  "integrity_verified": true,
+  "total_entries": 3
+}
