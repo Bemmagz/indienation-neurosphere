@@ -2,3 +2,11 @@
 .env*.local
 backups/
 state/node.log
+# Generated Reports & Audits
+AUDIT_REPORT_*.txt
+FOUNDER_BRIEFING_*.txt
+# Aura Identity Files
+AURA_*.json
+# Potential future visual files
+*.png
+*.svg
