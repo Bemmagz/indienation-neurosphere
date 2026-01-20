@@ -1,64 +1,413 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/bin/bash
 
-VERSION="4.0.1"
+# NeuroSphere Unified CLI v4.1.0
+VERSION="4.1.0"
 DB_FILE="neurosphere.db"
 
-# Colors
+# Colors for Auralang
 GREEN='\033[0;32m'
 CYAN='\033[0;36m'
 YELLOW='\033[1;33m'
 MAGENTA='\033[0;35m'
 RED='\033[0;31m'
+BLUE='\033[0;34m'
 NC='\033[0m'
 
-header() { echo -e "${CYAN}--- NEUROSPHERE SOVEREIGN SYSTEM v${VERSION} ---${NC}"; }
+# Initialize DB if missing
+init_db() {
+    if [ ! -f "$DB_FILE" ]; then
+        sqlite3 "$DB_FILE" << 'INIT_SQL'
+CREATE TABLE IF NOT EXISTS citizens (
+    id TEXT PRIMARY KEY,
+    current_aura INTEGER DEFAULT 50,
+    status TEXT DEFAULT 'active',
+    inherited_from TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS kindness_actions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    citizen_id TEXT,
+    action TEXT,
+    coins INTEGER,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (citizen_id) REFERENCES citizens(id)
+);
+
+CREATE TABLE IF NOT EXISTS inheritance_records (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    owner_id TEXT,
+    heir_id TEXT,
+    aura_transferred INTEGER,
+    executed_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (owner_id) REFERENCES citizens(id),
+    FOREIGN KEY (heir_id) REFERENCES citizens(id)
+);
+
+-- Insert Founder
+INSERT OR IGNORE INTO citizens (id, current_aura, status) VALUES 
+    ('FOUNDER-01', 100, '👑 Legend');
+INIT_SQL
+        echo -e "${GREEN}✅ Database initialized with Founder${NC}"
+    fi
+}
+
+header() {
+    echo -e "${CYAN}--- NEUROSPHERE SOVEREIGN SYSTEM v${VERSION} ---${NC}"
+}
+
+get_rank_color() {
+    local aura=$1
+    if [ "$aura" -le 30 ]; then
+        echo "${GREEN}🌱 Seed${NC}"
+    elif [ "$aura" -le 70 ]; then
+        echo "${CYAN}🛡️ Guardian${NC}"
+    else
+        echo "${MAGENTA}👑 Legend${NC}"
+    fi
+}
 
 case "$1" in
     status)
         header
         if [ -z "$2" ] || [ "$2" == "summary" ]; then
-            sqlite3 "$DB_FILE" -header -column "SELECT (SELECT COUNT(*) FROM citizens WHERE status='active') as 'Active', (SELECT COUNT(*) FROM citizens WHERE status='inherited') as 'Legacy', (SELECT SUM(current_aura) FROM citizens) as 'Total Aura';"
+            sqlite3 "$DB_FILE" -header -column << 'STATUS_SQL'
+SELECT 
+    (SELECT COUNT(*) FROM citizens) as 'Total',
+    (SELECT COUNT(*) FROM citizens WHERE status='active') as 'Active',
+    (SELECT COUNT(*) FROM citizens WHERE status='inherited') as 'Legacy',
+    (SELECT SUM(current_aura) FROM citizens) as 'Total_Aura',
+    (SELECT COUNT(*) FROM kindness_actions) as 'Kindness_Actions';
+STATUS_SQL
         else
-            sqlite3 "$DB_FILE" -header -column "SELECT id as 'Citizen_ID', current_aura as 'Aura', status as 'Status', inherited_from as 'Source' FROM citizens WHERE id='$2';"
+            sqlite3 "$DB_FILE" -header -column << STATUS_SQL
+SELECT 
+    id as 'Citizen_ID',
+    current_aura as 'Aura',
+    CASE 
+        WHEN current_aura <= 30 THEN '🌱 Seed'
+        WHEN current_aura <= 70 THEN '🛡️ Guardian'
+        ELSE '👑 Legend'
+    END as 'Rank',
+    status as 'Status',
+    inherited_from as 'Source',
+    created_at as 'Created'
+FROM citizens WHERE id='$2';
+STATUS_SQL
         fi
         ;;
+    
     reward)
         ID=$2; ACT=$3; QTY=$4
-        if [ "$QTY" -gt 10 ]; then echo -e "${RED}⚠️ Limit 10!${NC}"; exit 1; fi
-        sqlite3 "$DB_FILE" "BEGIN TRANSACTION; UPDATE citizens SET current_aura = current_aura + $QTY WHERE id='$ID'; INSERT INTO kindness_actions (citizen_id, action, coins) VALUES ('$ID', '$ACT', $QTY); COMMIT;"
-        echo -e "${GREEN}✅ Reward +$QTY LUV to $ID${NC}"
+        if [ -z "$QTY" ]; then 
+            echo -e "${RED}Usage: ns reward [ID] [ACTION] [0-10]${NC}"
+            echo -e "${YELLOW}Example: ns reward Citizen_01 Teaching 5${NC}"
+            exit 1
+        fi
+        if [ "$QTY" -gt 10 ]; then 
+            echo -e "${RED}⚠️ E-KINDNESS Limit: Max 10 per action!${NC}"
+            exit 1
+        fi
+        
+        # Check if citizen exists
+        EXISTS=$(sqlite3 "$DB_FILE" "SELECT id FROM citizens WHERE id='$ID';")
+        if [ -z "$EXISTS" ]; then
+            echo -e "${YELLOW}⚠️ Creating new citizen: $ID${NC}"
+            sqlite3 "$DB_FILE" "INSERT INTO citizens (id, current_aura) VALUES ('$ID', 50);"
+        fi
+        
+        sqlite3 "$DB_FILE" << REWARD_SQL
+BEGIN TRANSACTION;
+UPDATE citizens SET current_aura = current_aura + $QTY WHERE id='$ID';
+INSERT INTO kindness_actions (citizen_id, action, coins) VALUES ('$ID', '$ACT', $QTY);
+COMMIT;
+REWARD_SQL
+        
+        NEW_AURA=$(sqlite3 "$DB_FILE" "SELECT current_aura FROM citizens WHERE id='$ID';")
+        RANK=$(get_rank_color $NEW_AURA)
+        echo -e "${GREEN}✅ +$QTY LUV to $ID for $ACT${NC}"
+        echo -e "   New Total: $NEW_AURA Aura | Rank: $RANK"
         ;;
+    
     rank)
         header
+        if [ -z "$2" ]; then
+            echo -e "${RED}Usage: ns rank [citizen_id]${NC}"
+            exit 1
+        fi
+        
         AURA=$(sqlite3 "$DB_FILE" "SELECT current_aura FROM citizens WHERE id='$2';")
-        if [ "$AURA" -le 30 ]; then R="🌱 Seed"; C=$GREEN; elif [ "$AURA" -le 70 ]; then R="🛡️ Guardian"; C=$CYAN; else R="👑 Legend"; C=$MAGENTA; fi
-        echo -e "ID: $2 | Aura: $AURA | Rank: ${C}${R}${NC}"
+        if [ -z "$AURA" ]; then 
+            echo -e "${RED}❌ Citizen '$2' not found${NC}"
+            exit 1
+        fi
+        
+        RANK=$(get_rank_color $AURA)
+        STATUS=$(sqlite3 "$DB_FILE" "SELECT status FROM citizens WHERE id='$2';")
+        INHERITED=$(sqlite3 "$DB_FILE" "SELECT inherited_from FROM citizens WHERE id='$2';")
+        
+        echo -e "👤 ID: $2"
+        echo -e "💫 Aura: $AURA"
+        echo -e "🏆 Rank: $RANK"
+        echo -e "📋 Status: $STATUS"
+        if [ -n "$INHERITED" ]; then
+            echo -e "📜 Inherited from: $INHERITED"
+        fi
         ;;
+    
     inherit)
         OWNER=$2; HEIR=$3
+        if [ -z "$OWNER" ] || [ -z "$HEIR" ]; then
+            echo -e "${RED}Usage: ns inherit [owner_id] [heir_id]${NC}"
+            echo -e "${YELLOW}Example: ns inherit Citizen_77 Heir_99${NC}"
+            exit 1
+        fi
+        
         AURA=$(sqlite3 "$DB_FILE" "SELECT current_aura FROM citizens WHERE id='$OWNER' AND status='active';")
-        if [ -z "$AURA" ]; then echo "❌ Owner invalid"; exit 1; fi
+        if [ -z "$AURA" ]; then 
+            echo -e "${RED}❌ Owner '$OWNER' not found or not active${NC}"
+            exit 1
+        fi
+        
         VAL=$((AURA / 2))
-        sqlite3 "$DB_FILE" "BEGIN TRANSACTION; UPDATE citizens SET status='inherited' WHERE id='$OWNER'; INSERT OR REPLACE INTO citizens (id, current_aura, status, inherited_from) VALUES ('$HEIR', $VAL, 'active', '$OWNER'); INSERT INTO inheritance_records (owner_id, heir_id, aura_transferred) VALUES ('$OWNER', '$HEIR', $VAL); COMMIT;"
-        echo -e "${MAGENTA}📜 Legacy Transferred: $VAL Aura to $HEIR${NC}"
+        
+        sqlite3 "$DB_FILE" << INHERIT_SQL
+BEGIN TRANSACTION;
+-- Mark owner as inherited
+UPDATE citizens SET status='inherited' WHERE id='$OWNER';
+-- Create or update heir
+INSERT OR REPLACE INTO citizens (id, current_aura, status, inherited_from) 
+VALUES ('$HEIR', $VAL, 'active', '$OWNER');
+-- Record inheritance
+INSERT INTO inheritance_records (owner_id, heir_id, aura_transferred) 
+VALUES ('$OWNER', '$HEIR', $VAL);
+COMMIT;
+INHERIT_SQL
+        
+        echo -e "${MAGENTA}📜 LEGACY TRANSFERRED${NC}"
+        echo -e "From: $OWNER (Now: inherited)"
+        echo -e "To: $HEIR (Aura: $VAL)"
+        echo -e "Rank: $(get_rank_color $VAL)"
         ;;
+    
+    search)
+        if [ -z "$2" ]; then
+            echo -e "${RED}Usage: ns search [pattern]${NC}"
+            echo -e "${YELLOW}Example: ns search Guardian${NC}"
+            exit 1
+        fi
+        
+        header
+        echo -e "${YELLOW}🔍 Search Results for: '$2'${NC}"
+        
+        sqlite3 "$DB_FILE" -header -column << SEARCH_SQL
+SELECT 
+    id as 'Citizen_ID',
+    current_aura as 'Aura',
+    CASE 
+        WHEN current_aura <= 30 THEN '🌱 Seed'
+        WHEN current_aura <= 70 THEN '🛡️ Guardian'
+        ELSE '👑 Legend'
+    END as 'Rank',
+    status as 'Status'
+FROM citizens 
+WHERE id LIKE '%$2%' OR status LIKE '%$2%'
+ORDER BY current_aura DESC;
+SEARCH_SQL
+        ;;
+    
     list)
-        sqlite3 "$DB_FILE" -header -column "SELECT id, current_aura, status FROM citizens ORDER BY current_aura DESC LIMIT ${2:-10};"
+        LIMIT=${2:-10}
+        header
+        echo -e "${YELLOW}🏆 Top $LIMIT Citizens by Aura${NC}"
+        
+        sqlite3 "$DB_FILE" -header -column << LIST_SQL
+SELECT 
+    id as 'Citizen_ID',
+    current_aura as 'Aura',
+    CASE 
+        WHEN current_aura <= 30 THEN '🌱 Seed'
+        WHEN current_aura <= 70 THEN '🛡️ Guardian'
+        ELSE '👑 Legend'
+    END as 'Rank',
+    status as 'Status',
+    strftime('%Y-%m-%d', created_at) as 'Created'
+FROM citizens 
+ORDER BY current_aura DESC 
+LIMIT $LIMIT;
+LIST_SQL
         ;;
+    
+    audit)
+        header
+        echo -e "${YELLOW}📊 SYSTEM AUDIT REPORT${NC}"
+        echo "========================"
+        
+        # System Stats
+        echo -e "\n${CYAN}📈 Population Statistics${NC}"
+        sqlite3 "$DB_FILE" -header -column << 'AUDIT_SQL1'
+SELECT
+    (SELECT COUNT(*) FROM citizens) as 'Total_Citizens',
+    (SELECT COUNT(*) FROM citizens WHERE status='active') as 'Active',
+    (SELECT COUNT(*) FROM citizens WHERE status='inherited') as 'Legacy',
+    (SELECT AVG(current_aura) FROM citizens) as 'Avg_Aura',
+    (SELECT MAX(current_aura) FROM citizens) as 'Max_Aura',
+    (SELECT MIN(current_aura) FROM citizens) as 'Min_Aura';
+AUDIT_SQL1
+        
+        # Kindness Economy
+        echo -e "\n${CYAN}💖 Kindness Economy${NC}"
+        sqlite3 "$DB_FILE" -header -column << 'AUDIT_SQL2'
+SELECT
+    (SELECT COUNT(*) FROM kindness_actions) as 'Total_Actions',
+    (SELECT SUM(coins) FROM kindness_actions) as 'Total_Coins',
+    (SELECT AVG(coins) FROM kindness_actions) as 'Avg_Coins_Per_Action',
+    (SELECT COUNT(DISTINCT citizen_id) FROM kindness_actions) as 'Active_Contributors';
+AUDIT_SQL2
+        
+        # Top Contributors
+        echo -e "\n${CYAN}🏅 Top 5 Contributors${NC}"
+        sqlite3 "$DB_FILE" -header -column << 'AUDIT_SQL3'
+SELECT
+    citizen_id as 'Citizen',
+    COUNT(*) as 'Actions',
+    SUM(coins) as 'Total_Coins',
+    ROUND(AVG(coins), 1) as 'Avg_Coins'
+FROM kindness_actions 
+GROUP BY citizen_id 
+ORDER BY SUM(coins) DESC 
+LIMIT 5;
+AUDIT_SQL3
+        
+        # Inheritance History
+        echo -e "\n${CYAN}📜 Recent Inheritance${NC}"
+        sqlite3 "$DB_FILE" -header -column << 'AUDIT_SQL4'
+SELECT
+    owner_id as 'From',
+    heir_id as 'To',
+    aura_transferred as 'Aura',
+    executed_at as 'Date'
+FROM inheritance_records 
+ORDER BY executed_at DESC 
+LIMIT 3;
+AUDIT_SQL4
+        ;;
+    
     dashboard)
         while true; do
-            clear; header
-            sqlite3 "$DB_FILE" -header -column "SELECT id, current_aura, status FROM citizens ORDER BY current_aura DESC LIMIT 5;"
-            echo -e "\n${YELLOW}Latest Actions:${NC}"
-            sqlite3 "$DB_FILE" -header -column "SELECT timestamp, action, coins FROM kindness_actions ORDER BY timestamp DESC LIMIT 3;"
-            echo -e "\nCtrl+C to exit..."
-            sleep 3
+            clear
+            header
+            echo ""
+            
+            # Current Sovereign
+            echo -e "${YELLOW}👑 Current Sovereign${NC}"
+            sqlite3 "$DB_FILE" -header -column << 'DASH1'
+SELECT 
+    id as 'Citizen',
+    current_aura as 'Aura',
+    CASE 
+        WHEN current_aura <= 30 THEN '🌱 Seed'
+        WHEN current_aura <= 70 THEN '🛡️ Guardian'
+        ELSE '👑 Legend'
+    END as 'Rank'
+FROM citizens 
+ORDER BY current_aura DESC 
+LIMIT 1;
+DASH1
+            
+            # Top 5
+            echo -e "\n${YELLOW}🏆 Top 5 Citizens${NC}"
+            sqlite3 "$DB_FILE" -header -column << 'DASH2'
+SELECT 
+    ROW_NUMBER() OVER (ORDER BY current_aura DESC) as '#',
+    id as 'Citizen',
+    current_aura as 'Aura',
+    status as 'Status'
+FROM citizens 
+ORDER BY current_aura DESC 
+LIMIT 5;
+DASH2
+            
+            # Recent Kindness
+            echo -e "\n${YELLOW}💖 Recent Kindness Actions${NC}"
+            sqlite3 "$DB_FILE" -header -column << 'DASH3'
+SELECT 
+    strftime('%H:%M', timestamp) as 'Time',
+    citizen_id as 'Citizen',
+    action as 'Action',
+    coins as 'Coins'
+FROM kindness_actions 
+ORDER BY timestamp DESC 
+LIMIT 3;
+DASH3
+            
+            # System Stats
+            echo -e "\n${YELLOW}📊 Quick Stats${NC}"
+            sqlite3 "$DB_FILE" << 'DASH4'
+SELECT 
+    'Citizens: ' || (SELECT COUNT(*) FROM citizens) ||
+    ' | Aura Total: ' || (SELECT SUM(current_aura) FROM citizens) ||
+    ' | Actions: ' || (SELECT COUNT(*) FROM kindness_actions)
+    as 'System_Status';
+DASH4
+            
+            echo -e "\n${BLUE}🔄 Auto-refresh in 5s (Ctrl+C to exit)${NC}"
+            sleep 5
         done
         ;;
+    
     backup)
-        mkdir -p backups && cp "$DB_FILE" "backups/ns_$(date +%Y%m%d_%H%M%S).db"
+        BACKUP_DIR="backups"
+        mkdir -p "$BACKUP_DIR"
+        BACKUP_FILE="$BACKUP_DIR/neurosphere_$(date +%Y%m%d_%H%M%S).db"
+        
+        cp "$DB_FILE" "$BACKUP_FILE"
+        
         echo -e "${GREEN}✅ Backup Created${NC}"
+        echo -e "File: $(basename "$BACKUP_FILE")"
+        echo -e "Size: $(du -h "$BACKUP_FILE" | cut -f1)"
+        echo -e "Location: $BACKUP_DIR/"
+        
+        # List recent backups
+        echo -e "\n${YELLOW}Recent Backups:${NC}"
+        ls -lh "$BACKUP_DIR"/*.db 2>/dev/null | tail -3 || echo "No previous backups"
         ;;
-    version) echo "NeuroSphere CLI v$VERSION" ;;
-    *) echo "Commands: status, reward, rank, inherit, list, dashboard, backup, version" ;;
+    
+    version)
+        echo "NeuroSphere CLI v$VERSION"
+        echo "Database: $DB_FILE"
+        echo "Citizens: $(sqlite3 "$DB_FILE" "SELECT COUNT(*) FROM citizens;" 2>/dev/null || echo "0")"
+        ;;
+    
+    help|*)
+        header
+        echo -e "${YELLOW}Available Commands:${NC}"
+        echo ""
+        echo -e "  ${GREEN}status${NC} [id]           - System summary or citizen details"
+        echo -e "  ${GREEN}reward${NC} id act qty    - Grant LUV (0-10 per action)"
+        echo -e "  ${GREEN}rank${NC} id             - Check citizen's rank with colors"
+        echo -e "  ${GREEN}inherit${NC} owner heir  - Transfer 50% aura to heir"
+        echo -e "  ${GREEN}search${NC} pattern      - Search citizens by ID/status"
+        echo -e "  ${GREEN}list${NC} [limit]       - List citizens by aura"
+        echo -e "  ${GREEN}audit${NC}              - Comprehensive system audit"
+        echo -e "  ${GREEN}dashboard${NC}          - Live system dashboard"
+        echo -e "  ${GREEN}backup${NC}             - Create database backup"
+        echo -e "  ${GREEN}version${NC}            - Show version info"
+        echo -e "  ${GREEN}help${NC}               - This help message"
+        echo ""
+        echo -e "${MAGENTA}Auralang Ranking System:${NC}"
+        echo -e "  ${GREEN}🌱 Seed${NC}      (0-30 aura)"
+        echo -e "  ${CYAN}🛡️ Guardian${NC} (31-70 aura)"
+        echo -e "  ${MAGENTA}👑 Legend${NC}   (71+ aura)"
+        echo ""
+        echo -e "${YELLOW}Examples:${NC}"
+        echo -e "  ns status summary"
+        echo -e "  ns reward Alex Teaching 5"
+        echo -e "  ns inherit Citizen_77 Heir_99"
+        echo -e "  ns search Guardian"
+        echo -e "  ns dashboard"
+        ;;
 esac
+
+# Initialize database on first run
+init_db
