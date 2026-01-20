@@ -73,3 +73,161 @@ case "$1" in
         echo -e "Available Commands: status, reward, rank, list, dashboard, version"
         ;;
 esac
+    inherit)
+        if [ -z "$2" ] || [ -z "$3" ]; then 
+            echo "Usage: neuro inherit <owner_id> <heir_id>"
+            echo "Example: neuro inherit Citizen_77 Heir_Successor_99"
+            exit 1
+        fi
+        
+        # Check if owner exists and has sufficient aura
+        OWNER_AURA=$(sqlite3 "$DB_FILE" "SELECT current_aura FROM citizens WHERE id='$2';")
+        if [ -z "$OWNER_AURA" ]; then
+            echo -e "${RED}❌ Owner '$2' not found.${NC}"
+            exit 1
+        fi
+        
+        if [ "$OWNER_AURA" -lt 50 ]; then
+            echo -e "${RED}❌ Insufficient aura for inheritance (minimum 50 required).${NC}"
+            exit 1
+        fi
+        
+        # Calculate inheritance (50% transfer)
+        TRANSFER=$((OWNER_AURA / 2))
+        
+        # Execute inheritance
+        sqlite3 "$DB_FILE" << EOF_SQL
+BEGIN TRANSACTION;
+-- Reduce owner's aura
+UPDATE citizens SET current_aura = current_aura - $TRANSFER WHERE id='$2';
+-- Create or update heir
+INSERT OR REPLACE INTO citizens (id, current_aura, status, inherited_from) 
+VALUES ('$3', $TRANSFER, 'inherited', '$2');
+-- Record the inheritance
+INSERT INTO inheritance_records (owner_id, heir_id, aura_transferred) 
+VALUES ('$2', '$3', $TRANSFER);
+COMMIT;
+EOF_SQL
+        
+        echo -e "${GREEN}✅ Inheritance successful!${NC}"
+        echo -e "Owner: $2 (Aura: $((OWNER_AURA - TRANSFER)))"
+        echo -e "Heir: $3 (Aura: $TRANSFER) ${MAGENTA}[INHERITED]${NC}"
+        ;;
+    
+    search)
+        if [ -z "$2" ]; then
+            echo "Usage: neuro search <pattern>"
+            echo "Searches citizen IDs and statuses"
+            exit 1
+        fi
+        
+        sqlite3 "$DB_FILE" -header -column << EOF_SQL
+SELECT 
+    id as "Citizen ID", 
+    current_aura as "Aura",
+    CASE 
+        WHEN current_aura <= 30 THEN '${GREEN}🌱 Seed${NC}'
+        WHEN current_aura <= 70 THEN '${CYAN}🛡️ Guardian${NC}'
+        ELSE '${MAGENTA}👑 Legend${NC}'
+    END as "Rank",
+    status as "Status"
+FROM citizens 
+WHERE id LIKE '%$2%' OR status LIKE '%$2%'
+ORDER BY current_aura DESC;
+EOF_SQL
+        ;;
+    
+    audit)
+        header
+        echo -e "${YELLOW}📊 SYSTEM AUDIT REPORT${NC}"
+        echo "========================="
+        
+        # Basic stats
+        TOTAL_CITIZENS=$(sqlite3 "$DB_FILE" "SELECT COUNT(*) FROM citizens;")
+        ACTIVE_CITIZENS=$(sqlite3 "$DB_FILE" "SELECT COUNT(*) FROM citizens WHERE status='active';")
+        LEGACY_CITIZENS=$(sqlite3 "$DB_FILE" "SELECT COUNT(*) FROM citizens WHERE status='inherited';")
+        TOTAL_AURA=$(sqlite3 "$DB_FILE" "SELECT SUM(current_aura) FROM citizens;")
+        TOTAL_ACTIONS=$(sqlite3 "$DB_FILE" "SELECT COUNT(*) FROM kindness_actions;")
+        TOTAL_COINS=$(sqlite3 "$DB_FILE" "SELECT SUM(coins) FROM kindness_actions;")
+        
+        echo -e "${CYAN}Population:${NC}"
+        echo -e "  Total Citizens: $TOTAL_CITIZENS"
+        echo -e "  Active: $ACTIVE_CITIZENS"
+        echo -e "  Legacy/Inherited: $LEGACY_CITIZENS"
+        echo -e "  Total Aura in System: $TOTAL_AURA"
+        echo ""
+        
+        echo -e "${CYAN}Kindness Economy:${NC}"
+        echo -e "  Total Actions: $TOTAL_ACTIONS"
+        echo -e "  Total Coins Distributed: $TOTAL_COINS"
+        echo ""
+        
+        echo -e "${CYAN}Top 5 Contributors:${NC}"
+        sqlite3 "$DB_FILE" -header -column << EOF_SQL
+SELECT 
+    citizen_id as "Citizen",
+    COUNT(*) as "Actions",
+    SUM(coins) as "Total Coins",
+    AVG(coins) as "Avg Per Action"
+FROM kindness_actions 
+GROUP BY citizen_id 
+ORDER BY SUM(coins) DESC 
+LIMIT 5;
+EOF_SQL
+        echo ""
+        
+        echo -e "${CYAN}Recent Inheritance Records:${NC}"
+        sqlite3 "$DB_FILE" -header -column << EOF_SQL
+SELECT 
+    owner_id as "From",
+    heir_id as "To", 
+    aura_transferred as "Aura",
+    executed_at as "Date"
+FROM inheritance_records 
+ORDER BY executed_at DESC 
+LIMIT 3;
+EOF_SQL
+        ;;
+    
+    backup)
+        BACKUP_DIR="backups"
+        mkdir -p "$BACKUP_DIR"
+        BACKUP_FILE="$BACKUP_DIR/neurosphere_backup_$(date +%Y%m%d_%H%M%S).db"
+        
+        # Create backup
+        cp "$DB_FILE" "$BACKUP_FILE"
+        
+        # Compress backup
+        gzip -f "$BACKUP_FILE" 2>/dev/null || true
+        
+        echo -e "${GREEN}✅ Backup created successfully!${NC}"
+        echo -e "Location: $BACKUP_FILE.gz"
+        echo -e "Size: $(du -h "$BACKUP_FILE.gz" 2>/dev/null || echo "Compressed")"
+        echo ""
+        
+        # List recent backups
+        echo -e "${YELLOW}Recent backups:${NC}"
+        ls -lh "$BACKUP_DIR"/*.db.gz 2>/dev/null | tail -5 || echo "No previous backups found."
+        ;;
+    
+    help)
+        header
+        echo -e "${YELLOW}Available Commands:${NC}"
+        echo ""
+        echo -e "  ${GREEN}status${NC} [citizen_id]     - Show system or citizen status"
+        echo -e "  ${GREEN}reward${NC} <id> <act> <qty> - Grant LUV coins (0-10 per action)"
+        echo -e "  ${GREEN}rank${NC} <citizen_id>      - Check citizen's rank with Auralang colors"
+        echo -e "  ${GREEN}list${NC} [limit]          - List citizens by aura (default: 10)"
+        echo -e "  ${GREEN}inherit${NC} <from> <to>   - Transfer 50% aura to heir"
+        echo -e "  ${GREEN}search${NC} <pattern>      - Search citizens by ID or status"
+        echo -e "  ${GREEN}dashboard${NC}             - Live system dashboard"
+        echo -e "  ${GREEN}audit${NC}                 - Comprehensive system audit"
+        echo -e "  ${GREEN}backup${NC}                - Create database backup"
+        echo -e "  ${GREEN}version${NC}               - Show CLI version"
+        echo -e "  ${GREEN}help${NC}                  - This help message"
+        echo ""
+        echo -e "${MAGENTA}Auralang Ranks:${NC}"
+        echo -e "  ${GREEN}🌱 Seed${NC}      : 0-30 aura"
+        echo -e "  ${CYAN}🛡️ Guardian${NC} : 31-70 aura"
+        echo -e "  ${MAGENTA}👑 Legend${NC}   : 71+ aura"
+        ;;
