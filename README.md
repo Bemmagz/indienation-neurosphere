@@ -38,3 +38,6 @@ Akses kendali founder melalui CLI yang telah kami sediakan:
 
 ---
 © 2026 NeuroSphere Founder. Developed with **AuraLang** & **NeuroLang** protocols.
+
+## 🗃️ Database Migration (January 2026)
+NeuroSphere has migrated from JSON files to SQLite database for better performance and reliability. See [docs/DATABASE_MIGRATION_v1.0.md](docs/DATABASE_MIGRATION_v1.0.md) for details.
