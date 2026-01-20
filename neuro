@@ -1,0 +1,75 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+# ==========================================================
+# 🧠 NEUROSPHERE UNIFIED CLI v4.0.0
+# Core Sovereign Management System (SQL Edition)
+# ==========================================================
+
+VERSION="4.0.0"
+DB_FILE="neurosphere.db"
+
+# Colors for Auralang
+GREEN='\033[0;32m'
+CYAN='\033[0;36m'
+YELLOW='\033[1;33m'
+MAGENTA='\033[0;35m'
+RED='\033[0;31m'
+NC='\033[0m'
+
+# Initialize DB if missing
+if [ ! -f "$DB_FILE" ]; then
+    sqlite3 "$DB_FILE" "CREATE TABLE IF NOT EXISTS citizens (id TEXT PRIMARY KEY, current_aura INTEGER, status TEXT, inherited_from TEXT, created_at DATETIME DEFAULT CURRENT_TIMESTAMP);"
+    sqlite3 "$DB_FILE" "CREATE TABLE IF NOT EXISTS kindness_actions (id INTEGER PRIMARY KEY AUTOINCREMENT, citizen_id TEXT, action TEXT, coins INTEGER, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP);"
+    sqlite3 "$DB_FILE" "CREATE TABLE IF NOT EXISTS inheritance_records (id INTEGER PRIMARY KEY AUTOINCREMENT, owner_id TEXT, heir_id TEXT, aura_transferred INTEGER, executed_at DATETIME DEFAULT CURRENT_TIMESTAMP);"
+fi
+
+header() {
+    echo -e "${CYAN}--- NEUROSPHERE SOVEREIGN SYSTEM v${VERSION} ---${NC}"
+}
+
+case "$1" in
+    status)
+        header
+        if [ -z "$2" ] || [ "$2" == "summary" ]; then
+            sqlite3 "$DB_FILE" -header -column "SELECT (SELECT COUNT(*) FROM citizens WHERE status='active') as 'Active', (SELECT COUNT(*) FROM citizens WHERE status='inherited') as 'Legacy', (SELECT SUM(current_aura) FROM citizens) as 'Total Aura';"
+        else
+            sqlite3 "$DB_FILE" -header -column "SELECT id as 'Citizen_ID', current_aura as 'Aura', status as 'Status', inherited_from as 'Source' FROM citizens WHERE id='$2';"
+        fi
+        ;;
+    reward)
+        # E-KINDNESS Algorithm: 0-10 coins per day
+        ID=$2; ACT=$3; QTY=$4
+        if [ -z "$QTY" ]; then echo "Usage: ns reward [ID] [ACTION] [0-10]"; exit 1; fi
+        if [ "$QTY" -gt 10 ]; then echo -e "${RED}⚠️ E-KINDNESS Limit exceeded (Max 10 per action)${NC}"; exit 1; fi
+        
+        sqlite3 "$DB_FILE" "BEGIN TRANSACTION; UPDATE citizens SET current_aura = current_aura + $QTY WHERE id='$ID'; INSERT INTO kindness_actions (citizen_id, action, coins) VALUES ('$ID', '$ACT', $QTY); COMMIT;"
+        echo -e "${GREEN}✅ Reward +$QTY LUV successfully granted to $ID for $ACT.${NC}"
+        ;;
+    rank)
+        header
+        AURA=$(sqlite3 "$DB_FILE" "SELECT current_aura FROM citizens WHERE id='$2';")
+        if [ -z "$AURA" ]; then echo "Citizen not found."; exit 1; fi
+        if [ "$AURA" -le 30 ]; then R="🌱 Seed"; C=$GREEN; elif [ "$AURA" -le 70 ]; then R="🛡️ Guardian"; C=$CYAN; else R="👑 Legend"; C=$MAGENTA; fi
+        echo -e "ID: $2 | Aura: $AURA | Rank: ${C}${R}${NC}"
+        ;;
+    list)
+        sqlite3 "$DB_FILE" -header -column "SELECT id, current_aura, status FROM citizens ORDER BY current_aura DESC LIMIT ${2:-10};"
+        ;;
+    dashboard)
+        while true; do
+            clear; header
+            echo -e "${YELLOW}Top 5 Sovereign Identities:${NC}"
+            sqlite3 "$DB_FILE" -header -column "SELECT id, current_aura, status FROM citizens ORDER BY current_aura DESC LIMIT 5;"
+            echo -e "\n${YELLOW}Latest Actions:${NC}"
+            sqlite3 "$DB_FILE" -header -column "SELECT timestamp, citizen_id, action, coins FROM kindness_actions ORDER BY timestamp DESC LIMIT 3;"
+            echo -e "\nPress Ctrl+C to exit dashboard..."
+            sleep 3
+        done
+        ;;
+    version)
+        echo "NeuroSphere Unified CLI v$VERSION"
+        ;;
+    *)
+        echo -e "Available Commands: status, reward, rank, list, dashboard, version"
+        ;;
+esac
