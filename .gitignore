@@ -10,3 +10,13 @@ AURA_*.json
 # Potential future visual files
 *.png
 *.svg
+# Generated Reports & Audits
+AUDIT_REPORT_*.txt
+FOUNDER_BRIEFING_*.txt
+
+# Aura Identity Files (Data Rakyat)
+AURA_*.json
+
+# Security Logs & Temporary Files
+*.log
+__pycache__/
