@@ -1,0 +1,12 @@
+
+🌳 NEUROSPHERE LINEAGE MAP
+==========================
+🏛️ Citizen_Baucau_77 [Origin]
+   └── 🛡️ Heir_Successor_99 (Aura: 52)
+      └── 🌱 Legacy_Gen_3 (Aura: 26)
+         └── 🌱 Future_Gen_4 (Aura: 13)
+🏛️ Citizen_01 [Origin]
+🏛️ Future_Gen_1 [Origin]
+   └── 🛡️ Next_Gen_2 (Aura: 60)
+🏛️ Future_Gen_3 [Origin]
+   └── 🌱 Next_Gen_4 (Aura: 30)

@@ -1,0 +1,32 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+VERSION="4.2.0"
+DB_FILE="neurosphere.db"
+
+# Colors & Header
+CYAN='\033[0;36m'
+GREEN='\033[0;32m'
+MAGENTA='\033[0;35m'
+NC='\033[0m'
+
+header() { echo -e "${CYAN}--- NEUROSPHERE SOVEREIGN SYSTEM v${VERSION} ---${NC}"; }
+
+case "$1" in
+    visualize)
+        header
+        echo "Generating Auralang Visuals..."
+        python neuro-gen.py
+        echo -e "${GREEN}✨ All active avatars updated in /avatars${NC}"
+        ;;
+    reward)
+        # Menjalankan reward seperti biasa, lalu auto-update visual
+        ID=$2; ACT=$3; QTY=$4
+        sqlite3 "$DB_FILE" "UPDATE citizens SET current_aura = current_aura + $QTY WHERE id='$ID';"
+        echo -e "${GREEN}✅ Reward added.${NC}"
+        python neuro-gen.py
+        ;;
+    *)
+        # Meneruskan perintah lain ke logika v4.1.0 yang sudah ada
+        bash -c "./neuro-old $@" # (Asumsi file lama dipreservasi sementara)
+        ;;
+esac

@@ -1,0 +1,220 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+# NeuroSphere Unified CLI v4.2.0
+VERSION="4.2.0"
+DB_FILE="neurosphere.db"
+OLD_SCRIPT="neuro-old"
+
+# Colors for Auralang
+GREEN='\033[0;32m'
+CYAN='\033[0;36m'
+YELLOW='\033[1;33m'
+MAGENTA='\033[0;35m'
+RED='\033[0;31m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+# Header function
+header() {
+    echo -e "${CYAN}--- NEUROSPHERE SOVEREIGN SYSTEM v${VERSION} ---${NC}"
+}
+
+# Check if database exists
+check_db() {
+    if [ ! -f "$DB_FILE" ]; then
+        echo -e "${RED}❌ Database not found!${NC}"
+        echo "Please run 'ns status summary' first to initialize."
+        exit 1
+    fi
+}
+
+# Generate avatars
+generate_avatars() {
+    echo -e "${CYAN}🎨 Generating Auralang Avatars...${NC}"
+    
+    # Check if Python is available
+    if ! command -v python3 &> /dev/null; then
+        echo -e "${YELLOW}⚠️ Python3 not found. Installing...${NC}"
+        pkg install python -y || {
+            echo -e "${RED}❌ Failed to install Python3${NC}"
+            return 1
+        }
+    fi
+    
+    # Check if the Python script exists
+    if [ ! -f "neuro-gen.py" ]; then
+        echo -e "${RED}❌ neuro-gen.py not found!${NC}"
+        return 1
+    fi
+    
+    # Create avatars directory
+    mkdir -p avatars
+    
+    # Run the generator
+    python3 neuro-gen.py
+    
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}✨ Avatars generated successfully!${NC}"
+        echo -e "📁 Location: avatars/"
+        echo -e "🌐 View: avatars/index.html"
+    else
+        echo -e "${RED}❌ Failed to generate avatars${NC}"
+    fi
+}
+
+# Main command handler
+case "$1" in
+    visualize|avatars|avatar)
+        header
+        check_db
+        generate_avatars
+        ;;
+    
+    reward)
+        # Call old reward command first
+        if [ -f "$OLD_SCRIPT" ] && [ -x "$OLD_SCRIPT" ]; then
+            "$OLD_SCRIPT" "$@"
+            REWARD_RESULT=$?
+            
+            # If reward was successful, generate/update avatar
+            if [ $REWARD_RESULT -eq 0 ] && [ -n "$2" ]; then
+                echo ""
+                echo -e "${CYAN}🔄 Updating avatar for $2...${NC}"
+                mkdir -p avatars
+                
+                # Get updated aura
+                AURA=$(sqlite3 "$DB_FILE" "SELECT current_aura FROM citizens WHERE id='$2';" 2>/dev/null)
+                if [ -n "$AURA" ]; then
+                    # Generate single avatar
+                    python3 -c "
+import sqlite3, os, sys
+conn = sqlite3.connect('neurosphere.db')
+cursor = conn.cursor()
+cursor.execute(\"SELECT id, current_aura FROM citizens WHERE id='$2'\")
+row = cursor.fetchone()
+conn.close()
+if row:
+    id, aura = row
+    color = 'green' if aura <= 30 else 'cyan' if aura <= 70 else 'magenta'
+    rank = '🌱' if aura <= 30 else '🛡️' if aura <= 70 else '👑'
+    svg = f'''<svg width=\"200\" height=\"200\" xmlns=\"http://www.w3.org/2000/svg\">
+    <rect width=\"200\" height=\"200\" fill=\"#0a0a1a\"/>
+    <circle cx=\"100\" cy=\"100\" r=\"80\" fill=\"{color}\" opacity=\"0.8\"/>
+    <text x=\"100\" y=\"90\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"40\" fill=\"white\">{rank}</text>
+    <text x=\"100\" y=\"130\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"12\" fill=\"white\">{id}</text>
+    <text x=\"100\" y=\"150\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"14\" fill=\"{color}\">Aura: {aura}</text>
+</svg>'''
+    os.makedirs('avatars', exist_ok=True)
+    with open(f'avatars/{id.replace(\"/\", \"_\").replace(\" \", \"_\")}.svg', 'w') as f:
+        f.write(svg)
+    print(f'✅ Avatar updated for {id}')
+" 2>/dev/null && echo -e "${GREEN}✅ Avatar updated!${NC}"
+                fi
+            fi
+        else
+            echo -e "${RED}❌ Old neuro script not found!${NC}"
+            exit 1
+        fi
+        ;;
+    
+    inherit)
+        # Call old inherit command first
+        if [ -f "$OLD_SCRIPT" ] && [ -x "$OLD_SCRIPT" ]; then
+            "$OLD_SCRIPT" "$@"
+            INHERIT_RESULT=$?
+            
+            # If inheritance was successful, generate avatars for both
+            if [ $INHERIT_RESULT -eq 0 ] && [ -n "$2" ] && [ -n "$3" ]; then
+                echo ""
+                echo -e "${CYAN}🔄 Updating avatars for inheritance...${NC}"
+                generate_avatars
+            fi
+        else
+            echo -e "${RED}❌ Old neuro script not found!${NC}"
+            exit 1
+        fi
+        ;;
+    
+    gallery)
+        header
+        echo -e "${YELLOW}🖼️ NeuroSphere Avatar Gallery${NC}"
+        echo "================================"
+        
+        if [ -d "avatars" ]; then
+            COUNT=$(find avatars -name "*.svg" | wc -l)
+            if [ "$COUNT" -gt 0 ]; then
+                echo -e "${GREEN}Found $COUNT avatars:${NC}"
+                echo ""
+                
+                # List avatars with aura info
+                for avatar in avatars/*.svg; do
+                    if [ -f "$avatar" ]; then
+                        NAME=$(basename "$avatar" .svg)
+                        # Try to get aura from database
+                        AURA=$(sqlite3 "$DB_FILE" "SELECT current_aura FROM citizens WHERE id='$NAME' OR id='${NAME//_/ }';" 2>/dev/null)
+                        if [ -n "$AURA" ]; then
+                            if [ "$AURA" -le 30 ]; then RANK="🌱"; COLOR="$GREEN";
+                            elif [ "$AURA" -le 70 ]; then RANK="🛡️"; COLOR="$CYAN";
+                            else RANK="👑"; COLOR="$MAGENTA"; fi
+                            echo -e "  $RANK ${COLOR}$NAME${NC} (Aura: $AURA)"
+                        else
+                            echo -e "  ⚪ $NAME"
+                        fi
+                    fi
+                done
+                
+                echo ""
+                echo -e "${CYAN}To view in browser:${NC}"
+                echo "  file://$(pwd)/avatars/index.html"
+                echo ""
+                echo -e "${CYAN}To regenerate all avatars:${NC}"
+                echo "  ns visualize"
+            else
+                echo -e "${YELLOW}No avatars found. Generate some first:${NC}"
+                echo "  ns visualize"
+            fi
+        else
+            echo -e "${YELLOW}Avatar directory not found. Generate avatars first:${NC}"
+            echo "  ns visualize"
+        fi
+        ;;
+    
+    # Pass through all other commands to the old script
+    status|rank|list|search|audit|dashboard|backup|version|help)
+        if [ -f "$OLD_SCRIPT" ] && [ -x "$OLD_SCRIPT" ]; then
+            "$OLD_SCRIPT" "$@"
+        else
+            echo -e "${RED}❌ Old neuro script not found!${NC}"
+            echo "Please restore neuro-old or reinstall v4.1.0"
+            exit 1
+        fi
+        ;;
+    
+    *)
+        header
+        echo -e "${YELLOW}Available Commands:${NC}"
+        echo ""
+        echo -e "  ${GREEN}Core Commands (v4.1.0):${NC}"
+        echo -e "    status [id]           - System/citizen status"
+        echo -e "    reward id act qty     - Grant LUV (0-10 per action)"
+        echo -e "    rank id               - Check citizen's rank"
+        echo -e "    inherit owner heir    - Transfer 50% aura"
+        echo -e "    search pattern        - Search citizens"
+        echo -e "    list [limit]         - List citizens by aura"
+        echo -e "    audit                - System audit"
+        echo -e "    dashboard            - Live dashboard"
+        echo -e "    backup               - Create backup"
+        echo ""
+        echo -e "  ${CYAN}Visualization (v4.2.0):${NC}"
+        echo -e "    visualize            - Generate aura avatars"
+        echo -e "    gallery              - Show avatar gallery"
+        echo -e "    version              - Show version"
+        echo -e "    help                 - This help"
+        echo ""
+        echo -e "${MAGENTA}Examples:${NC}"
+        echo -e "  ns reward Alex Teaching 5"
+        echo -e "  ns visualize           # Generate avatars"
+        echo -e "  ns gallery             # View avatar gallery"
+        echo -e "  open avatars/index.html # Open in browser"
+        ;;
+esac

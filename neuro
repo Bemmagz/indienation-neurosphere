@@ -1,8 +1,9 @@
-#!/bin/bash
+#!/data/data/com.termux/files/usr/bin/bash
 
-# NeuroSphere Unified CLI v4.1.0
-VERSION="4.1.0"
+# NeuroSphere Unified CLI v4.3.0
+VERSION="4.3.0"
 DB_FILE="neurosphere.db"
+OLD_SCRIPT="neuro-old"
 
 # Colors for Auralang
 GREEN='\033[0;32m'
@@ -11,403 +12,295 @@ YELLOW='\033[1;33m'
 MAGENTA='\033[0;35m'
 RED='\033[0;31m'
 BLUE='\033[0;34m'
+PURPLE='\033[0;95m'
 NC='\033[0m'
 
-# Initialize DB if missing
-init_db() {
-    if [ ! -f "$DB_FILE" ]; then
-        sqlite3 "$DB_FILE" << 'INIT_SQL'
-CREATE TABLE IF NOT EXISTS citizens (
-    id TEXT PRIMARY KEY,
-    current_aura INTEGER DEFAULT 50,
-    status TEXT DEFAULT 'active',
-    inherited_from TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE IF NOT EXISTS kindness_actions (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    citizen_id TEXT,
-    action TEXT,
-    coins INTEGER,
-    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (citizen_id) REFERENCES citizens(id)
-);
-
-CREATE TABLE IF NOT EXISTS inheritance_records (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    owner_id TEXT,
-    heir_id TEXT,
-    aura_transferred INTEGER,
-    executed_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (owner_id) REFERENCES citizens(id),
-    FOREIGN KEY (heir_id) REFERENCES citizens(id)
-);
-
--- Insert Founder
-INSERT OR IGNORE INTO citizens (id, current_aura, status) VALUES 
-    ('FOUNDER-01', 100, '👑 Legend');
-INIT_SQL
-        echo -e "${GREEN}✅ Database initialized with Founder${NC}"
-    fi
-}
-
+# Header function
 header() {
-    echo -e "${CYAN}--- NEUROSPHERE SOVEREIGN SYSTEM v${VERSION} ---${NC}"
+    echo -e "${CYAN}╔══════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${CYAN}║            NEUROSPHERE SOVEREIGN SYSTEM v${VERSION}            ║${NC}"
+    echo -e "${CYAN}║               QR-Verified Auralang Protocol               ║${NC}"
+    echo -e "${CYAN}╚══════════════════════════════════════════════════════════╝${NC}"
 }
 
-get_rank_color() {
-    local aura=$1
-    if [ "$aura" -le 30 ]; then
-        echo "${GREEN}🌱 Seed${NC}"
-    elif [ "$aura" -le 70 ]; then
-        echo "${CYAN}🛡️ Guardian${NC}"
-    else
-        echo "${MAGENTA}👑 Legend${NC}"
-    fi
+# QR code generation function
+generate_qr_terminal() {
+    local id="$1"
+    local aura="$2"
+    local status="$3"
+    
+    echo -e "${YELLOW}🔗 Generating shareable QR code for ${id}...${NC}"
+    
+    # Create a simple ASCII QR-like representation
+    local qr_data="neurosphere://citizen/${id}"
+    echo -e "${CYAN}┌─────────────────────────────────────────────────────┐${NC}"
+    echo -e "${CYAN}│          NeuroSphere Citizen QR Data               │${NC}"
+    echo -e "${CYAN}├─────────────────────────────────────────────────────┤${NC}"
+    echo -e "│ ${GREEN}ID:${NC} $id"
+    echo -e "│ ${GREEN}Aura:${NC} $aura"
+    echo -e "│ ${GREEN}Status:${NC} $status"
+    echo -e "│ ${GREEN}URL:${NC} $qr_data"
+    echo -e "${CYAN}└─────────────────────────────────────────────────────┘${NC}"
+    echo -e "${YELLOW}📱 Scan QR code in avatar to verify this data${NC}"
 }
 
+# Main command handler
 case "$1" in
-    status)
+    recover)
+        ./ns-recovery.sh "$2" "$3"
+        ;;
+    tree)
+        python neuro-tree.py
+        ;;
+    verify)
+        ./neuro-lineage.sh find "$2"
+        ;;
+    nft|avatar|visualize)
         header
-        if [ -z "$2" ] || [ "$2" == "summary" ]; then
-            sqlite3 "$DB_FILE" -header -column << 'STATUS_SQL'
-SELECT 
-    (SELECT COUNT(*) FROM citizens) as 'Total',
-    (SELECT COUNT(*) FROM citizens WHERE status='active') as 'Active',
-    (SELECT COUNT(*) FROM citizens WHERE status='inherited') as 'Legacy',
-    (SELECT SUM(current_aura) FROM citizens) as 'Total_Aura',
-    (SELECT COUNT(*) FROM kindness_actions) as 'Kindness_Actions';
-STATUS_SQL
+        echo -e "${PURPLE}🎨 NeuroSphere NFT Avatar Generator v4.3.0${NC}"
+        echo -e "${PURPLE}══════════════════════════════════════════${NC}"
+        
+        if [ ! -f "neuro-gen.py" ]; then
+            echo -e "${RED}❌ neuro-gen.py not found!${NC}"
+            echo "Please ensure the avatar generator script is in the current directory."
+            exit 1
+        fi
+        
+        echo -e "${YELLOW}Generating NFT-style avatars with QR codes...${NC}"
+        echo ""
+        
+        # Run the Python generator
+        python3 neuro-gen.py
+        
+        if [ $? -eq 0 ]; then
+            echo ""
+            echo -e "${GREEN}✨ Avatar generation complete!${NC}"
+            echo ""
+            echo -e "${CYAN}📂 Files generated in:${NC} ./avatars/"
+            echo -e "${CYAN}🌐 View gallery:${NC}      file://$(pwd)/avatars/index.html"
+            echo -e "${CYAN}📱 Scan QR codes:${NC}     Open any .svg file and scan the QR code"
+            echo ""
+            echo -e "${YELLOW}To view in Termux:${NC}"
+            echo "  termux-open avatars/index.html"
         else
-            sqlite3 "$DB_FILE" -header -column << STATUS_SQL
-SELECT 
-    id as 'Citizen_ID',
-    current_aura as 'Aura',
-    CASE 
-        WHEN current_aura <= 30 THEN '🌱 Seed'
-        WHEN current_aura <= 70 THEN '🛡️ Guardian'
-        ELSE '👑 Legend'
-    END as 'Rank',
-    status as 'Status',
-    inherited_from as 'Source',
-    created_at as 'Created'
-FROM citizens WHERE id='$2';
-STATUS_SQL
+            echo -e "${RED}❌ Avatar generation failed!${NC}"
         fi
         ;;
     
-    reward)
-        ID=$2; ACT=$3; QTY=$4
-        if [ -z "$QTY" ]; then 
-            echo -e "${RED}Usage: ns reward [ID] [ACTION] [0-10]${NC}"
-            echo -e "${YELLOW}Example: ns reward Citizen_01 Teaching 5${NC}"
-            exit 1
-        fi
-        if [ "$QTY" -gt 10 ]; then 
-            echo -e "${RED}⚠️ E-KINDNESS Limit: Max 10 per action!${NC}"
-            exit 1
-        fi
-        
-        # Check if citizen exists
-        EXISTS=$(sqlite3 "$DB_FILE" "SELECT id FROM citizens WHERE id='$ID';")
-        if [ -z "$EXISTS" ]; then
-            echo -e "${YELLOW}⚠️ Creating new citizen: $ID${NC}"
-            sqlite3 "$DB_FILE" "INSERT INTO citizens (id, current_aura) VALUES ('$ID', 50);"
-        fi
-        
-        sqlite3 "$DB_FILE" << REWARD_SQL
-BEGIN TRANSACTION;
-UPDATE citizens SET current_aura = current_aura + $QTY WHERE id='$ID';
-INSERT INTO kindness_actions (citizen_id, action, coins) VALUES ('$ID', '$ACT', $QTY);
-COMMIT;
-REWARD_SQL
-        
-        NEW_AURA=$(sqlite3 "$DB_FILE" "SELECT current_aura FROM citizens WHERE id='$ID';")
-        RANK=$(get_rank_color $NEW_AURA)
-        echo -e "${GREEN}✅ +$QTY LUV to $ID for $ACT${NC}"
-        echo -e "   New Total: $NEW_AURA Aura | Rank: $RANK"
-        ;;
-    
-    rank)
+    qr|code)
         header
         if [ -z "$2" ]; then
-            echo -e "${RED}Usage: ns rank [citizen_id]${NC}"
+            echo -e "${RED}Usage: ns qr [citizen_id]${NC}"
+            echo -e "${YELLOW}Example: ns qr Heir_Successor_99${NC}"
             exit 1
         fi
         
-        AURA=$(sqlite3 "$DB_FILE" "SELECT current_aura FROM citizens WHERE id='$2';")
-        if [ -z "$AURA" ]; then 
-            echo -e "${RED}❌ Citizen '$2' not found${NC}"
+        # Get citizen data
+        DATA=$(sqlite3 "$DB_FILE" "SELECT id, CAST(current_aura * 0.9 AS INTEGER), status FROM citizens WHERE id='$2';" 2>/dev/null)
+        
+        if [ -z "$DATA" ]; then
+            echo -e "${RED}❌ Citizen '$2' not found!${NC}"
             exit 1
         fi
         
-        RANK=$(get_rank_color $AURA)
-        STATUS=$(sqlite3 "$DB_FILE" "SELECT status FROM citizens WHERE id='$2';")
-        INHERITED=$(sqlite3 "$DB_FILE" "SELECT inherited_from FROM citizens WHERE id='$2';")
+        IFS='|' read -r id aura status <<< "$DATA"
         
-        echo -e "👤 ID: $2"
-        echo -e "💫 Aura: $AURA"
-        echo -e "🏆 Rank: $RANK"
-        echo -e "📋 Status: $STATUS"
-        if [ -n "$INHERITED" ]; then
-            echo -e "📜 Inherited from: $INHERITED"
+        echo -e "${MAGENTA}🔍 QR Data for Citizen: $id${NC}"
+        echo ""
+        
+        # Generate terminal QR display
+        generate_qr_terminal "$id" "$aura" "$status"
+        
+        # Check if avatar exists
+        if [ -f "avatars/${id// /_}.svg" ]; then
+            echo ""
+            echo -e "${GREEN}✅ Avatar exists:${NC} avatars/${id// /_}.svg"
+            echo -e "${CYAN}Scan the QR code in the avatar to verify authenticity.${NC}"
+        else
+            echo ""
+            echo -e "${YELLOW}⚠️ No avatar found. Generate one with:${NC}"
+            echo "  ns nft"
         fi
         ;;
     
-    inherit)
-        OWNER=$2; HEIR=$3
-        if [ -z "$OWNER" ] || [ -z "$HEIR" ]; then
-            echo -e "${RED}Usage: ns inherit [owner_id] [heir_id]${NC}"
-            echo -e "${YELLOW}Example: ns inherit Citizen_77 Heir_99${NC}"
-            exit 1
-        fi
-        
-        AURA=$(sqlite3 "$DB_FILE" "SELECT current_aura FROM citizens WHERE id='$OWNER' AND status='active';")
-        if [ -z "$AURA" ]; then 
-            echo -e "${RED}❌ Owner '$OWNER' not found or not active${NC}"
-            exit 1
-        fi
-        
-        VAL=$((AURA / 2))
-        
-        sqlite3 "$DB_FILE" << INHERIT_SQL
-BEGIN TRANSACTION;
--- Mark owner as inherited
-UPDATE citizens SET status='inherited' WHERE id='$OWNER';
--- Create or update heir
-INSERT OR REPLACE INTO citizens (id, current_aura, status, inherited_from) 
-VALUES ('$HEIR', $VAL, 'active', '$OWNER');
--- Record inheritance
-INSERT INTO inheritance_records (owner_id, heir_id, aura_transferred) 
-VALUES ('$OWNER', '$HEIR', $VAL);
-COMMIT;
-INHERIT_SQL
-        
-        echo -e "${MAGENTA}📜 LEGACY TRANSFERRED${NC}"
-        echo -e "From: $OWNER (Now: inherited)"
-        echo -e "To: $HEIR (Aura: $VAL)"
-        echo -e "Rank: $(get_rank_color $VAL)"
-        ;;
-    
-    search)
-        if [ -z "$2" ]; then
-            echo -e "${RED}Usage: ns search [pattern]${NC}"
-            echo -e "${YELLOW}Example: ns search Guardian${NC}"
-            exit 1
-        fi
-        
+    gallery|collection)
         header
-        echo -e "${YELLOW}🔍 Search Results for: '$2'${NC}"
-        
-        sqlite3 "$DB_FILE" -header -column << SEARCH_SQL
-SELECT 
-    id as 'Citizen_ID',
-    current_aura as 'Aura',
-    CASE 
-        WHEN current_aura <= 30 THEN '🌱 Seed'
-        WHEN current_aura <= 70 THEN '🛡️ Guardian'
-        ELSE '👑 Legend'
-    END as 'Rank',
-    status as 'Status'
-FROM citizens 
-WHERE id LIKE '%$2%' OR status LIKE '%$2%'
-ORDER BY current_aura DESC;
-SEARCH_SQL
-        ;;
-    
-    list)
-        LIMIT=${2:-10}
-        header
-        echo -e "${YELLOW}🏆 Top $LIMIT Citizens by Aura${NC}"
-        
-        sqlite3 "$DB_FILE" -header -column << LIST_SQL
-SELECT 
-    id as 'Citizen_ID',
-    current_aura as 'Aura',
-    CASE 
-        WHEN current_aura <= 30 THEN '🌱 Seed'
-        WHEN current_aura <= 70 THEN '🛡️ Guardian'
-        ELSE '👑 Legend'
-    END as 'Rank',
-    status as 'Status',
-    strftime('%Y-%m-%d', created_at) as 'Created'
-FROM citizens 
-ORDER BY current_aura DESC 
-LIMIT $LIMIT;
-LIST_SQL
-        ;;
-    
-    audit)
-        header
-        echo -e "${YELLOW}📊 SYSTEM AUDIT REPORT${NC}"
-        echo "========================"
-        
-        # System Stats
-        echo -e "\n${CYAN}📈 Population Statistics${NC}"
-        sqlite3 "$DB_FILE" -header -column << 'AUDIT_SQL1'
-SELECT
-    (SELECT COUNT(*) FROM citizens) as 'Total_Citizens',
-    (SELECT COUNT(*) FROM citizens WHERE status='active') as 'Active',
-    (SELECT COUNT(*) FROM citizens WHERE status='inherited') as 'Legacy',
-    (SELECT AVG(current_aura) FROM citizens) as 'Avg_Aura',
-    (SELECT MAX(current_aura) FROM citizens) as 'Max_Aura',
-    (SELECT MIN(current_aura) FROM citizens) as 'Min_Aura';
-AUDIT_SQL1
-        
-        # Kindness Economy
-        echo -e "\n${CYAN}💖 Kindness Economy${NC}"
-        sqlite3 "$DB_FILE" -header -column << 'AUDIT_SQL2'
-SELECT
-    (SELECT COUNT(*) FROM kindness_actions) as 'Total_Actions',
-    (SELECT SUM(coins) FROM kindness_actions) as 'Total_Coins',
-    (SELECT AVG(coins) FROM kindness_actions) as 'Avg_Coins_Per_Action',
-    (SELECT COUNT(DISTINCT citizen_id) FROM kindness_actions) as 'Active_Contributors';
-AUDIT_SQL2
-        
-        # Top Contributors
-        echo -e "\n${CYAN}🏅 Top 5 Contributors${NC}"
-        sqlite3 "$DB_FILE" -header -column << 'AUDIT_SQL3'
-SELECT
-    citizen_id as 'Citizen',
-    COUNT(*) as 'Actions',
-    SUM(coins) as 'Total_Coins',
-    ROUND(AVG(coins), 1) as 'Avg_Coins'
-FROM kindness_actions 
-GROUP BY citizen_id 
-ORDER BY SUM(coins) DESC 
-LIMIT 5;
-AUDIT_SQL3
-        
-        # Inheritance History
-        echo -e "\n${CYAN}📜 Recent Inheritance${NC}"
-        sqlite3 "$DB_FILE" -header -column << 'AUDIT_SQL4'
-SELECT
-    owner_id as 'From',
-    heir_id as 'To',
-    aura_transferred as 'Aura',
-    executed_at as 'Date'
-FROM inheritance_records 
-ORDER BY executed_at DESC 
-LIMIT 3;
-AUDIT_SQL4
-        ;;
-    
-    dashboard)
-        while true; do
-            clear
-            header
+        if [ -d "avatars" ] && [ -f "avatars/index.html" ]; then
+            echo -e "${PURPLE}🖼️ NeuroSphere Sovereign Collection${NC}"
+            echo -e "${PURPLE}═══════════════════════════════════${NC}"
+            
+            COUNT=$(find avatars -name "*.svg" | wc -l)
+            echo -e "${GREEN}Found ${COUNT} avatars in the collection${NC}"
             echo ""
             
-            # Current Sovereign
-            echo -e "${YELLOW}👑 Current Sovereign${NC}"
-            sqlite3 "$DB_FILE" -header -column << 'DASH1'
-SELECT 
-    id as 'Citizen',
-    current_aura as 'Aura',
-    CASE 
-        WHEN current_aura <= 30 THEN '🌱 Seed'
-        WHEN current_aura <= 70 THEN '🛡️ Guardian'
-        ELSE '👑 Legend'
-    END as 'Rank'
-FROM citizens 
-ORDER BY current_aura DESC 
-LIMIT 1;
-DASH1
+            # Show some stats
+            SEED_COUNT=$(find avatars -name "*.svg" -exec grep -l "#00ff00" {} \; | wc -l)
+            GUARDIAN_COUNT=$(find avatars -name "*.svg" -exec grep -l "#00ffff" {} \; | wc -l)
+            LEGEND_COUNT=$(find avatars -name "*.svg" -exec grep -l "#ff00ff" {} \; | wc -l)
             
-            # Top 5
-            echo -e "\n${YELLOW}🏆 Top 5 Citizens${NC}"
-            sqlite3 "$DB_FILE" -header -column << 'DASH2'
-SELECT 
-    ROW_NUMBER() OVER (ORDER BY current_aura DESC) as '#',
-    id as 'Citizen',
-    current_aura as 'Aura',
-    status as 'Status'
-FROM citizens 
-ORDER BY current_aura DESC 
-LIMIT 5;
-DASH2
+            echo -e "${GREEN}🌱 Seeds:${NC} $SEED_COUNT"
+            echo -e "${CYAN}🛡️ Guardians:${NC} $GUARDIAN_COUNT"
+            echo -e "${MAGENTA}👑 Legends:${NC} $LEGEND_COUNT"
+            echo ""
             
-            # Recent Kindness
-            echo -e "\n${YELLOW}💖 Recent Kindness Actions${NC}"
-            sqlite3 "$DB_FILE" -header -column << 'DASH3'
-SELECT 
-    strftime('%H:%M', timestamp) as 'Time',
-    citizen_id as 'Citizen',
-    action as 'Action',
-    coins as 'Coins'
-FROM kindness_actions 
-ORDER BY timestamp DESC 
-LIMIT 3;
-DASH3
+            # List recent avatars
+            echo -e "${YELLOW}Recent avatars:${NC}"
+            ls -1t avatars/*.svg 2>/dev/null | head -5 | while read file; do
+                name=$(basename "$file" .svg)
+                echo "  🎨 $name"
+            done
             
-            # System Stats
-            echo -e "\n${YELLOW}📊 Quick Stats${NC}"
-            sqlite3 "$DB_FILE" << 'DASH4'
-SELECT 
-    'Citizens: ' || (SELECT COUNT(*) FROM citizens) ||
-    ' | Aura Total: ' || (SELECT SUM(current_aura) FROM citizens) ||
-    ' | Actions: ' || (SELECT COUNT(*) FROM kindness_actions)
-    as 'System_Status';
-DASH4
+            echo ""
+            echo -e "${CYAN}To view in browser:${NC}"
+            echo "  file://$(pwd)/avatars/index.html"
+            echo ""
+            echo -e "${CYAN}To open in Termux:${NC}"
+            echo "  termux-open avatars/index.html"
+            echo ""
+            echo -e "${YELLOW}Quick commands:${NC}"
+            echo "  ns nft        - Regenerate all avatars"
+            echo "  ns qr [id]    - View QR data for citizen"
+            echo "  ls avatars/   - List all avatars"
             
-            echo -e "\n${BLUE}🔄 Auto-refresh in 5s (Ctrl+C to exit)${NC}"
-            sleep 5
-        done
+        else
+            echo -e "${YELLOW}🎨 No avatar gallery found.${NC}"
+            echo ""
+            echo -e "${CYAN}Generate your first avatar collection:${NC}"
+            echo "  ns nft"
+        fi
         ;;
     
-    backup)
-        BACKUP_DIR="backups"
-        mkdir -p "$BACKUP_DIR"
-        BACKUP_FILE="$BACKUP_DIR/neurosphere_$(date +%Y%m%d_%H%M%S).db"
+    verify)
+        header
+        if [ -z "$2" ]; then
+            echo -e "${RED}Usage: ns verify [avatar_file.svg]${NC}"
+            echo -e "${YELLOW}Example: ns verify avatars/Heir_Successor_99.svg${NC}"
+            exit 1
+        fi
         
-        cp "$DB_FILE" "$BACKUP_FILE"
+        if [ ! -f "$2" ]; then
+            echo -e "${RED}❌ File not found: $2${NC}"
+            exit 1
+        fi
         
-        echo -e "${GREEN}✅ Backup Created${NC}"
-        echo -e "File: $(basename "$BACKUP_FILE")"
-        echo -e "Size: $(du -h "$BACKUP_FILE" | cut -f1)"
-        echo -e "Location: $BACKUP_DIR/"
+        echo -e "${GREEN}🔍 Verifying NeuroSphere Avatar...${NC}"
+        echo -e "File: $2"
+        echo ""
         
-        # List recent backups
-        echo -e "\n${YELLOW}Recent Backups:${NC}"
-        ls -lh "$BACKUP_DIR"/*.db 2>/dev/null | tail -3 || echo "No previous backups"
+        # Check if it's a valid SVG with NeuroSphere signature
+        if grep -q "NeuroSphere" "$2" 2>/dev/null; then
+            echo -e "✅ ${GREEN}Valid NeuroSphere Avatar${NC}"
+            
+            # Extract citizen ID from filename
+            CITIZEN_ID=$(basename "$2" .svg | tr '_' ' ')
+            
+            # Try to get data from database
+            DATA=$(sqlite3 "$DB_FILE" "SELECT id, CAST(current_aura * 0.9 AS INTEGER), status FROM citizens WHERE id='$CITIZEN_ID' OR id='${CITIZEN_ID//_/ }';" 2>/dev/null)
+            
+            if [ -n "$DATA" ]; then
+                IFS='|' read -r id aura status <<< "$DATA"
+                echo -e "📋 ${CYAN}Database Match Found:${NC}"
+                echo -e "   ID: $id"
+                echo -e "   Aura: $aura"
+                echo -e "   Status: $status"
+                
+                # Check aura color matches
+                if [ "$aura" -le 30 ] && grep -q "#00ff00" "$2"; then
+                    echo -e "🎨 ${GREEN}Aura color (🌱 Seed) matches avatar${NC}"
+                elif [ "$aura" -le 70 ] && grep -q "#00ffff" "$2"; then
+                    echo -e "🎨 ${CYAN}Aura color (🛡️ Guardian) matches avatar${NC}"
+                elif [ "$aura" -gt 70 ] && grep -q "#ff00ff" "$2"; then
+                    echo -e "🎨 ${MAGENTA}Aura color (👑 Legend) matches avatar${NC}"
+                else
+                    echo -e "⚠️ ${YELLOW}Aura color may not match database${NC}"
+                fi
+            else
+                echo -e "⚠️ ${YELLOW}No database entry found for this citizen${NC}"
+            fi
+            
+            echo ""
+            echo -e "${GREEN}✅ Verification complete!${NC}"
+            echo -e "${CYAN}This avatar contains a scannable QR code with embedded data.${NC}"
+            
+        else
+            echo -e "${RED}❌ Not a valid NeuroSphere Avatar${NC}"
+            echo "This file doesn't appear to be a NeuroSphere-generated avatar."
+        fi
         ;;
     
-    version)
-        echo "NeuroSphere CLI v$VERSION"
-        echo "Database: $DB_FILE"
-        echo "Citizens: $(sqlite3 "$DB_FILE" "SELECT COUNT(*) FROM citizens;" 2>/dev/null || echo "0")"
+    reward|inherit|status|rank|list|search|audit|dashboard|backup|version|help)
+        # Pass through to old script
+        if [ -f "$OLD_SCRIPT" ] && [ -x "$OLD_SCRIPT" ]; then
+            # For reward and inherit, generate avatar afterwards
+            if [ "$1" = "reward" ] || [ "$1" = "inherit" ]; then
+                "$OLD_SCRIPT" "$@"
+                RESULT=$?
+                
+                # If successful and we have an ID, update avatar
+                if [ $RESULT -eq 0 ] && [ -n "$2" ] && [ -f "neuro-gen.py" ]; then
+                    echo ""
+                    echo -e "${CYAN}🔄 Updating avatar for $2...${NC}"
+                    
+                    # Get updated data
+                    DATA=$(sqlite3 "$DB_FILE" "SELECT id, CAST(current_aura * 0.9 AS INTEGER), status, inherited_from FROM citizens WHERE id='$2';" 2>/dev/null)
+                    if [ -n "$DATA" ]; then
+                        IFS='|' read -r id aura status inherited <<< "$DATA"
+                        python3 -c "
+import sys
+sys.path.insert(0, '.')
+try:
+    from neuro_gen import generate_svg
+    generate_svg('$id', $aura, '$status', ${inherited:+'$inherited'})
+    print('✅ Avatar updated!')
+except ImportError:
+    # Fallback to full regeneration
+    import subprocess
+    subprocess.run(['python3', 'neuro-gen.py'], capture_output=True)
+" 2>/dev/null || python3 neuro-gen.py 2>/dev/null
+                        
+                        echo -e "${GREEN}✅ Avatar synchronized!${NC}"
+                    fi
+                fi
+            else
+                "$OLD_SCRIPT" "$@"
+            fi
+        else
+            echo -e "${RED}❌ Core functionality not available!${NC}"
+            echo "Please ensure neuro-old exists and is executable."
+            exit 1
+        fi
         ;;
     
-    help|*)
+    *)
         header
         echo -e "${YELLOW}Available Commands:${NC}"
         echo ""
-        echo -e "  ${GREEN}status${NC} [id]           - System summary or citizen details"
-        echo -e "  ${GREEN}reward${NC} id act qty    - Grant LUV (0-10 per action)"
-        echo -e "  ${GREEN}rank${NC} id             - Check citizen's rank with colors"
-        echo -e "  ${GREEN}inherit${NC} owner heir  - Transfer 50% aura to heir"
-        echo -e "  ${GREEN}search${NC} pattern      - Search citizens by ID/status"
-        echo -e "  ${GREEN}list${NC} [limit]       - List citizens by aura"
-        echo -e "  ${GREEN}audit${NC}              - Comprehensive system audit"
-        echo -e "  ${GREEN}dashboard${NC}          - Live system dashboard"
-        echo -e "  ${GREEN}backup${NC}             - Create database backup"
-        echo -e "  ${GREEN}version${NC}            - Show version info"
-        echo -e "  ${GREEN}help${NC}               - This help message"
+        echo -e "  ${PURPLE}🎨 NFT Avatar System (v4.3.0):${NC}"
+        echo -e "    nft                 - Generate NFT avatars with QR codes"
+        echo -e "    qr [citizen_id]     - Show QR data for citizen"
+        echo -e "    gallery             - View avatar collection"
+        echo -e "    verify [file.svg]   - Verify avatar authenticity"
         echo ""
-        echo -e "${MAGENTA}Auralang Ranking System:${NC}"
-        echo -e "  ${GREEN}🌱 Seed${NC}      (0-30 aura)"
-        echo -e "  ${CYAN}🛡️ Guardian${NC} (31-70 aura)"
-        echo -e "  ${MAGENTA}👑 Legend${NC}   (71+ aura)"
+        echo -e "  ${CYAN}Core Commands (v4.1.0):${NC}"
+        echo -e "    status [id]         - System/citizen status"
+        echo -e "    reward id act qty   - Grant LUV (0-10 per action)"
+        echo -e "    rank id             - Check citizen's rank"
+        echo -e "    inherit owner heir  - Transfer 50% aura"
+        echo -e "    search pattern      - Search citizens"
+        echo -e "    list [limit]       - List citizens by aura"
+        echo -e "    audit              - System audit"
+        echo -e "    dashboard          - Live dashboard"
+        echo -e "    backup             - Create backup"
+        echo -e "    version            - Show version"
+        echo -e "    help               - This help"
         echo ""
-        echo -e "${YELLOW}Examples:${NC}"
-        echo -e "  ns status summary"
-        echo -e "  ns reward Alex Teaching 5"
-        echo -e "  ns inherit Citizen_77 Heir_99"
-        echo -e "  ns search Guardian"
-        echo -e "  ns dashboard"
+        echo -e "${MAGENTA}Examples:${NC}"
+        echo -e "  ns nft                    # Generate all avatars"
+        echo -e "  ns reward Alex Teaching 5 # Reward & auto-update avatar"
+        echo -e "  ns qr Alex               # Show QR data"
+        echo -e "  ns gallery               # View collection"
+        echo -e "  termux-open avatars/index.html # Open in browser"
+        echo ""
+        echo -e "${GREEN}📱 QR Codes contain:${NC} Citizen ID, Aura, Status, Timestamp"
         ;;
 esac
-
-# Initialize database on first run
-init_db

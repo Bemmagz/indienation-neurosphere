@@ -1,0 +1,135 @@
+{
+  "metadata": {
+    "export_date": "2024-01-20T12:00:00Z",
+    "version": "NeuroSphere v4.3.0",
+    "total_citizens": 15,
+    "total_transfers": 3
+  },
+  "citizens": [
+    {
+      "id": "Citizen_Baucau_77",
+      "aura": 60,
+      "status": "inherited",
+      "inherited_from": null,
+      "created_at": "2026-01-20 05:21:23"
+    },
+    {
+      "id": "Citizen_01",
+      "aura": 55,
+      "status": "active",
+      "inherited_from": null,
+      "created_at": "2026-01-20 05:54:48"
+    },
+    {
+      "id": "Future_Gen_1",
+      "aura": 45,
+      "status": null,
+      "inherited_from": null,
+      "created_at": "2026-01-20 06:43:39"
+    },
+    {
+      "id": "Future_Gen_3",
+      "aura": 75,
+      "status": null,
+      "inherited_from": null,
+      "created_at": "2026-01-20 06:43:39"
+    },
+    {
+      "id": "Gen_Test_Founder",
+      "aura": 100,
+      "status": null,
+      "inherited_from": null,
+      "created_at": "2026-01-20 06:43:58"
+    },
+    {
+      "id": "Heir_Successor_99",
+      "aura": 52,
+      "status": "inherited",
+      "inherited_from": "Citizen_Baucau_77",
+      "created_at": "2026-01-20 05:21:23"
+    },
+    {
+      "id": "Next_Gen_2",
+      "aura": 60,
+      "status": null,
+      "inherited_from": "Future_Gen_1",
+      "created_at": "2026-01-20 06:43:39"
+    },
+    {
+      "id": "Next_Gen_4",
+      "aura": 30,
+      "status": null,
+      "inherited_from": "Future_Gen_3",
+      "created_at": "2026-01-20 06:43:39"
+    },
+    {
+      "id": "Gen_Test_Grandchild_1",
+      "aura": 60,
+      "status": null,
+      "inherited_from": "Gen_Test_Child_1",
+      "created_at": "2026-01-20 06:43:58"
+    },
+    {
+      "id": "Gen_Test_Grandchild_2",
+      "aura": 65,
+      "status": null,
+      "inherited_from": "Gen_Test_Child_1",
+      "created_at": "2026-01-20 06:43:58"
+    },
+    {
+      "id": "Gen_Test_Child_1",
+      "aura": 80,
+      "status": null,
+      "inherited_from": "Gen_Test_Founder",
+      "created_at": "2026-01-20 06:43:58"
+    },
+    {
+      "id": "Gen_Test_Child_2",
+      "aura": 70,
+      "status": null,
+      "inherited_from": "Gen_Test_Founder",
+      "created_at": "2026-01-20 06:43:58"
+    },
+    {
+      "id": "Gen_Test_GreatGrandchild",
+      "aura": 50,
+      "status": null,
+      "inherited_from": "Gen_Test_Grandchild_1",
+      "created_at": "2026-01-20 06:43:58"
+    },
+    {
+      "id": "Legacy_Gen_3",
+      "aura": 26,
+      "status": "inherited",
+      "inherited_from": "Heir_Successor_99",
+      "created_at": "2026-01-20 05:49:58"
+    },
+    {
+      "id": "Future_Gen_4",
+      "aura": 13,
+      "status": "active",
+      "inherited_from": "Legacy_Gen_3",
+      "created_at": "2026-01-20 05:54:48"
+    }
+  ],
+  "inheritance_records": [
+    {
+      "from": "Citizen_Baucau_77",
+      "to": "Heir_Successor_99",
+      "aura_transferred": 42,
+      "timestamp": "2026-01-20 05:21:23"
+    },
+    {
+      "from": "Heir_Successor_99",
+      "to": "Legacy_Gen_3",
+      "aura_transferred": 26,
+      "timestamp": "2026-01-20 05:49:58"
+    },
+    {
+      "from": "Legacy_Gen_3",
+      "to": "Future_Gen_4",
+      "aura_transferred": 13,
+      "timestamp": "2026-01-20 05:54:48"
+    }
+  ]
+}

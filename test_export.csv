@@ -1,0 +1,10 @@
+Citizen_ID,Aura,Status,Inherited_From,Created_At
+Future_Gen_3,75,,,"2026-01-20 06:43:39"
+Citizen_Baucau_77,60,inherited,,"2026-01-20 05:21:23"
+Citizen_01,55,active,,"2026-01-20 05:54:48"
+Future_Gen_1,45,,,"2026-01-20 06:43:39"
+Heir_Successor_99,52,inherited,Citizen_Baucau_77,"2026-01-20 05:21:23"
+Next_Gen_2,60,,Future_Gen_1,"2026-01-20 06:43:39"
+Next_Gen_4,30,,Future_Gen_3,"2026-01-20 06:43:39"
+Legacy_Gen_3,26,inherited,Heir_Successor_99,"2026-01-20 05:49:58"
+Future_Gen_4,13,active,Legacy_Gen_3,"2026-01-20 05:54:48"
