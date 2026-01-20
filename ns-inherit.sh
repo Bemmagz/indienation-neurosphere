@@ -1,74 +1,50 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-# NeuroSphere Value Inheritance Protocol (VIP) v2.0
-# Memindahkan Reputasi + Riwayat secara Atomik & Terverifikasi
+# NeuroSphere Value Inheritance Protocol (VIP) v3.0 - SQL EDITION
+# Keamanan Transaksional untuk Kontinuitas Nilai
 
 OWNER_ID=$1
 HEIR_ID=$2
-INHERITANCE_KEY=$3
+DB_FILE="neurosphere.db"
 
-# 0. VERIFIKASI AWAL
-if [ -z "$OWNER_ID" ] || [ -z "$HEIR_ID" ] || [ -z "$INHERITANCE_KEY" ]; then
-    echo "Usage: ./ns-inherit.sh [Owner_ID] [Heir_ID] [Key]"
+if [ -z "$OWNER_ID" ] || [ -z "$HEIR_ID" ]; then
+    echo "Usage: ./ns-inherit.sh [Owner_ID] [Heir_ID]"
     exit 1
 fi
 
-# Simulasi Verifikasi Key (Bisa dihubungkan ke OpenSSL/Master Key nanti)
-if [ "$INHERITANCE_KEY" != "NS-SECRET-2026" ]; then
-    echo "⛔ UNAUTHORIZED: Invalid inheritance key."
+# 1. Ambil Skor & Validasi via SQL
+OWNER_DATA=$(sqlite3 $DB_FILE "SELECT current_aura FROM citizens WHERE id='$OWNER_ID' AND status='active';")
+
+if [ -z "$OWNER_DATA" ]; then
+    echo "❌ Error: Owner $OWNER_ID not found or already inherited."
     exit 1
 fi
 
-DB_DIR="aura_history"
-DB_FILE="$DB_DIR/${OWNER_ID}.json"
-LOCK_FILE="$DB_FILE.lock"
-LOG_FILE="logs/inheritance.log"
+# 2. Kalkulasi Warisan (70%)
+HEIR_SCORE=$(echo "$OWNER_DATA * 0.7" | bc | cut -d. -f1)
 
-mkdir -p "$DB_DIR" logs inheritance_certs
+echo "📜 Processing Legacy Transfer: $OWNER_ID -> $HEIR_ID ($HEIR_SCORE Aura)"
 
-# 1. ATOMIC LOCKING
-exec 200>"$LOCK_FILE"
-flock -w 10 200 || { echo "⚠️ System busy. Could not acquire lock."; exit 1; }
+# 3. SQL ATOMIC TRANSACTION
+sqlite3 $DB_FILE <<SQL
+BEGIN TRANSACTION;
+-- Archive Owner
+UPDATE citizens SET status='inherited' WHERE id='$OWNER_ID';
 
-if [ ! -f "$DB_FILE" ]; then
-    echo "[ERROR] Owner data not found: $DB_FILE"
-    flock -u 200; exit 1
+-- Create/Update Heir
+INSERT OR REPLACE INTO citizens (id, current_aura, status, inherited_from) 
+VALUES ('$HEIR_ID', $HEIR_SCORE, 'active', '$OWNER_ID');
+
+-- Record Inheritance History
+INSERT INTO inheritance_records (owner_id, heir_id, aura_transferred)
+VALUES ('$OWNER_ID', '$HEIR_ID', $HEIR_SCORE);
+COMMIT;
+SQL
+
+if [ $? -eq 0 ]; then
+    echo "✅ SUCCESS: Inheritance completed via SQL Transaction."
+    ./ns-status.sh "$HEIR_ID"
+else
+    echo "❌ FATAL: Database transaction failed."
+    exit 1
 fi
-
-# 2. LOAD DATA & HISTORY
-OWNER_DATA=$(cat "$DB_FILE")
-OWNER_SCORE=$(echo "$OWNER_DATA" | jq -r '.social_reputation // 0')
-OWNER_HISTORY=$(echo "$OWNER_DATA" | jq -c '.history // []')
-
-# 3. KALKULASI WARISAN (70% Skor)
-HEIR_SCORE=$(echo "$OWNER_SCORE * 0.7" | bc | cut -d. -f1)
-
-# 4. CREATE HEIR DATA (Membawa Riwayat Pendahulu)
-HEIR_DATA_JSON=$(jq -n \
-    --arg id "$HEIR_ID" \
-    --argjson aura "$HEIR_SCORE" \
-    --argjson hist "$OWNER_HISTORY" \
-    --arg owner "$OWNER_ID" \
-    '{identity: $id, social_reputation: $aura, history: $hist, inherited_from: $owner, inherited_at: "'$(date -Iseconds)'"}')
-
-echo "$HEIR_DATA_JSON" > "$DB_DIR/${HEIR_ID}.json"
-
-# 5. ARCHIVE & CLEANUP
-mv "$DB_FILE" "$DB_DIR/${OWNER_ID}.inherited.json"
-
-# 6. RELEASE LOCK
-flock -u 200
-rm -f "$LOCK_FILE"
-
-# 7. MINT IDENTITY & AUDIT CERT
-./ns-mint.sh "$HEIR_ID" "$HEIR_SCORE"
-echo "$HEIR_DATA_JSON" | jq '. + {cert_type: "LegacyInheritance"}' > "inheritance_certs/CERT_${OWNER_ID}_TO_${HEIR_ID}.json"
-
-# 8. LOGGING
-echo "$(date -Iseconds) | OWNER:$OWNER_ID | HEIR:$HEIR_ID | SCORE:$HEIR_SCORE" >> "$LOG_FILE"
-
-echo "------------------------------------------"
-echo "✅ VALUE INHERITANCE COMPLETE (VIP v2.0)"
-echo "✨ $HEIR_ID inherited $HEIR_SCORE points & history."
-echo "📜 Logged to: $LOG_FILE"
-echo "------------------------------------------"
