@@ -20,3 +20,5 @@ AURA_*.json
 # Security Logs & Temporary Files
 *.log
 __pycache__/
+*.db
+neurosphere.db
