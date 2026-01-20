@@ -1,1 +1,8 @@
-{"citizen_id":"Heir_Successor_99","current_aura":42,"history":[],"status":"active"}
+{
+  "citizen_id": "Heir_Successor_99",
+  "current_aura": 42,
+  "history": [],
+  "status": "active",
+  "inherited_from": "Citizen_Baucau_77",
+  "protocol": "VIP-v2.0"
+}
