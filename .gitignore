@@ -22,3 +22,4 @@ AURA_*.json
 __pycache__/
 *.db
 neurosphere.db
+public_registry.csv
