@@ -16,31 +16,77 @@ export default function Dashboard() {
     }
   }, [iid, key]);
 
+  const downloadCert = () => {
+    const certText = `
+    ◈ NEUROSPHERE GENESIS CERTIFICATE ◈
+    ====================================
+    ID: ${data.identity}
+    ALIAS: ${data.alias}
+    ROLE: ${data.role}
+    
+    ASSETS (TOTAL TM):
+    - ENPE (Native): ${data.tm_identity.enpe}
+    - LUV (Social): ${data.tm_identity.luv}
+    - STABLE (IND-EUR): €${data.tm_identity.stable}
+    
+    STATUS: TERVERIFIKASI & TERKUNCI (2 TAHUN)
+    DISTRIBUSI TUNAI: 01-02-2026
+    ====================================
+    Dikelola oleh AI Guard & Neurosphere.
+    `;
+    const element = document.createElement("a");
+    const file = new Blob([certText], {type: 'text/plain'});
+    element.href = URL.createObjectURL(file);
+    element.download = `Certificate_${data.identity}.txt`;
+    document.body.appendChild(element);
+    element.click();
+  };
+
   if (!data || data.status !== "ACCESS_GRANTED") {
     return (
-      <div style={{ textAlign: 'center', marginTop: '100px' }}>
-        <h1 style={{ color: '#FF2E2E' }}>◈ ACCESS DENIED ◈</h1>
-        <p>Protokol Living Value Identity memerlukan identitas valid.</p>
+      <div style={{ textAlign: 'center', marginTop: '100px', color: '#FF2E2E' }}>
+        <h1>◈ ACCESS DENIED ◈</h1>
+        <p>Gunakan Kunci Rahasia Valid.</p>
       </div>
     );
   }
 
   return (
-    <div style={{ maxWidth: '400px', margin: 'auto', border: '1px solid #46FF2E', padding: '20px', borderRadius: '15px', backgroundColor: '#0a0a0a' }}>
-      <h2 style={{ textAlign: 'center', borderBottom: '1px solid #46FF2E', pb: '10px' }}>IDENTITY CARD</h2>
-      <div style={{ marginBottom: '20px' }}>
-        <p><strong>Alias:</strong> {data.alias}</p>
-        <p><strong>ID:</strong> {data.identity}</p>
-        <p><strong>Role:</strong> {data.role}</p>
+    <div style={{ maxWidth: '400px', margin: '40px auto', border: '1px solid #46FF2E', padding: '30px', borderRadius: '20px', backgroundColor: '#0a0a0a', boxShadow: '0 0 20px #46FF2E33' }}>
+      <h2 style={{ textAlign: 'center', letterSpacing: '2px', borderBottom: '2px solid #46FF2E', paddingBottom: '10px' }}>GENESIS CARD</h2>
+      
+      <div style={{ margin: '20px 0' }}>
+        <p style={{ fontSize: '12px', color: '#888', margin: '0' }}>IDENTITY HOLDER</p>
+        <p style={{ fontSize: '20px', margin: '5px 0' }}>{data.alias}</p>
+        <p style={{ fontSize: '12px', opacity: 0.7 }}>ID: {data.identity}</p>
       </div>
-      <div style={{ backgroundColor: '#111', padding: '15px', borderRadius: '10px' }}>
-        <h3 style={{ fontSize: '14px', margin: '0 0 10px 0' }}>TOTAL TM ASSETS</h3>
-        <p style={{ margin: '5px 0' }}>◈ ENPE: {data.tm_identity.enpe}</p>
-        <p style={{ margin: '5px 0' }}>◈ LUV: {data.tm_identity.luv}</p>
-        <p style={{ margin: '5px 0', color: '#FFD700' }}>◈ STABLE: €{data.tm_identity.stable}</p>
+
+      <div style={{ backgroundColor: '#111', padding: '20px', borderRadius: '12px', borderLeft: '4px solid #46FF2E' }}>
+        <h3 style={{ fontSize: '14px', color: '#46FF2E', margin: '0 0 10px 0' }}>TOTAL TM ASSETS</h3>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+          <span>ENPE (Engine)</span>
+          <span>{data.tm_identity.enpe}</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+          <span>LUV (Social)</span>
+          <span>{data.tm_identity.luv}</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', color: '#FFD700' }}>
+          <span>STABLE (IND-EUR)</span>
+          <span>€{data.tm_identity.stable}</span>
+        </div>
       </div>
-      <footer style={{ marginTop: '20px', fontSize: '10px', textAlign: 'center', color: '#888' }}>
-        ACTIVATE ON: 01-02-2026 | SECURED BY NEURO GUARD
+
+      <button 
+        onClick={downloadCert}
+        style={{ width: '100%', marginTop: '25px', padding: '12px', backgroundColor: '#46FF2E', color: '#000', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}
+      >
+        UNDUH SERTIFIKAT KEDAULATAN
+      </button>
+
+      <footer style={{ marginTop: '20px', fontSize: '10px', textAlign: 'center', color: '#666', lineHeight: '1.5' }}>
+        ASET TERKUNCI HINGGA 2028<br/>
+        STABLE COIN AKTIF: 01 FEBRUARI 2026
       </footer>
     </div>
   );
