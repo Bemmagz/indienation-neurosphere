@@ -3,8 +3,16 @@ const path = require('path');
 const crypto = require('crypto');
 
 export default function handler(req, res) {
-  const { iid, key } = req.query; // Mengambil ID dan Password dari URL
-  const registry = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'genesis-registry.json'), 'utf8'));
+  const { iid, key } = req.query;
+  
+  // Membaca file yang sekarang berada di folder yang sama
+  const registryPath = path.join(process.cwd(), 'api/v1/genesis-registry.json');
+  
+  if (!fs.existsSync(registryPath)) {
+    return res.status(500).json({ status: "ERROR", message: "Database not found in API path" });
+  }
+
+  const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
 
   if (!registry[iid]) {
     return res.status(404).json({ status: "NOT_FOUND", message: "Identity not registered." });
@@ -12,19 +20,13 @@ export default function handler(req, res) {
 
   const citizen = registry[iid];
 
-  // Jika ID memiliki pengunci (auth), cek passwordnya
   if (citizen.auth) {
     const hashedInput = crypto.createHash('sha256').update(key || "").digest('hex');
-    
     if (hashedInput !== citizen.auth.k) {
-      return res.status(401).json({ 
-        status: "LOCKED", 
-        message: "Key rahasia salah. Akses ditolak." 
-      });
+      return res.status(401).json({ status: "LOCKED", message: "Key rahasia salah." });
     }
   }
 
-  // Jika lolos (atau tidak dikunci), tampilkan data
   res.status(200).json({
     status: "ACCESS_GRANTED",
     identity: iid,

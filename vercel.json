@@ -1,6 +1,9 @@
 {
   "version": 2,
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" }
-  ]
+  "functions": {
+    "api/v1/*.js": {
+      "memory": 1024,
+      "maxDuration": 10
+    }
+  }
 }
