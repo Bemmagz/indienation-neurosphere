@@ -16,82 +16,70 @@ function DashboardContent() {
     }
   }, [iid, key]);
 
-  const downloadCert = () => {
-    const certText = `
-    ◈ NEUROSPHERE GENESIS CERTIFICATE ◈
-    ====================================
-    ID: ${data.identity}
-    ALIAS: ${data.alias}
-    ROLE: ${data.role}
-    
-    ASSETS (TOTAL TM):
-    - ENPE (Engine): ${data.tm_identity.enpe}
-    - LUV (Social): ${data.tm_identity.luv}
-    - STABLE (IND-EUR): €${data.tm_identity.stable}
-    
-    STATUS: TERVERIFIKASI & TERKUNCI (2 TAHUN)
-    DISTRIBUSI TUNAI: 01-02-2026
-    ====================================
-    Dikelola oleh AI Guard & Neurosphere.
-    `;
-    const element = document.createElement("a");
-    const file = new Blob([certText], {type: 'text/plain'});
-    element.href = URL.createObjectURL(file);
-    element.download = `Certificate_${data.identity}.txt`;
-    document.body.appendChild(element);
-    element.click();
-  };
-
   if (!data || data.status !== "ACCESS_GRANTED") {
     return (
-      <div style={{ textAlign: 'center', marginTop: '100px', color: '#FF2E2E' }}>
-        <h1>◈ ACCESS DENIED ◈</h1>
-        <p>Gunakan Kunci Rahasia Valid untuk Identitas Living Value.</p>
+      <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center', color: '#FF2E2E', backgroundColor: '#000' }}>
+        <h1 style={{ letterSpacing: '5px', textShadow: '0 0 10px #FF2E2E' }}>◈ ACCESS DENIED ◈</h1>
       </div>
     );
   }
 
   return (
-    <div style={{ maxWidth: '400px', margin: '40px auto', border: '1px solid #46FF2E', padding: '30px', borderRadius: '20px', backgroundColor: '#0a0a0a', boxShadow: '0 0 20px #46FF2E33' }}>
-      <h2 style={{ textAlign: 'center', letterSpacing: '2px', borderBottom: '2px solid #46FF2E', paddingBottom: '10px' }}>GENESIS CARD</h2>
-      
-      <div style={{ margin: '20px 0' }}>
-        <p style={{ fontSize: '12px', color: '#888', margin: '0' }}>IDENTITY HOLDER</p>
-        <p style={{ fontSize: '20px', margin: '5px 0' }}>{data.alias}</p>
-        <p style={{ fontSize: '12px', opacity: 0.7 }}>ID: {data.identity}</p>
+    <div style={{ 
+      minHeight: '100vh', 
+      display: 'flex', 
+      flexDirection: 'column', 
+      alignItems: 'center', 
+      justifyContent: 'center',
+      background: 'radial-gradient(circle, #0d1a0d 0%, #000 100%)',
+      padding: '20px'
+    }}>
+      <div style={{ 
+        width: '100%', 
+        maxWidth: '380px', 
+        padding: '30px', 
+        borderRadius: '30px', 
+        background: 'rgba(255, 255, 255, 0.03)', 
+        backdropFilter: 'blur(15px)',
+        border: '1px solid rgba(70, 255, 46, 0.2)',
+        boxShadow: '0 25px 50px rgba(0,0,0,0.5), 0 0 20px rgba(70, 255, 46, 0.1)',
+        textAlign: 'center'
+      }}>
+        <div style={{ fontSize: '10px', color: '#46FF2E', letterSpacing: '3px', marginBottom: '10px' }}>NEUROSPHERE GENESIS ID</div>
+        <div style={{ height: '80px', width: '80px', background: 'linear-gradient(45deg, #46FF2E, #1a3d1a)', borderRadius: '50%', margin: 'auto', marginBottom: '15px', border: '3px solid #000', boxShadow: '0 0 15px #46FF2E' }}></div>
+        
+        <h2 style={{ fontSize: '24px', margin: '0', color: '#fff' }}>{data.alias}</h2>
+        <code style={{ fontSize: '11px', color: '#46FF2E', opacity: 0.6 }}>UUID: {data.identity}</code>
+
+        <div style={{ marginTop: '30px', textAlign: 'left' }}>
+          <div style={{ marginBottom: '15px', padding: '15px', background: 'rgba(0,0,0,0.3)', borderRadius: '15px' }}>
+            <div style={{ fontSize: '10px', color: '#888' }}>LIVING VALUE (STABLE)</div>
+            <div style={{ fontSize: '22px', color: '#FFD700', fontWeight: 'bold' }}>€{data.tm_identity.stable}</div>
+          </div>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+            <div style={{ padding: '10px', background: 'rgba(0,0,0,0.3)', borderRadius: '12px' }}>
+              <div style={{ fontSize: '9px', color: '#888' }}>ENPE NATIVE</div>
+              <div style={{ fontSize: '16px', color: '#46FF2E' }}>{data.tm_identity.enpe}</div>
+            </div>
+            <div style={{ padding: '10px', background: 'rgba(0,0,0,0.3)', borderRadius: '12px' }}>
+              <div style={{ fontSize: '9px', color: '#888' }}>AURA REWARD</div>
+              <div style={{ fontSize: '16px', color: '#46FF2E' }}>{data.tm_identity.luv} LUV</div>
+            </div>
+          </div>
+        </div>
+
+        <button style={{ width: '100%', marginTop: '30px', padding: '15px', borderRadius: '12px', background: '#46FF2E', color: '#000', border: 'none', fontWeight: 'bold', cursor: 'pointer', transition: '0.3s' }}>
+          ACTIVATE VOUCHER 01-02-2026
+        </button>
       </div>
-
-      <div style={{ backgroundColor: '#111', padding: '20px', borderRadius: '12px', borderLeft: '4px solid #46FF2E' }}>
-        <h3 style={{ fontSize: '14px', color: '#46FF2E', margin: '0 0 10px 0' }}>TOTAL TM ASSETS</h3>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-          <span>ENPE (Engine)</span>
-          <span>{data.tm_identity.enpe}</span>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-          <span>LUV (Social)</span>
-          <span>{data.tm_identity.luv}</span>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', color: '#FFD700' }}>
-          <span>STABLE (IND-EUR)</span>
-          <span>€{data.tm_identity.stable}</span>
-        </div>
-      </div>
-
-      <button onClick={downloadCert} style={{ width: '100%', marginTop: '25px', padding: '12px', backgroundColor: '#46FF2E', color: '#000', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}>
-        UNDUH SERTIFIKAT KEDAULATAN
-      </button>
-
-      <footer style={{ marginTop: '20px', fontSize: '10px', textAlign: 'center', color: '#666', lineHeight: '1.5' }}>
-        ASET TERKUNCI HINGGA 2028<br/>
-        STABLE COIN AKTIF: 01 FEBRUARI 2026
-      </footer>
     </div>
   );
 }
 
 export default function Dashboard() {
   return (
-    <Suspense fallback={<div style={{ textAlign: 'center', color: '#46FF2E' }}>Synchronizing Identity...</div>}>
+    <Suspense fallback={<div style={{ color: '#46FF2E', textAlign: 'center', marginTop: '50vh' }}>ACCESSING NEURAL NETWORK...</div>}>
       <DashboardContent />
     </Suspense>
   );
