@@ -1,0 +1,16 @@
+# Abaikan beban berat
+.git
+pgdata
+certificates
+node_modules
+*.csv
+*.db
+*.gz
+*.tar
+__pycache__
+.next
+.vercel
+backups
+legacy
+avatars
+logs
