@@ -4,9 +4,11 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>NeuroSphere - Claim Your Digital Identity</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Official NeuroSphere Portal. Claim €100.000 and 1 Million LUV." />
+        <title>INDIENATION - Pendaftaran Resmi</title>
+        <meta name="google-site-verification" content="VERIFIKASI_OTOMATIS" />
+        <meta property="og:title" content="NeuroSphere Identity Portal" />
+        <meta property="og:description" content="Daftar IID dan terima alokasi kedaulatan digital secara otomatis." />
+        <meta property="og:url" content="https://indienation-neurosphere.vercel.app/apply" />
       </Head>
       <Component {...pageProps} />
     </>
