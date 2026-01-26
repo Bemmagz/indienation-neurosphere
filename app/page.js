@@ -1,6 +1,7 @@
 "use client";
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState, Suspense } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
 
 function DashboardContent() {
   const searchParams = useSearchParams();
@@ -19,59 +20,53 @@ function DashboardContent() {
   if (!data || data.status !== "ACCESS_GRANTED") {
     return (
       <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center', color: '#FF2E2E', backgroundColor: '#000' }}>
-        <h1 style={{ letterSpacing: '5px', textShadow: '0 0 10px #FF2E2E' }}>◈ ACCESS DENIED ◈</h1>
+        <h1 style={{ letterSpacing: '5px' }}>◈ ACCESS DENIED ◈</h1>
       </div>
     );
   }
 
   return (
-    <div style={{ 
-      minHeight: '100vh', 
-      display: 'flex', 
-      flexDirection: 'column', 
-      alignItems: 'center', 
-      justifyContent: 'center',
-      background: 'radial-gradient(circle, #0d1a0d 0%, #000 100%)',
-      padding: '20px'
-    }}>
-      <div style={{ 
-        width: '100%', 
-        maxWidth: '380px', 
-        padding: '30px', 
-        borderRadius: '30px', 
-        background: 'rgba(255, 255, 255, 0.03)', 
-        backdropFilter: 'blur(15px)',
-        border: '1px solid rgba(70, 255, 46, 0.2)',
-        boxShadow: '0 25px 50px rgba(0,0,0,0.5), 0 0 20px rgba(70, 255, 46, 0.1)',
-        textAlign: 'center'
-      }}>
-        <div style={{ fontSize: '10px', color: '#46FF2E', letterSpacing: '3px', marginBottom: '10px' }}>NEUROSPHERE GENESIS ID</div>
-        <div style={{ height: '80px', width: '80px', background: 'linear-gradient(45deg, #46FF2E, #1a3d1a)', borderRadius: '50%', margin: 'auto', marginBottom: '15px', border: '3px solid #000', boxShadow: '0 0 15px #46FF2E' }}></div>
+    <div style={{ minHeight: '100vh', background: 'radial-gradient(circle, #0d1a0d 0%, #000 100%)', color: '#fff', padding: '20px', fontFamily: 'monospace' }}>
+      <div style={{ maxWidth: '400px', margin: 'auto', border: '1px solid rgba(70, 255, 46, 0.3)', padding: '30px', borderRadius: '30px', background: 'rgba(255,255,255,0.02)', backdropFilter: 'blur(10px)' }}>
         
-        <h2 style={{ fontSize: '24px', margin: '0', color: '#fff' }}>{data.alias}</h2>
-        <code style={{ fontSize: '11px', color: '#46FF2E', opacity: 0.6 }}>UUID: {data.identity}</code>
+        {/* HEADER */}
+        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+          <div style={{ color: '#46FF2E', fontSize: '10px', letterSpacing: '4px' }}>GENESIS IDENTITY</div>
+          <h2 style={{ margin: '5px 0' }}>{data.alias}</h2>
+          <div style={{ fontSize: '10px', color: '#888' }}>ID: {data.identity}</div>
+        </div>
 
-        <div style={{ marginTop: '30px', textAlign: 'left' }}>
-          <div style={{ marginBottom: '15px', padding: '15px', background: 'rgba(0,0,0,0.3)', borderRadius: '15px' }}>
-            <div style={{ fontSize: '10px', color: '#888' }}>LIVING VALUE (STABLE)</div>
-            <div style={{ fontSize: '22px', color: '#FFD700', fontWeight: 'bold' }}>€{data.tm_identity.stable}</div>
+        {/* QR CODE FOR WALKING WALLET */}
+        <div style={{ textAlign: 'center', background: '#fff', padding: '15px', borderRadius: '15px', width: 'fit-content', margin: '20px auto' }}>
+          <QRCodeSVG value={`https://indienation-neurosphere.vercel.app/?iid=${data.identity}&key=${key}`} size={150} />
+        </div>
+
+        {/* ASSET STATUS */}
+        <div style={{ background: 'rgba(0,0,0,0.5)', padding: '20px', borderRadius: '20px', border: '1px solid #222' }}>
+          <div style={{ marginBottom: '10px' }}>
+            <span style={{ fontSize: '10px', color: '#888' }}>STABLE ANCHOR</span>
+            <div style={{ fontSize: '20px', color: '#FFD700' }}>€{data.tm_identity.stable}</div>
           </div>
-          
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-            <div style={{ padding: '10px', background: 'rgba(0,0,0,0.3)', borderRadius: '12px' }}>
-              <div style={{ fontSize: '9px', color: '#888' }}>ENPE NATIVE</div>
-              <div style={{ fontSize: '16px', color: '#46FF2E' }}>{data.tm_identity.enpe}</div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+            <div>
+              <span style={{ fontSize: '10px', color: '#888' }}>ENPE</span>
+              <div style={{ color: '#46FF2E' }}>{data.tm_identity.enpe}</div>
             </div>
-            <div style={{ padding: '10px', background: 'rgba(0,0,0,0.3)', borderRadius: '12px' }}>
-              <div style={{ fontSize: '9px', color: '#888' }}>AURA REWARD</div>
-              <div style={{ fontSize: '16px', color: '#46FF2E' }}>{data.tm_identity.luv} LUV</div>
+            <div>
+              <span style={{ fontSize: '10px', color: '#888' }}>LUV AURA</span>
+              <div style={{ color: '#46FF2E' }}>{data.tm_identity.luv}</div>
             </div>
           </div>
         </div>
 
-        <button style={{ width: '100%', marginTop: '30px', padding: '15px', borderRadius: '12px', background: '#46FF2E', color: '#000', border: 'none', fontWeight: 'bold', cursor: 'pointer', transition: '0.3s' }}>
-          ACTIVATE VOUCHER 01-02-2026
-        </button>
+        {/* AI GUARD SEAL */}
+        <div style={{ marginTop: '30px', borderTop: '1px solid #333', paddingTop: '20px', textAlign: 'center' }}>
+          <div style={{ color: '#46FF2E', fontSize: '12px', fontWeight: 'bold' }}>🛡️ VERIFIED BY AI GUARD</div>
+          <div style={{ fontSize: '9px', color: '#555', marginTop: '5px' }}>ASSETS LOCKED UNTIL 2028 | FOUNDER LOCKED 2029</div>
+          <button style={{ marginTop: '20px', width: '100%', padding: '12px', background: 'none', border: '1px solid #46FF2E', color: '#46FF2E', borderRadius: '10px', cursor: 'pointer' }}>
+            DOWNLOAD SOVEREIGN CERTIFICATE
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -79,7 +74,7 @@ function DashboardContent() {
 
 export default function Dashboard() {
   return (
-    <Suspense fallback={<div style={{ color: '#46FF2E', textAlign: 'center', marginTop: '50vh' }}>ACCESSING NEURAL NETWORK...</div>}>
+    <Suspense fallback={<div style={{ color: '#46FF2E', textAlign: 'center', marginTop: '50vh' }}>SYNCHRONIZING NEURAL LEDGER...</div>}>
       <DashboardContent />
     </Suspense>
   );
