@@ -1,8 +1,8 @@
 "use client";
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 
-export default function Dashboard() {
+function DashboardContent() {
   const searchParams = useSearchParams();
   const [data, setData] = useState(null);
   const iid = searchParams.get('iid');
@@ -25,7 +25,7 @@ export default function Dashboard() {
     ROLE: ${data.role}
     
     ASSETS (TOTAL TM):
-    - ENPE (Native): ${data.tm_identity.enpe}
+    - ENPE (Engine): ${data.tm_identity.enpe}
     - LUV (Social): ${data.tm_identity.luv}
     - STABLE (IND-EUR): €${data.tm_identity.stable}
     
@@ -46,7 +46,7 @@ export default function Dashboard() {
     return (
       <div style={{ textAlign: 'center', marginTop: '100px', color: '#FF2E2E' }}>
         <h1>◈ ACCESS DENIED ◈</h1>
-        <p>Gunakan Kunci Rahasia Valid.</p>
+        <p>Gunakan Kunci Rahasia Valid untuk Identitas Living Value.</p>
       </div>
     );
   }
@@ -77,10 +77,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <button 
-        onClick={downloadCert}
-        style={{ width: '100%', marginTop: '25px', padding: '12px', backgroundColor: '#46FF2E', color: '#000', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}
-      >
+      <button onClick={downloadCert} style={{ width: '100%', marginTop: '25px', padding: '12px', backgroundColor: '#46FF2E', color: '#000', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}>
         UNDUH SERTIFIKAT KEDAULATAN
       </button>
 
@@ -89,5 +86,13 @@ export default function Dashboard() {
         STABLE COIN AKTIF: 01 FEBRUARI 2026
       </footer>
     </div>
+  );
+}
+
+export default function Dashboard() {
+  return (
+    <Suspense fallback={<div style={{ textAlign: 'center', color: '#46FF2E' }}>Synchronizing Identity...</div>}>
+      <DashboardContent />
+    </Suspense>
   );
 }
