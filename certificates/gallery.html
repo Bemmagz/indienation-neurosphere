@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Indienation Genesis Gallery</title>
+    <style>
+        body { background: #000; color: #00ff00; font-family: 'Courier New', monospace; text-align: center; margin: 0; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 20px; }
+        .item { background: #0a0a0a; padding: 15px; border: 1px solid #222; border-radius: 12px; transition: 0.4s; }
+        .item:hover { border-color: #bc13fe; box-shadow: 0 0 20px rgba(188, 19, 254, 0.3); transform: translateY(-5px); }
+        img { width: 100%; border-radius: 8px; margin-bottom: 10px; }
+        p { font-size: 0.9em; letter-spacing: 2px; color: #fff; }
+        h1 { font-size: 2.5em; letter-spacing: 8px; text-shadow: 0 0 10px #00ff00; margin-bottom: 5px; }
+        .sub { color: #888; margin-bottom: 40px; text-transform: uppercase; font-size: 0.8em; }
+    </style>
+</head>
+<body>
+    <h1>GENESIS GALLERY</h1>
+    <div class="sub">Indienation Identity Archive | Phase: AURA</div>
+    <div class="grid" id="gallery"></div>
+    <script>
+        const gallery = document.getElementById('gallery');
+        for(let i=1; i<=100; i++) {
+            const id = "IID-2026-" + i.toString().padStart(7, '0');
+            gallery.innerHTML += `
+                <div class="item">
+                    <img src="${id}.svg" alt="${id}">
+                    <p>${id}</p>
+                </div>`;
+        }
+    </script>
+</body>
+</html>
