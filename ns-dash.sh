@@ -1,41 +1,23 @@
-#!/data/data/com.termux/files/usr/bin/bash
-
-# NeuroSphere Sovereign Dashboard v1.0
-# Founder Monitoring Tool
-
-clear
-echo "========================================================="
-echo "        NEUROSPHERE GLOBAL MONITORING CENTER            "
-echo "              FOUNDER ACCESS ONLY                       "
-echo "========================================================="
-echo "Timestamp: $(date)"
-echo "---------------------------------------------------------"
-
-# 1. Asset Status Simulation
-echo "[ASSET OVERVIEW]"
-echo "ENPE (E-Coin) Total Supply : 100,000,000,000,000"
-echo "IND-EUR (Stablecoin) Status: STABLE (Pegged to Real-Value)"
-echo "LUV Distributed Today     : $((RANDOM % 1000000 + 500000)) LUV"
-echo "Donation Pool (15%)       : OPEN & LIQUID"
-echo "Founder Allocation (Lock) : 3 YEARS REMAINING"
-echo "---------------------------------------------------------"
-
-# 2. Regional Node Status (20 Countries)
-echo "[REGIONAL NODE STATUS]"
-printf "%-20s %-15s %-10s\n" "Country/Region" "Security" "Uptime"
-echo "---------------------------------------------------------"
-countries=("Timor Leste" "Indonesia" "Brunei" "Papua NG" "Fiji" "Vanuatu" "Samoa" "Kiribati" "Tonga" "Palau")
-for c in "${countries[@]}"; do
-    printf "%-20s %-15s %-10s\n" "$c" "ARGI-PostLattice" "100.0%"
+#!/bin/bash
+while true; do
+    clear
+    echo -e "\e[1;37m====================================================="
+    echo -e "          INDIENATION COMMAND CENTER (v2.6)          "
+    echo -e "=====================================================\e[0m"
+    echo -e " STATUS: \e[32mACTIVE\e[0m | NETWORK: \e[34mSECURE\e[0m | UPTIME: $(uptime -p)"
+    echo -e "-----------------------------------------------------"
+    
+    # Menghitung Total Identitas
+    TOTAL_IID=$(psql -d neurosphere -t -c "SELECT count(*) FROM wallets WHERE id LIKE 'IID-2026-%';")
+    # Menghitung Total Distribusi (Simulasi/Real)
+    TOTAL_DIST=$(psql -d neurosphere -t -c "SELECT COALESCE(SUM(balance_ind_eur), 0) FROM wallets;")
+    
+    echo -e " TOTAL IDENTITIES (IID-2026) : \e[1;36m$TOTAL_IID\e[0m"
+    echo -e " TOTAL DISTRIBUTED IND-EUR   : \e[1;32m$TOTAL_DIST\e[0m"
+    echo -e "-----------------------------------------------------"
+    echo -e " \e[1;33mRECENT ACTIVITY:\e[0m"
+    psql -d neurosphere -c "SELECT id, balance_ind_eur, created_at FROM wallets WHERE balance_ind_eur > 0 ORDER BY created_at DESC LIMIT 5;"
+    
+    echo -e "\n \e[1;30mPress [CTRL+C] to exit monitoring\e[0m"
+    sleep 5
 done
-echo "... (Total 20 Countries Online)"
-echo "---------------------------------------------------------"
-
-# 3. Security Insight
-echo "[SECURITY INSIGHT]"
-echo "Quantum Threat Level: LOW"
-echo "Recent Blocked Attacks: $((RANDOM % 100)) Bot-Attacks (Auto-Drained)"
-echo "Current Protocol     : NeuroSphere v2.6.6"
-echo "---------------------------------------------------------"
-echo "Status: ALL SYSTEMS OPERATIONAL"
-echo "========================================================="

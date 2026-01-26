@@ -1,0 +1,9 @@
+[
+  {
+    "event": "GENESIS_LOCK",
+    "timestamp": "2026-01-26T04:00:36.395Z",
+    "total_identity": 100000,
+    "merkle_root": "6be59ee079dd61cb1f193fb282a7c59ae441c6fb78f0c5123aedb233d771c518",
+    "founder_seal": "AUTHORIZED_BY_FOUNDER_2026"
+  }
+]

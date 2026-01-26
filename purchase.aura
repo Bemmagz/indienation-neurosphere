@@ -1,0 +1,13 @@
+@Authority(L5_Supreme)
+define EXECUTE_PURCHASE {
+    ASSET: IND-EUR;
+    VALUE: 1.00;
+    SOURCE: Vault_Authority;
+    TARGET: Merchant_Node_A;
+
+    PROTOCOLS {
+        BYPASS_FEE = TRUE;
+        INSTANT_SETTLEMENT = TRUE;
+        METADATA_SYNC = "Living Value Identity";
+    }
+}
