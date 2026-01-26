@@ -1,37 +1,33 @@
-const fs = require('fs');
-const path = require('path');
-const crypto = require('crypto');
-
 export default function handler(req, res) {
   const { iid, key } = req.query;
-  
-  // Membaca file yang sekarang berada di folder yang sama
-  const registryPath = path.join(process.cwd(), 'api/v1/genesis-registry.json');
-  
-  if (!fs.existsSync(registryPath)) {
-    return res.status(500).json({ status: "ERROR", message: "Database not found in API path" });
-  }
 
-  const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
-
-  if (!registry[iid]) {
-    return res.status(404).json({ status: "NOT_FOUND", message: "Identity not registered." });
-  }
-
-  const citizen = registry[iid];
-
-  if (citizen.auth) {
-    const hashedInput = crypto.createHash('sha256').update(key || "").digest('hex');
-    if (hashedInput !== citizen.auth.k) {
-      return res.status(401).json({ status: "LOCKED", message: "Key rahasia salah." });
+  // Database Identitas Genesis
+  const registry = {
+    "0000000002": {
+      key: "NEURO-FIRST-2026",
+      alias: "Citizen 02",
+      role: "Genesis Pioneer",
+      tm_identity: { enpe: "1.000", luv: "0", stable: "100.000" }
+    },
+    "0000000003": {
+      key: "NEURO-EXPAND-2026",
+      alias: "Citizen 03",
+      role: "Early Adopter",
+      tm_identity: { enpe: "1.000", luv: "1.000.000", stable: "100.000" }
     }
-  }
+  };
 
-  res.status(200).json({
-    status: "ACCESS_GRANTED",
-    identity: iid,
-    alias: citizen.alias || "Citizen",
-    tm_identity: citizen.tm_identity,
-    role: citizen.role || "CITIZEN"
-  });
+  const user = registry[iid];
+
+  if (user && user.key === key) {
+    res.status(200).json({
+      status: "ACCESS_GRANTED",
+      identity: iid,
+      alias: user.alias,
+      role: user.role,
+      tm_identity: user.tm_identity
+    });
+  } else {
+    res.status(403).json({ status: "ACCESS_DENIED" });
+  }
 }
