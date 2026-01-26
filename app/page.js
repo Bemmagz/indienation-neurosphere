@@ -1,9 +1,9 @@
-export default function Home() {
+export default function Page() {
   return (
-    <div style={{ padding: '2rem', fontFamily: 'system-ui' }}>
-      <h1>🧠 NeuroSphere</h1>
-      <p>App Router Architecture</p>
-      <p><a href="/api/health">Health Check</a></p>
+    <div style={{ padding: '20px' }}>
+      <h1>◈ NEUROSPHERE LEDGER ◈</h1>
+      <p>Status: ONLINE</p>
+      <p>Protocol: Living Value Identity</p>
     </div>
-  );
+  )
 }
