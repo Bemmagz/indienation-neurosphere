@@ -1,46 +1,73 @@
 import React, { useState } from 'react';
 
 export default function Apply() {
+  const [lang, setLang] = useState('ID');
   const [step, setStep] = useState(1);
   const [iid, setIid] = useState('');
 
-  const executeAiGuard = (e) => {
-    e.preventDefault();
-    // Protokol Neurolang: Validasi Integritas Otomatis
-    const generatedIid = "NS-" + Math.random().toString(36).substr(2, 9).toUpperCase();
-    setIid(generatedIid);
-    setStep(2);
-  };
+  const t = {
+    ID: {
+      title: "AJUKAN KEDAULATAN DIGITAL",
+      desc: "Daftar untuk menerima alokasi €100.000 & 1.000.000 LUV (Distribusi 01-02-2027)",
+      alias: "ALIAS / NAMA DIGITAL",
+      email: "EMAIL VERIFIKASI",
+      proof: "BUKTI KARYA/KEBAIKAN (Link/Deskripsi)",
+      btn: "KIRIM KE AI GUARD",
+      success: "PENDAFTARAN BERHASIL",
+      dir: "ltr"
+    },
+    ENG: {
+      title: "CLAIM DIGITAL SOVEREIGNTY",
+      desc: "Register to receive €100,000 & 1,000,000 LUV allocation (Distribution 01-02-2027)",
+      alias: "DIGITAL ALIAS / NAME",
+      email: "VERIFICATION EMAIL",
+      proof: "PROOF OF WORK/KINDNESS (Link/Description)",
+      btn: "SEND TO AI GUARD",
+      success: "REGISTRATION SUCCESSFUL",
+      dir: "ltr"
+    },
+    AR: {
+      title: "طالب بالسيادة الرقمية",
+      desc: "سجل للحصول على تخصيص 100,000 يورو و 1,000,000 LUV (التوزيع 01-02-2027)",
+      alias: "الاسم الرقمي",
+      email: "البريد الإلكتروني للتحقق",
+      proof: "دليل العمل / أعمال الخير (رابط/وصف)",
+      btn: "أرسل إلى الحارس الذكي",
+      success: "تم التسجيل بنجاح",
+      dir: "rtl"
+    }
+  }[lang];
 
   return (
-    <div style={{ backgroundColor: '#000', color: '#46FF2E', minHeight: '100vh', padding: '40px', fontFamily: 'monospace' }}>
-      {step === 1 ? (
-        <div style={{ maxWidth: '500px', margin: 'auto', border: '1px solid #46FF2E', padding: '30px' }}>
-          <h2 style={{ textAlign: 'center' }}>◈ AJUKAN KEDAULATAN DIGITAL ◈</h2>
-          <p style={{ fontSize: '11px', textAlign: 'center' }}>Alokasi: €100.000 & 1.000.000 LUV [Target 01-02-2027]</p>
-          <form onSubmit={executeAiGuard} style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '20px' }}>
-            <input type="text" placeholder="ALIAS / NAMA DIGITAL" required style={{ background: '#111', border: '1px solid #46FF2E', padding: '12px', color: '#fff' }} />
-            <input type="email" placeholder="EMAIL VERIFIKASI" required style={{ background: '#111', border: '1px solid #46FF2E', padding: '12px', color: '#fff' }} />
-            <textarea placeholder="BUKTI KARYA/KEBAIKAN (Link/Deskripsi)" required style={{ background: '#111', border: '1px solid #46FF2E', padding: '12px', color: '#fff', height: '100px' }}></textarea>
-            <button type="submit" style={{ background: '#46FF2E', color: '#000', border: 'none', padding: '15px', fontWeight: 'bold', cursor: 'pointer' }}>
-              KIRIM KE AI GUARD
-            </button>
-          </form>
-        </div>
-      ) : (
-        <div style={{ textAlign: 'center', marginTop: '100px' }}>
-          <h2 style={{ color: '#FFD700' }}>◈ IDENTITAS DITERBITKAN ◈</h2>
-          <div style={{ border: '2px double #46FF2E', padding: '40px', display: 'inline-block', backgroundColor: '#111' }}>
-            <p>IID IDENTITY:</p>
-            <h1 style={{ letterSpacing: '5px' }}>{iid}</h1>
-            <hr style={{ borderColor: '#46FF2E' }} />
-            <p style={{ fontSize: '12px' }}>STATUS: TERKUNCI (LOCKED) - 2 TAHUN</p>
-            <p style={{ fontSize: '12px' }}>AURA METER: INITIALIZING...</p>
+    <div style={{ backgroundColor: '#000', color: '#46FF2E', minHeight: '100vh', padding: '20px', fontFamily: 'monospace', direction: t.dir }}>
+      {/* Globe Switcher */}
+      <div style={{ textAlign: 'right', marginBottom: '20px' }}>
+        <button onClick={() => setLang(lang === 'ID' ? 'ENG' : lang === 'ENG' ? 'AR' : 'ID')} style={{ background: 'none', border: '1px solid #46FF2E', color: '#46FF2E', cursor: 'pointer', padding: '5px 10px' }}>
+          🌍 {lang}
+        </button>
+      </div>
+
+      <div style={{ maxWidth: '500px', margin: 'auto', border: '1px solid #46FF2E', padding: '30px', backgroundColor: '#050505' }}>
+        {step === 1 ? (
+          <>
+            <h2 style={{ textAlign: 'center' }}>◈ {t.title} ◈</h2>
+            <p style={{ fontSize: '12px', textAlign: 'center', color: '#FFD700', marginBottom: '20px' }}>{t.desc}</p>
+            <form onSubmit={(e) => { e.preventDefault(); setIid("NS-" + Math.random().toString(36).substr(2, 9).toUpperCase()); setStep(2); }} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+              <input type="text" placeholder={t.alias} required style={{ background: '#111', border: '1px solid #46FF2E', padding: '12px', color: '#fff' }} />
+              <input type="email" placeholder={t.email} required style={{ background: '#111', border: '1px solid #46FF2E', padding: '12px', color: '#fff' }} />
+              <textarea placeholder={t.proof} required style={{ background: '#111', border: '1px solid #46FF2E', padding: '12px', color: '#fff', height: '100px' }}></textarea>
+              <button type="submit" style={{ background: '#46FF2E', color: '#000', border: 'none', padding: '15px', fontWeight: 'bold', cursor: 'pointer' }}>{t.btn}</button>
+            </form>
+          </>
+        ) : (
+          <div style={{ textAlign: 'center' }}>
+            <h2 style={{ color: '#FFD700' }}>{t.success}</h2>
+            <p>IID: <span style={{ color: '#fff' }}>{iid}</span></p>
+            <p style={{ fontSize: '11px' }}>Alokasi 1.000.000 LUV akan didistribusikan pada 01-02-2027.</p>
+            <a href="/" style={{ color: '#46FF2E', display: 'block', marginTop: '20px' }}>Kembali ke Control Room</a>
           </div>
-          <br />
-          <a href="/" style={{ color: '#fff', textDecoration: 'underline', display: 'block', marginTop: '30px' }}>Masuk ke Dashboard Dashboard Dashboard Dashboard Control Room</a>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
