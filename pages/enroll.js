@@ -39,7 +39,7 @@ export default function Enroll() {
             <p>NAME: {name.toUpperCase()}</p>
             <p>ALLOCATION: €100.000 STABLE</p>
             <img src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${name}`} style={{ marginTop: '15px', border: '5px solid #fff' }} />
-            <br/><Link href="/"><button style={{color:'#888', background:'none', border:'none', marginTop:'10px'}}>Back</button></Link>
+            <br/><Link href="/"><button style={{color:'#888', background:'none', border:'none', marginTop:'20px', cursor:'pointer'}}>Back to Dashboard</button></Link>
           </div>
         )}
       </main>
