@@ -1,6 +1,7 @@
 #!/bin/bash
-echo "🛡️ AI Guard: Watcher Mode Aktif. Menunggu perubahan file..."
-while inotifywait -r -e modify,create,delete ./ ; do
-    echo "⚡ Perubahan terdeteksi! Memulai prosedur autopilot..."
+echo "🛡️ AI Guard: Watcher Mode 2.0 (Throttled) Aktif..."
+while inotifywait -r -e modify,create,delete --exclude '\.(log|git)' ./ ; do
+    echo "⚡ Perubahan terdeteksi. Menunggu stabilitas (5 detik)..."
+    sleep 5
     ./auto-pilot.sh
 done
