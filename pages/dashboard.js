@@ -1,30 +1,25 @@
 import React, { useState } from 'react';
 import TMWallet from '../components/TMWallet';
-import Certificate from './certificate';
 
 export default function Dashboard() {
-  const [view, setView] = useState('wallet'); // toggle: wallet | certificate
+  const [view, setView] = useState('wallet');
   
   const founderBalances = {
     total: "€ 100.000,00",
     stable: "3 IND-EUR",
-    enpe: "20% Staked",
+    enpe: "100T E-Coin",
     luv: "1.000.000 LUV"
   };
 
   return (
-    <div className="bg-black min-h-screen text-white">
-      <nav className="flex justify-center gap-10 p-5 border-b border-green-900 bg-black sticky top-0 z-50">
-        <button onClick={() => setView('wallet')} className={view === 'wallet' ? 'text-green-400 font-bold' : 'text-gray-600'}>TM ORB WALLET</button>
-        <button onClick={() => setView('certificate')} className={view === 'certificate' ? 'text-green-400 font-bold' : 'text-gray-600'}>SOVEREIGNTY CERTIFICATE</button>
+    <div style={{ backgroundColor: '#000', minHeight: '100vh', color: '#fff' }}>
+      <nav style={{ display: 'flex', justifyContent: 'center', gap: '40px', padding: '20px', borderBottom: '1px solid #1a1a1a' }}>
+        <button onClick={() => setView('wallet')} style={{ background: 'none', border: 'none', color: view === 'wallet' ? '#00ff41' : '#444', cursor: 'pointer', fontWeight: 'bold' }}>TM ORB WALLET</button>
+        <button style={{ background: 'none', border: 'none', color: '#444', cursor: 'not-allowed' }}>CERTIFICATE (SECURE)</button>
       </nav>
 
-      <main className="p-4">
-        {view === 'wallet' ? (
-          <TMWallet auraValue={100} balances={founderBalances} txHash="INDIE-F-GENESIS-2026" />
-        ) : (
-          <Certificate />
-        )}
+      <main style={{ padding: '40px 20px' }}>
+        <TMWallet auraValue={100} balances={founderBalances} txHash="INDIE-F-GENESIS-2026" />
       </main>
     </div>
   );
