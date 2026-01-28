@@ -1,14 +1,13 @@
-const { createClient } = require('./supabase-local.js');
-const dotenv = require('./dotenv-local.js');
-dotenv.config();
 const crypto = require('crypto');
+require('dotenv').config();
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+const URL = process.env.SUPABASE_URL + '/rest/v1/iid_inventory';
+const KEY = process.env.SUPABASE_KEY;
 
 async function runMassSeed() {
     const totalTarget = 1250;
-    const chunkSize = 50; // Lebih kecil agar RAM HP stabil
-    console.log(`🚀 AI Guard: Memulai Mass Seeding ${totalTarget} Citizens...`);
+    const chunkSize = 50;
+    console.log(`🚀 AI Guard: Jalur REST Aktif. Memulai Seeding ${totalTarget} Citizens...`);
 
     for (let i = 0; i < totalTarget; i += chunkSize) {
         const chunk = [];
@@ -23,14 +22,25 @@ async function runMassSeed() {
             });
         }
 
-        const { error } = await supabase.from('iid_inventory').upsert(chunk);
-        if (error) {
-            console.error(`❌ GAGAL di batch ${i}:`, error.message);
-        } else {
-            console.log(`✅ Batch ${i + chunk.length} berhasil disinkronkan...`);
+        try {
+            const response = await fetch(URL, {
+                method: 'POST',
+                headers: {
+                    'apikey': KEY,
+                    'Authorization': `Bearer ${KEY}`,
+                    'Content-Type': 'application/json',
+                    'Prefer': 'resolution=merge-duplicates'
+                },
+                body: JSON.stringify(chunk)
+            });
+
+            if (!response.ok) throw new Error(await response.text());
+            console.log(`✅ Batch ${i + chunk.length} Sinkron.`);
+        } catch (err) {
+            console.error(`❌ Batch ${i} Gagal:`, err.message);
         }
     }
-    console.log("🏁 MASS SEEDING SELESAI. Ekosistem kini memiliki 1,250 Citizens.");
+    console.log("🏁 MASS SEEDING SELESAI. NeuroSphere Online.");
 }
 
-runMassSeed().catch(err => console.error("🛡️ AI Guard Alert:", err.message));
+runMassSeed();

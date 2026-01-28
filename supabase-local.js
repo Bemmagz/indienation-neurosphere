@@ -1,1 +1,0 @@
-Package not found: @supabase/supabase-client
