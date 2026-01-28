@@ -1,37 +1,32 @@
+const { createClient } = require('@supabase/supabase-client');
 require('dotenv').config();
+const crypto = require('crypto');
 
-async function shootToCloud() {
-  const url = `${process.env.SUPABASE_URL}/rest/v1/iid_inventory`;
-  const key = process.env.SUPABASE_KEY;
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
-  const data = [
-    { iid: "00000000001", status: "CLAIMED & LOCKED", date: "2026-01-27" },
-    { iid: "00000000002", status: "CLAIMED & LOCKED", date: "2026-01-27" },
-    { iid: "00000000003", status: "CLAIMED & LOCKED", date: "2026-01-27" },
-    { iid: "00000000004", status: "CLAIMED & LOCKED", date: "2026-01-27" },
-    { iid: "00000000005", status: "CLAIMED & LOCKED", date: "2026-01-27" }
-  ];
+async function autoPilotDistro() {
+    console.log("📡 AI Guard: Menjalankan Distribusi Otomatis...");
 
-  console.log("📡 AI Guard: Memulai transmisi ke Cloud...");
+    // Data IID yang akan diproses
+    const iid_list = ["NS-GEN-001", "NS-GEN-002", "NS-GEN-003", "NS-GEN-004", "NS-GEN-005"];
 
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'apikey': key,
-      'Authorization': `Bearer ${key}`,
-      'Content-Type': 'application/json',
-      'Prefer': 'resolution=merge-duplicates'
-    },
-    body: JSON.stringify(data)
-  });
+    const payload = iid_list.map(id => ({
+        iid: id,
+        wallet_address: "0x" + crypto.randomBytes(20).toString('hex'),
+        status: 'LOCKED',
+        // Dialek Ekonomi TM (Technology Money)
+        ind_eur_balance: 100000, // Basic Living Value [cite: 2026-01-25]
+        luv_balance: 1000000     // 1M LUV/person [cite: 2025-12-20]
+    }));
 
-  if (response.ok) {
-    console.log("✅ SUCCESS: 5 Genesis IID telah terdaftar di Supabase.");
-  } else {
-    const err = await response.text();
-    console.log("❌ FAILED: Periksa apakah tabel 'iid_inventory' sudah dibuat di Supabase.");
-    console.log("Detail Error:", err);
-  }
+    const { error } = await supabase.from('iid_inventory').upsert(payload);
+
+    if (error) {
+        console.error("❌ GAGAL:", error.message);
+    } else {
+        console.log("✅ SUCCESS: Wallet & Saldo Terdistribusi Otomatis.");
+    }
 }
 
-shootToCloud();
+autoPilotDistro();
+
