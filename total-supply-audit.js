@@ -3,10 +3,17 @@ const URL = process.env.SUPABASE_URL + '/rest/v1/iid_inventory?select=ind_eur_ba
 const KEY = process.env.SUPABASE_KEY;
 
 async function runAudit() {
-    console.log("🧐 AI Guard: Melakukan Audit Matematis Seluruh Ekosistem...");
+    console.log("🧐 AI Guard: Melakukan Audit Total (Menembus Limit 1000 Baris)...");
+    
+    // Menggunakan header Range untuk mengambil data lebih dari 1000
     const res = await fetch(URL, {
-        headers: { 'apikey': KEY, 'Authorization': `Bearer ${KEY}` }
+        headers: { 
+            'apikey': KEY, 
+            'Authorization': `Bearer ${KEY}`,
+            'Range': '0-1999' // Menarik hingga 2000 baris dalam satu panggil
+        }
     });
+    
     const data = await res.json();
     
     let totalEUR = 0;
@@ -24,9 +31,9 @@ async function runAudit() {
     console.log("-----------------------------------------");
     
     if (totalEUR === 125000000) {
-        console.log("✅ AUDIT SUKSES: Data Akurat 100%.");
+        console.log("✅ AUDIT SUKSES: 1.250 Citizens Terverifikasi Mutlak.");
     } else {
-        console.log("⚠️ PERHATIAN: Ditemukan Anomali Data.");
+        console.log("⚠️ PERHATIAN: Masih ada ketidaksesuaian data.");
     }
 }
 runAudit();
