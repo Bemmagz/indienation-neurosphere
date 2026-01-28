@@ -26,7 +26,7 @@ export default function handler(req, res) {
         symbol: "IND-EUR",
         supply: "Unlimited (Open Status)",
         anchor_value: "€100,000 per individual (Phased)",
-        target: "Initial: 10M People | Final: 10B People"
+        target: "Initial: 100,000 ID (Early Phase) | Final: 10B People"
       }
     },
     genesis_audit: [
