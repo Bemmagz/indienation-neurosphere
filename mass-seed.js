@@ -1,12 +1,13 @@
-const { createClient } = require('@supabase/supabase-client');
-require('dotenv').config();
+const { createClient } = require('./supabase-local.js');
+const dotenv = require('./dotenv-local.js');
+dotenv.config();
 const crypto = require('crypto');
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
 async function runMassSeed() {
     const totalTarget = 1250;
-    const chunkSize = 100;
+    const chunkSize = 50; // Lebih kecil agar RAM HP stabil
     console.log(`🚀 AI Guard: Memulai Mass Seeding ${totalTarget} Citizens...`);
 
     for (let i = 0; i < totalTarget; i += chunkSize) {
@@ -26,11 +27,10 @@ async function runMassSeed() {
         if (error) {
             console.error(`❌ GAGAL di batch ${i}:`, error.message);
         } else {
-            console.log(`✅ Batch ${i + chunkSize} berhasil disinkronkan...`);
+            console.log(`✅ Batch ${i + chunk.length} berhasil disinkronkan...`);
         }
     }
     console.log("🏁 MASS SEEDING SELESAI. Ekosistem kini memiliki 1,250 Citizens.");
 }
 
-runMassSeed();
-
+runMassSeed().catch(err => console.error("🛡️ AI Guard Alert:", err.message));
