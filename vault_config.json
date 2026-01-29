@@ -1,0 +1,21 @@
+{
+  "TM_Identity": "NeuroSphere Living Value",
+  "Assets": {
+    "ENPE": {
+      "Total": 100000000000000,
+      "Staking_20": 20000000000000,
+      "SWF_80": 80000000000000
+    },
+    "LUV": {
+      "Total": 100000000000000,
+      "Founder_20": 20000000000000,
+      "Disaster_Pool_15": 15000000000000,
+      "Operational_10": 10000000000000,
+      "Locked_System_55": 55000000000000
+    },
+    "IND_EUR": {
+      "Type": "Unlimited",
+      "Anchor": 100000
+    }
+  }
+}
