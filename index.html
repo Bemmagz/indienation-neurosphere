@@ -1,2 +1,74 @@
-const SB_URL = "https://yyzymgkdqevkuhowjci.supabase.co";
-const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5enltZ2tkcHFldmt1aG93amNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzODgyMDQsImV4cCI6MjA4MTk2NDIwNH0.hk3M39domZHQXjlG8i7ikGhxEFThqtO1RQaEzc65_1Y";
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INDIENATION GENESIS</title>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #000; color: #fff; text-align: center; padding: 20px; }
+        .box { background: #111; padding: 30px; border: 1px solid #222; border-radius: 20px; max-width: 450px; margin: auto; box-shadow: 0 0 30px rgba(0,225,255,0.1); }
+        input { width: 100%; padding: 15px; margin: 20px 0; background: #000; color: #fff; border: 1px solid #333; border-radius: 10px; text-align: center; font-size: 1.2em; box-sizing: border-box; }
+        button { background: #fff; color: #000; border: none; padding: 15px; font-weight: bold; cursor: pointer; width: 100%; border-radius: 10px; font-size: 1.1em; transition: 0.3s; }
+        button:hover { background: #00e1ff; }
+        #result { margin-top: 30px; padding: 20px; border-radius: 15px; display: none; background: #080808; border: 1px solid #333; }
+    </style>
+</head>
+<body>
+    <div style="margin-top:50px">
+        <h1 style="letter-spacing:5px; font-weight:900;">INDIENATION</h1>
+        <p style="color:#666; font-size:0.8em; margin-bottom:30px;">NEUROSPHERE SOVEREIGN LEDGER</p>
+        
+        <div class="box">
+            <input type="text" id="walletId" placeholder="ENTER IID (e.g. 1)">
+            <button onclick="checkIID()">VERIFY IDENTITY</button>
+            <div id="result"></div>
+        </div>
+    </div>
+
+    <script>
+        // KREDENSIAL FOUNDER
+        const SB_URL = "https://yyzymgkdqevkuhowjci.supabase.co";
+        const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5enltZ2tkcHFldmt1aG93amNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzODgyMDQsImV4cCI6MjA4MTk2NDIwNH0.hk3M39domZHQXjlG8i7ikGhxEFThqtO1RQaEzc65_1Y";
+
+        // INISIALISASI CLIENT RESMI (BYPASS CORS)
+        const supabase = window.supabase.createClient(SB_URL, SB_KEY);
+
+        async function checkIID() {
+            let val = document.getElementById('walletId').value.trim();
+            if(!val) return;
+            let id = val;
+            if(!isNaN(val)) id = "INDIE-" + val.padStart(10, '0');
+            
+            const isFounder = id.endsWith("0000000001");
+            const resDiv = document.getElementById('result');
+            resDiv.style.display = 'block';
+            resDiv.innerHTML = `
+                <div style="color:#888; font-size:0.7em">DETECTED:</div>
+                <div style="font-size:1.3em; font-weight:bold; color:${isFounder ? '#00e1ff' : '#fff'}">${isFounder ? 'INDIE-Founder' : 'INDIE-Citizen'}</div>
+                <p style="font-size:0.8em; color:#555">${id}</p>
+                <button onclick="claim('${id}')">ACTIVATE GENESIS</button>
+            `;
+        }
+
+        async function claim(id) {
+            document.getElementById('result').innerHTML = "🔄 WRITING TO LEDGER...";
+            
+            try {
+                // MENGGUNAKAN SDK RESMI (KEBAL CORS)
+                const { data, error } = await supabase
+                    .from('claims')
+                    .upsert([{ iid: id, status: 'ACTIVE', amount: 100000 }], { onConflict: 'iid' });
+
+                if (error) throw error;
+
+                alert("✅ SUCCESS! Genesis Identity Activated.");
+                location.reload();
+            } catch (err) {
+                alert("❌ ERROR: " + err.message);
+                checkIID();
+            }
+        }
+    </script>
+</body>
+</html>
