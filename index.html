@@ -18,7 +18,6 @@
     <div style="margin-top:50px">
         <h1 style="letter-spacing:5px; font-weight:900;">INDIENATION</h1>
         <p style="color:#666; font-size:0.8em; margin-bottom:30px;">NEUROSPHERE SOVEREIGN LEDGER</p>
-        
         <div class="box">
             <input type="text" id="walletId" placeholder="ENTER IID (e.g. 1)">
             <button onclick="checkIID()">VERIFY IDENTITY</button>
@@ -27,19 +26,16 @@
     </div>
 
     <script>
-        // KREDENSIAL FOUNDER
         const SB_URL = "https://yyzymgkdqevkuhowjci.supabase.co";
-        const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5enltZ2tkcHFldmt1aG93amNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzODgyMDQsImV4cCI6MjA4MTk2NDIwNH0.hk3M39domZHQXjlG8i7ikGhxEFThqtO1RQaEzc65_1Y";
+        const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5enltZ2tkcHFldmt1aG93amNpIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NjM4ODIwNCwiZXhwIjoyMDgxOTY0MjA0fQ.CpKZlLsH9uYRyHtrKCD_viIPmdfOhjzf-cIIKEFjotE";
 
-        // INISIALISASI CLIENT RESMI (BYPASS CORS)
+        // 2. INISIALISASI CLIENT RESMI (BYPASS CORS)
         const supabase = window.supabase.createClient(SB_URL, SB_KEY);
 
         async function checkIID() {
             let val = document.getElementById('walletId').value.trim();
             if(!val) return;
-            let id = val;
-            if(!isNaN(val)) id = "INDIE-" + val.padStart(10, '0');
-            
+            let id = isNaN(val) ? val : "INDIE-" + val.padStart(10, '0');
             const isFounder = id.endsWith("0000000001");
             const resDiv = document.getElementById('result');
             resDiv.style.display = 'block';
@@ -47,22 +43,16 @@
                 <div style="color:#888; font-size:0.7em">DETECTED:</div>
                 <div style="font-size:1.3em; font-weight:bold; color:${isFounder ? '#00e1ff' : '#fff'}">${isFounder ? 'INDIE-Founder' : 'INDIE-Citizen'}</div>
                 <p style="font-size:0.8em; color:#555">${id}</p>
-                <button onclick="claim('${id}')">ACTIVATE GENESIS</button>
-            `;
+                <button onclick="claim('${id}')">ACTIVATE GENESIS</button>`;
         }
 
         async function claim(id) {
             document.getElementById('result').innerHTML = "🔄 WRITING TO LEDGER...";
-            
             try {
-                // MENGGUNAKAN SDK RESMI (KEBAL CORS)
-                const { data, error } = await supabase
-                    .from('claims')
-                    .upsert([{ iid: id, status: 'ACTIVE', amount: 100000 }], { onConflict: 'iid' });
-
+                // 3. MENGGUNAKAN SDK (KEBAL BLOKIR)
+                const { error } = await supabase.from('claims').upsert([{ iid: id, status: 'ACTIVE', amount: 100000 }]);
                 if (error) throw error;
-
-                alert("✅ SUCCESS! Genesis Identity Activated.");
+                alert("✅ SUCCESS! INDIE-Founder Identity Activated.");
                 location.reload();
             } catch (err) {
                 alert("❌ ERROR: " + err.message);
