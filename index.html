@@ -1,65 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INDIENATION - SOVEREIGN LEDGER</title>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #000; color: #fff; text-align: center; padding: 20px; }
+        .container { max-width: 500px; margin: auto; }
+        .box { background: #111; padding: 30px; border: 1px solid #222; border-radius: 20px; }
+        input { width: 100%; padding: 15px; margin: 20px 0; background: #000; color: #fff; border: 1px solid #333; border-radius: 10px; text-align: center; }
+        button { background: #fff; color: #000; border: none; padding: 15px; font-weight: bold; width: 100%; border-radius: 10px; cursor: pointer; }
+        .result-box { margin-top: 30px; padding: 20px; border-radius: 15px; display: none; border: 1px solid #333; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>INDIENATION</h1>
+        <div class="box">
+            <input type="text" id="walletId" placeholder="ENTER IID (e.g. 1)">
+            <button onclick="checkIID()">VERIFY & CLAIM</button>
+        </div>
+        <div id="result" class="result-box"></div>
+    </div>
+
+    <script>
+        // KONEKSI DATABASE BARU FOUNDER
+        const _URL = "https://jpcofjankomicljstmqw.supabase.co";
+        const _KEY = "sb_publishable_mEVj4dOChpttajAhj7mUMA_3gAeYfa1";
+        const supabase = supabase.createClient(_URL, _KEY);
+
         async function checkIID() {
-            let id = document.getElementById('walletId').value.toUpperCase().trim();
+            let input = document.getElementById('walletId').value.trim();
+            // Standarisasi IID ke format 10 digit (Skala 10 Miliar)
+            const idNum = input.replace(/\D/g,'');
+            const iid = "INDIE-" + idNum.padStart(10, '0');
             const resultDiv = document.getElementById('result');
+            
             resultDiv.style.display = 'block';
-            resultDiv.innerHTML = "Accessing Ledger...";
+            resultDiv.innerHTML = "Authenticating with AI Guard...";
 
-            try {
-                // Standarisasi Input (Jika hanya angka, tambahkan prefix)
-                if (!id.startsWith("INDIE-")) {
-                    id = "INDIE-" + id.padStart(10, '0');
-                }
+            const isFounder = (idNum === "1");
+            const name = isFounder ? "INDIE-Founder" : "INDIE-Citizen";
 
-                // 1. LOGIKA KHUSUS FOUNDER (IID-01)
-                const isFounder = (id.includes("0000000001") || id.endsWith("-1"));
-                const displayName = isFounder ? "INDIE-Founder" : "INDIE-Citizen";
+            resultDiv.innerHTML = `
+                <h2 style="color:${isFounder ? '#00e1ff' : '#fff'}">${name}</h2>
+                <p>${iid}</p>
+                <button id="btnClaim" onclick="processClaim('${iid}')">CONFIRM GENESIS CLAIM</button>
+            `;
+        }
 
-                // 2. PARSING ID UNTUK SHARDING
-                const idNum = parseInt(id.split('-').pop());
-                if (isNaN(idNum)) throw new Error("INVALID ID FORMAT");
+        async function processClaim(iid) {
+            const btn = document.getElementById('btnClaim');
+            btn.innerHTML = "RECORDING TO SUPABASE...";
+            btn.disabled = true;
 
-                // 3. SKALA 10 MILIAR (Cek Range sebelum Fetch)
-                if (idNum > 10000000000) throw new Error("OUT OF RANGE (MAX 10B)");
+            // KIRIM DATA KE SUPABASE (Tanpa Overwrite)
+            const { error } = await supabase.from('claims').insert([{ iid: iid, status: 'ACTIVE' }]);
 
-                const recordsPerFile = 910000;
-                let fileIndex = Math.ceil(idNum / recordsPerFile);
-                
-                // Jika file index lebih besar dari CSV yang ada, kita gunakan validasi algoritmik
-                // agar tidak error 404 pada ID besar yang belum di-upload ke GitHub
-                let isVerified = false;
-                
-                if (fileIndex <= 11) {
-                    const response = await fetch(`registry_part${fileIndex}.csv`);
-                    const data = await response.text();
-                    isVerified = data.includes(id);
+            if (error) {
+                if (error.code === '23505') {
+                    alert("IDENTITY ALREADY ACTIVATED!");
+                    btn.innerHTML = "ALREADY CLAIMED";
                 } else {
-                    // Algoritma Sharding untuk 10M+ (Bypass GitHub Limit)
-                    isVerified = true; 
+                    alert("ERROR: " + error.message);
+                    btn.innerHTML = "RETRY CLAIM";
+                    btn.disabled = false;
                 }
-
-                if (isVerified || isFounder) {
-                    resultDiv.style.borderColor = "#fff";
-                    resultDiv.innerHTML = `
-                        <div style="color:#888; font-size:0.8em">IDENTITY DETECTED</div>
-                        <div style="font-size:1.5em; font-weight:bold; margin: 10px 0; color:${isFounder ? '#00e1ff' : '#fff'}">${displayName}</div>
-                        <div style="color:#888; font-size:0.9em; margin-bottom:10px">${id}</div>
-                        <div style="color:#00ff00; font-size:0.9em">● VERIFIED ${isFounder ? 'SUPREME GENESIS' : 'GENESIS CITIZEN'}</div>
-                        <hr style="border:0; border-top:1px solid #222; margin:20px 0">
-                        <button onclick="claim('${id}', ${isFounder})">CLAIM ${isFounder ? 'FOUNDER' : 'CITIZEN'} REWARDS</button>
-                    `;
-                } else {
-                    resultDiv.style.borderColor = "#ff0000";
-                    resultDiv.innerHTML = "<span style='color:#ff0000'>ID NOT RECOGNIZED IN MASTER LEDGER</span>";
-                }
-            } catch (err) {
-                resultDiv.innerHTML = "SYSTEM ERROR: " + err.message;
+            } else {
+                alert("SUCCESS! Sovereign Identity Secured.");
+                btn.innerHTML = "IDENTITY VERIFIED";
             }
         }
-
-        async function claim(id, isFounder) {
-            // Langsung kirim ke Supabase untuk menjaga urutan Timestamp
-            const reward = isFounder ? "FOUNDER ALLOCATION" : "272 IND-EUR";
-            alert(`Sovereign Claim Initiated for ${id}.\nReward: ${reward}\n\nTimestamping Genesis Ledger...`);
-            
-            // Di sini nanti kita sambungkan ke fetch() POST ke Supabase
-        }
+    </script>
+</body>
+</html>
