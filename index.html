@@ -3,75 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INDIENATION - SOVEREIGN LEDGER</title>
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <title>INDIENATION</title>
+    <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #000; color: #fff; text-align: center; padding: 20px; }
-        .container { max-width: 500px; margin: auto; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #000; color: #fff; text-align: center; padding: 20px; margin: 0; }
+        .container { max-width: 500px; margin: auto; padding-top: 50px; }
+        .logo { font-size: 2.5em; font-weight: 900; letter-spacing: 5px; color: #fff; text-shadow: 0 0 20px rgba(255,255,255,0.5); margin-bottom: 10px; }
+        .tagline { font-size: 0.8em; color: #888; letter-spacing: 2px; margin-bottom: 40px; text-transform: uppercase; }
         .box { background: #111; padding: 30px; border: 1px solid #222; border-radius: 20px; }
-        input { width: 100%; padding: 15px; margin: 20px 0; background: #000; color: #fff; border: 1px solid #333; border-radius: 10px; text-align: center; }
-        button { background: #fff; color: #000; border: none; padding: 15px; font-weight: bold; width: 100%; border-radius: 10px; cursor: pointer; }
-        .result-box { margin-top: 30px; padding: 20px; border-radius: 15px; display: none; border: 1px solid #333; }
+        input { width: 100%; padding: 15px; margin: 20px 0; background: #000; color: #fff; border: 1px solid #333; border-radius: 10px; text-align: center; font-size: 1.2em; box-sizing: border-box; }
+        button { background: #fff; color: #000; border: none; padding: 15px; font-weight: bold; cursor: pointer; width: 100%; border-radius: 10px; font-size: 1em; transition: 0.3s; }
+        button:hover { background: #ccc; }
+        #reader { width: 100%; margin-top: 20px; border-radius: 15px; overflow: hidden; border: 1px solid #222; }
+        .result-box { margin-top: 30px; padding: 20px; border-radius: 15px; display: none; text-align: left; border: 1px solid #333; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>INDIENATION</h1>
+        <div class="logo">INDIENATION</div>
+        <div class="tagline">Sovereign Wealth & Living Value Identity</div>
         <div class="box">
-            <input type="text" id="walletId" placeholder="ENTER IID (e.g. 1)">
-            <button onclick="checkIID()">VERIFY & CLAIM</button>
+            <div id="reader"></div>
+            <input type="text" id="walletId" placeholder="ENTER IID-2026-XXXXXXX">
+            <button onclick="checkIID()">VERIFY IDENTITY</button>
         </div>
         <div id="result" class="result-box"></div>
     </div>
 
     <script>
-        // KONEKSI DATABASE BARU FOUNDER
-        const _URL = "https://jpcofjankomicljstmqw.supabase.co";
-        const _KEY = "sb_publishable_mEVj4dOChpttajAhj7mUMA_3gAeYfa1";
-        const supabase = supabase.createClient(_URL, _KEY);
+        const SB_URL = "https://jpcofjankomicljstmqw.supabase.co";
+        const SB_KEY = "sb_publishable_mEVj4dOChpttajAhj7mUMA_3gAeYfa1";
+
+        function onScanSuccess(decodedText) {
+            document.getElementById('walletId').value = decodedText;
+            checkIID();
+        }
+        let html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+        html5QrcodeScanner.render(onScanSuccess);
 
         async function checkIID() {
-            let input = document.getElementById('walletId').value.trim();
-            // Standarisasi IID ke format 10 digit (Skala 10 Miliar)
-            const idNum = input.replace(/\D/g,'');
-            const iid = "INDIE-" + idNum.padStart(10, '0');
+            let id = document.getElementById('walletId').value.toUpperCase().trim();
             const resultDiv = document.getElementById('result');
-            
             resultDiv.style.display = 'block';
-            resultDiv.innerHTML = "Authenticating with AI Guard...";
+            resultDiv.innerHTML = "Accessing Ledger...";
 
-            const isFounder = (idNum === "1");
-            const name = isFounder ? "INDIE-Founder" : "INDIE-Citizen";
-
-            resultDiv.innerHTML = `
-                <h2 style="color:${isFounder ? '#00e1ff' : '#fff'}">${name}</h2>
-                <p>${iid}</p>
-                <button id="btnClaim" onclick="processClaim('${iid}')">CONFIRM GENESIS CLAIM</button>
-            `;
-        }
-
-        async function processClaim(iid) {
-            const btn = document.getElementById('btnClaim');
-            btn.innerHTML = "RECORDING TO SUPABASE...";
-            btn.disabled = true;
-
-            // KIRIM DATA KE SUPABASE (Tanpa Overwrite)
-            const { error } = await supabase.from('claims').insert([{ iid: iid, status: 'ACTIVE' }]);
-
-            if (error) {
-                if (error.code === '23505') {
-                    alert("IDENTITY ALREADY ACTIVATED!");
-                    btn.innerHTML = "ALREADY CLAIMED";
-                } else {
-                    alert("ERROR: " + error.message);
-                    btn.innerHTML = "RETRY CLAIM";
-                    btn.disabled = false;
+            try {
+                // Auto-format input '1' menjadi INDIE-0000000001
+                if (!id.startsWith("INDIE-") && !isNaN(id)) {
+                    id = "INDIE-" + id.padStart(10, '0');
                 }
-            } else {
-                alert("SUCCESS! Sovereign Identity Secured.");
-                btn.innerHTML = "IDENTITY VERIFIED";
+
+                const isFounder = id.endsWith("0000000001");
+                const displayName = isFounder ? "INDIE-Founder" : "INDIE-Citizen";
+
+                // Cek status di Supabase
+                const checkRes = await fetch(`${SB_URL}/rest/v1/claims?iid=eq.${id}`, {
+                    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+                });
+                const existing = await checkRes.json();
+
+                resultDiv.style.borderColor = "#fff";
+                resultDiv.innerHTML = `
+                    <div style="color:#888; font-size:0.8em">IDENTITY DETECTED</div>
+                    <div style="font-size:1.5em; font-weight:bold; margin: 10px 0; color:${isFounder ? '#00e1ff' : '#fff'}">${displayName}</div>
+                    <div style="color:#888; font-size:0.9em; margin-bottom:10px">${id}</div>
+                    <div style="color:#00ff00; font-size:0.9em">● VERIFIED ${isFounder ? 'SUPREME GENESIS' : 'GENESIS CITIZEN'}</div>
+                    <hr style="border:0; border-top:1px solid #222; margin:20px 0">
+                    ${existing.length > 0 ? 
+                        '<div style="text-align:center;color:#00ff00">IDENTITY ALREADY ACTIVATED</div>' : 
+                        `<button onclick="claim('${id}')">ACTIVATE KNOWLEDGE & CLAIM</button>`
+                    }
+                `;
+            } catch (err) {
+                resultDiv.innerHTML = "SYSTEM ERROR: " + err.message;
             }
         }
-    </script>
-</body>
-</html>
+
+        async function claim(id) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = "RECORDING TO GENESIS LEDGER...";
+            
+            try {
+                const response = await fetch(`${SB_URL}/rest/v1/claims`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': SB_KEY,
+                        'Authorization': `Bearer ${SB_KEY}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify({ iid: id, status: 'ACTIVE', amount: 100000 })
+                });
+
+                if (!response.ok)
