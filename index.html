@@ -3,45 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IndieNation - Aura Sovereignty</title>
+    <title>IndieNation - Aura Gateway</title>
     <style>
-        body { background: #000; color: #0f0; font-family: 'Courier New', monospace; padding: 20px; text-align: center; }
-        .container { max-width: 900px; margin: auto; border: 1px solid #0f0; padding: 20px; }
-        .aura-display { margin: 20px auto; width: 200px; height: 200px; border-radius: 50%; border: 5px solid #0f0; 
-                        box-shadow: 0 0 50px #0f0; transition: all 2s ease-in-out; }
-        .certificate { border: 2px double #ff0; padding: 20px; margin-top: 20px; background: rgba(255, 255, 0, 0.05); }
+        body { background: #000; color: #0f0; font-family: 'Courier New', monospace; padding: 15px; text-align: center; }
+        .container { max-width: 600px; margin: auto; border: 1px solid #0f0; padding: 20px; box-shadow: 0 0 15px #0f0; }
+        .aura-circle { width: 150px; height: 150px; border-radius: 50%; border: 3px solid #0f0; margin: 20px auto; 
+                       display: flex; align-items: center; justify-content: center; transition: box-shadow 0.5s; }
+        .cert-box { border: 2px double #ff0; padding: 15px; margin-top: 20px; background: rgba(0, 255, 0, 0.05); }
+        .token-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .token-card { border: 1px solid #0a0; padding: 10px; font-size: 0.8em; }
         .highlight { color: #ff0; font-weight: bold; }
-        .btn { color: #000; background: #0f0; padding: 10px 20px; border: none; cursor: pointer; text-decoration: none; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>INDIENATION CIVILIZATION</h1>
-        <p>"Welcome to the Civilization of Kindness. €100,000 manifested for those who do good."</p>
-        
-        <div class="aura-display" id="aura">
-            <div style="margin-top: 80px; font-weight: bold;">AURA LEVEL: ACTIVE</div>
+        <h2>INDIENATION SYSTEM v1.0</h2>
+        <p style="font-size: 0.9em;">"Welcome to the Civilization of Kindness. €100,000 for everyone just by doing good."</p>
+
+        <div class="aura-circle" id="aura">
+            <span id="aura-text">AURA: ACTIVE</span>
         </div>
 
-        <div class="certificate">
-            <h3>CERTIFICATE OF APPRECIATION</h3>
-            <p>Granted to: <span class="highlight">Global Citizen</span></p>
-            <p>For contributing to the <span class="highlight">IndieNation World of Kindness</span></p>
-            <p>Value Validated: <span class="highlight">€100,000 IND-EUR</span></p>
+        <div class="cert-box">
+            <h4 style="margin: 0;">CERTIFICATE OF KINDNESS</h4>
+            <p style="font-size: 0.7em;">This certifies the holder as a Sovereign Citizen of IndieNation with an anchor value of €100,000 IND-EUR.</p>
         </div>
 
-        <div style="margin-top: 30px;">
-            <p>Social Reputation: <span class="highlight" id="luv-aura">1,000,000 LUV</span></p>
-            <p>Metadata: ENPE | LUV | STABLE | HASH-VERIFIED</p>
+        <div class="token-grid">
+            <div class="token-card">ENPE: 100T<br><span style="color:red">Lock 2Y</span></div>
+            <div class="token-card">LUV: 100T<br><span style="color:red">Lock 3Y</span></div>
         </div>
+
+        <p style="font-size: 0.6em; margin-top: 20px;">© 2026 IndieNation - AI Guard Protected</p>
     </div>
-    
+
     <script>
-        // Simulasi Ketebalan Aura berdasarkan Parameter Kebaikan
+        // Simulasi Otonom Ketebalan Aura
         setInterval(() => {
-            const glow = Math.floor(Math.random() * 100) + 20;
-            document.getElementById('aura').style.boxShadow = `0 0 ${glow}px #0f0`;
-        }, 3000);
+            let thickness = Math.floor(Math.random() * 40) + 10;
+            document.getElementById('aura').style.boxShadow = `0 0 ${thickness}px #0f0`;
+        }, 2000);
     </script>
 </body>
 </html>
