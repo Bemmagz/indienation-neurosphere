@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndieNation - Sovereign Access</title>
+    <style>
+        body { background: #000; color: #0f0; font-family: 'Courier New', monospace; padding: 20px; text-align: center; }
+        .container { max-width: 600px; margin: auto; border: 1px solid #0f0; padding: 20px; }
+        .cert-card { border: 4px double #ff0; padding: 20px; margin-top: 20px; }
+        .highlight { color: #ff0; font-weight: bold; }
+        #hash-display { font-size: 0.6em; color: #0a0; word-break: break-all; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>VERIFYING SOVEREIGN IDENTITY...</h2>
+        <div id="loader">Scanning Ledger Hash...</div>
+        
+        <div id="content" style="display:none;">
+            <div class="cert-card">
+                <h3>CERTIFICATE OF KINDNESS</h3>
+                <p>Status: <span class="highlight">AUTHENTIC</span></p>
+                <p>IID: <span id="iid-display" class="highlight"></span></p>
+                <p>Value Anchor: <span class="highlight">€100,000 IND-EUR</span></p>
+                <hr style="border: 0.5px solid #0f0;">
+                <p id="hash-display"></p>
+            </div>
+            <p style="margin-top:20px;">© 2026 IndieNation - AI Guard Protected</p>
+        </div>
+    </div>
+
+    <script>
+        // Simulasi pembacaan Hash dari URL
+        const path = window.location.pathname;
+        const hash = path.split('/').pop() || "NO-HASH";
+        
+        setTimeout(() => {
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+            document.getElementById('hash-display').innerText = "Access Token: " + hash;
+            
+            // Logika sederhana untuk simulasi IID dari hash
+            document.getElementById('iid-display').innerText = "NS-IND-" + hash.substring(0, 8).toUpperCase();
+        }, 1500);
+    </script>
+</body>
+</html>
