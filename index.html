@@ -3,46 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IndieNation - Aura Gateway</title>
+    <title>IndieNation - Sovereign Authority</title>
     <style>
-        body { background: #000; color: #0f0; font-family: 'Courier New', monospace; padding: 15px; text-align: center; }
-        .container { max-width: 600px; margin: auto; border: 1px solid #0f0; padding: 20px; box-shadow: 0 0 15px #0f0; }
-        .aura-circle { width: 150px; height: 150px; border-radius: 50%; border: 3px solid #0f0; margin: 20px auto; 
-                       display: flex; align-items: center; justify-content: center; transition: box-shadow 0.5s; }
-        .cert-box { border: 2px double #ff0; padding: 15px; margin-top: 20px; background: rgba(0, 255, 0, 0.05); }
-        .token-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .token-card { border: 1px solid #0a0; padding: 10px; font-size: 0.8em; }
+        body { background: #000; color: #0f0; font-family: 'Courier New', monospace; padding: 10px; text-align: center; font-size: 14px; }
+        .container { max-width: 700px; margin: auto; border: 1px solid #0f0; padding: 20px; box-shadow: 0 0 20px #050; }
+        .header { border-bottom: 2px solid #0f0; padding-bottom: 10px; margin-bottom: 20px; }
+        .cert-card { border: 3px double #ff0; padding: 25px; background: rgba(0, 255, 0, 0.02); position: relative; }
+        .aura-status { position: absolute; top: 10px; right: 10px; border: 1px solid #0f0; padding: 5px; font-size: 0.7em; }
         .highlight { color: #ff0; font-weight: bold; }
+        .metadata-box { margin-top: 20px; font-size: 0.65em; text-align: left; border-top: 1px dashed #0f0; padding-top: 10px; color: #0a0; }
+        .qr-placeholder { background: #fff; width: 100px; height: 100px; margin: 15px auto; padding: 5px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>INDIENATION SYSTEM v1.0</h2>
-        <p style="font-size: 0.9em;">"Welcome to the Civilization of Kindness. €100,000 for everyone just by doing good."</p>
-
-        <div class="aura-circle" id="aura">
-            <span id="aura-text">AURA: ACTIVE</span>
+        <div class="header">
+            <h1>INDIENATION CIVILIZATION</h1>
+            <p>"Welcome to the World of Kindness. €100,000 for everyone just by doing good."</p>
         </div>
 
-        <div class="cert-box">
-            <h4 style="margin: 0;">CERTIFICATE OF KINDNESS</h4>
-            <p style="font-size: 0.7em;">This certifies the holder as a Sovereign Citizen of IndieNation with an anchor value of €100,000 IND-EUR.</p>
+        <div class="cert-card">
+            <div class="aura-status">AURA LEVEL: <span class="highlight">ACTIVE</span></div>
+            <h3>CERTIFICATE OF SOVEREIGN APPRECIATION</h3>
+            
+            <p>Granted to: <span class="highlight">Sovereign Identity (IID): NS-IND-20260201-0001</span></p>
+            <p>Issued At: <span class="highlight">01 February 2026, 00:00 UTC</span></p>
+            
+            <hr style="border: 0.5px solid #0f0;">
+            
+            <p>Validated Value: <span class="highlight">€100,000 IND-EUR</span></p>
+            <p>Social Reputation: <span class="highlight">1,000,000 LUV</span></p>
+            <p>Certificate Status: <span class="highlight">VERIFIED / ACTIVE</span></p>
+
+            <div class="qr-placeholder">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=NS-IND-0001-VERIFIED" alt="QR Identity">
+            </div>
+            <p style="font-size: 0.6em;">QR Code: Sovereign Identity Access & Verification</p>
+
+            <div class="metadata-box">
+                Ledger Ref: TX: NS-MINT-7D8D8897B [cite: 2026-01-29]<br>
+                Hash: 0xe1434406a71ff4cec59dbb897f5260cb7d8d8897b<br>
+                Authority: <span style="color: #fff;">Issued & Secured by INDIE-Founder NeuroSphere AI Guard</span>
+            </div>
         </div>
 
-        <div class="token-grid">
-            <div class="token-card">ENPE: 100T<br><span style="color:red">Lock 2Y</span></div>
-            <div class="token-card">LUV: 100T<br><span style="color:red">Lock 3Y</span></div>
+        <div style="margin-top: 20px; font-size: 0.7em;">
+            Metadata: ENPE | LUV | STABLE | HASH-VERIFIED | OTONOMOUS CONTROL
         </div>
-
-        <p style="font-size: 0.6em; margin-top: 20px;">© 2026 IndieNation - AI Guard Protected</p>
     </div>
-
-    <script>
-        // Simulasi Otonom Ketebalan Aura
-        setInterval(() => {
-            let thickness = Math.floor(Math.random() * 40) + 10;
-            document.getElementById('aura').style.boxShadow = `0 0 ${thickness}px #0f0`;
-        }, 2000);
-    </script>
 </body>
 </html>
