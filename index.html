@@ -63,7 +63,7 @@
             btn.disabled = true; btn.innerText = "MENGHUBUNGKAN...";
             const { error } = await supabase.from('claims').insert({ iid: iid, status: 'ACTIVE' });
             if (error) { alert("Error: " + error.message); btn.disabled = false; btn.innerText = "KLAIM HAK HIDUP"; }
-            else { btn.innerText = "TERKLAIM ✓"; btn.className = "w-full bg-slate-800 text-slate-400 font-bold py-5 rounded-2xl"; }
+            else { btn.innerText = "TERKLAIM ✓ + PRIORITAS 1 JUTA LUV SECURED"; btn.className = "w-full bg-slate-800 text-slate-400 font-bold py-5 rounded-2xl"; }
         }
     </script>
 </body>
