@@ -21,7 +21,7 @@
             <div class="cert-card">
                 <h3>CERTIFICATE OF KINDNESS</h3>
                 <p>Status: <span class="highlight">AUTHENTIC</span></p>
-                <p>IID: <span id="iid-display" class="highlight"></span></p>
+                <p>IID: <span id="display-alias" class="highlight"></span></p>
                 <p>Value Anchor: <span class="highlight">€100,000 IND-EUR</span></p>
                 <hr style="border: 0.5px solid #0f0;">
                 <p id="hash-display"></p>
@@ -41,7 +41,7 @@
             document.getElementById('hash-display').innerText = "Access Token: " + hash;
             
             // Logika sederhana untuk simulasi IID dari hash
-            document.getElementById('iid-display').innerText = "NS-IND-" + hash.substring(0, 8).toUpperCase();
+            document.getElementById('display-alias').innerText = "NS-IND-" + hash.substring(0, 8).toUpperCase();
         }, 1500);
     </script>
 </body>
