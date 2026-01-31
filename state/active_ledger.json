@@ -1,0 +1,11 @@
+[
+  {
+    "iid": "INDIE-0000000001",
+    "alias": "INDIE-Founder",
+    "event": "GENESIS_CLAIM",
+    "asset": "IND-EUR",
+    "amount": 100000,
+    "timestamp": "2026-02-01T00:00:00Z",
+    "status": "FINAL_SSOT"
+  }
+]
