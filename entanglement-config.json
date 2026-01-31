@@ -1,0 +1,15 @@
+{
+  "project": "NeuroSphere",
+  "founder": "INDIE-Founder",
+  "status": "Genesis",
+  "components": {
+    "TM_Core": "Living Value Identity",
+    "Stable_Anchor": "IND-EUR 100k",
+    "Social_Layer": "Lovely Coin (LUV)",
+    "Engine": "ENPE (E-Coin)"
+  },
+  "lock_protocols": {
+    "founder_allocation": "3 Years",
+    "general_assets": "2 Years"
+  }
+}
