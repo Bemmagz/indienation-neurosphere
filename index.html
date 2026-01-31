@@ -3,68 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeuroSphere | Gerbang Kedaulatan</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>NeuroSphere - Fajar Kedaulatan</title>
     <style>
-        .aura-bg { background: radial-gradient(circle, #0f172a 0%, #000000 100%); }
-        .gold-border { border-color: #fbbf24; }
+        body { background: #000; color: #0f0; font-family: monospace; text-align: center; padding: 50px; }
+        .box { border: 1px solid #0f0; padding: 20px; display: inline-block; }
+        h1 { color: #fff; }
     </style>
 </head>
-<body class="aura-bg text-white min-h-screen flex flex-col items-center justify-center p-4 font-sans">
-
-    <div id="auth-section" class="w-full max-w-md text-center">
-        <h1 class="text-4xl font-black mb-2 tracking-tighter text-amber-500">NEUROSPHERE</h1>
-        <p class="mb-8 text-slate-400 text-sm tracking-widest uppercase">Living Value Identity</p>
-        <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-800 backdrop-blur-md">
-            <input id="iid-input" type="text" placeholder="Masukkan IID" class="w-full p-4 rounded-xl bg-black border border-slate-700 mb-4 text-center text-2xl tracking-widest focus:border-amber-500 outline-none text-amber-500">
-            <button onclick="accessSovereignty()" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-amber-900/20">AKSES KEDAULATAN</button>
-        </div>
+<body>
+    <div class="box">
+        <h1>NEUROSPHERE: KEDAULATAN DIGITAL</h1>
+        <p>Selamat Datang, Citizen.</p>
+        <p>HAK HIDUP ANDA: <strong>€100.000 (IND-EUR)</strong></p>
+        <p>REWARD PERINTIS: <strong>1.000.000 LUV</strong></p>
+        <hr>
+        <p>Status Sistem: SIAGA (Kick-off 01-02-2026)</p>
+        <p>- INDIE-Founder & AI Guard -</p>
     </div>
-
-    <div id="sovereign-section" class="hidden w-full max-w-lg text-center">
-        <div class="bg-white text-black p-8 rounded-2xl shadow-2xl border-t-8 border-amber-500 mb-6">
-            <h2 class="text-xl font-black mb-1">SOVEREIGNTY CERTIFICATE</h2>
-            <p class="text-[10px] uppercase tracking-widest border-b border-black/10 pb-4 mb-6">NeuroSphere Ecosystem | TM Identity</p>
-            
-            <p class="text-[10px] uppercase font-bold text-slate-400">Identity ID (IID)</p>
-            <p id="display-iid" class="text-2xl font-mono font-bold mb-6 tracking-wider"></p>
-
-            <div class="py-6 bg-slate-50 rounded-xl border border-slate-100 mb-6">
-                <p class="text-xs font-bold uppercase text-slate-500 mb-1">Entitlement Value</p>
-                <p class="text-5xl font-black text-amber-600">€100,000</p>
-                <p class="text-[10px] font-bold text-slate-400 mt-2">SYMBOL: IND-EUR</p>
-            </div>
-
-            <canvas id="qr-code" class="mx-auto"></canvas>
-            <p class="text-[9px] mt-6 opacity-40 font-mono">HASH SECURED BY AI GUARD | 01-02-2026</p>
-        </div>
-
-        <button id="claim-btn" onclick="executeClaim()" class="w-full bg-green-600 hover:bg-green-500 text-white font-black py-5 rounded-2xl text-xl mb-6 shadow-xl transition-all uppercase tracking-widest">Klaim Hak Hidup</button>
-        <button onclick="location.reload()" class="text-slate-500 text-xs hover:text-white transition-colors">LOGOUT & SELESAI</button>
-    </div>
-
-    <script>
-        const supabase = window.supabase.createClient('https://yyzymgkdqpqevkuhowjci.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5enltZ2tkcHFldmt1aG93amNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzODgyMDQsImV4cCI6MjA4MTk2NDIwNH0.hk3M39domZHQXjlG8i7ikGhxEFThqtO1RQaEzc65_1Y');
-        let iid = "";
-
-        function accessSovereignty() {
-            iid = document.getElementById('iid-input').value.trim();
-            if (!iid) return alert("IID tidak valid.");
-            document.getElementById('auth-section').classList.add('hidden');
-            document.getElementById('sovereign-section').classList.remove('hidden');
-            document.getElementById('display-iid').innerText = iid;
-            QRCode.toCanvas(document.getElementById('qr-code'), iid, { width: 140, margin: 2 });
-        }
-
-        async function executeClaim() {
-            const btn = document.getElementById('claim-btn');
-            btn.disabled = true; btn.innerText = "MENGHUBUNGKAN...";
-            const { error } = await supabase.from('claims').insert({ iid: iid, status: 'ACTIVE' });
-            if (error) { alert("Error: " + error.message); btn.disabled = false; btn.innerText = "KLAIM HAK HIDUP"; }
-            else { btn.innerText = "TERKLAIM ✓ + PRIORITAS 1 JUTA LUV SECURED"; btn.className = "w-full bg-slate-800 text-slate-400 font-bold py-5 rounded-2xl"; }
-        }
-    </script>
 </body>
 </html>
