@@ -1,15 +1,10 @@
 {
-  "project": "NeuroSphere",
+  "system_version": "1.0",
+  "status": "Genesis Active",
   "founder": "INDIE-Founder",
-  "status": "Genesis",
-  "components": {
-    "TM_Core": "Living Value Identity",
-    "Stable_Anchor": "IND-EUR 100k",
-    "Social_Layer": "Lovely Coin (LUV)",
-    "Engine": "ENPE (E-Coin)"
-  },
-  "lock_protocols": {
-    "founder_allocation": "3 Years",
-    "general_assets": "2 Years"
-  }
+  "ssot_timestamp": "2026-01-31 04:46:58.925695+00",
+  "ledger_verified": [
+    {"iid": "ID-ASLI-1", "hash": "HASH-DARI-DB-1", "type": "TRANSFER"},
+    {"iid": "ID-ASLI-2", "hash": "HASH-DARI-DB-2", "type": "TRANSFER"}
+  ]
 }
