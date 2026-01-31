@@ -3,61 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INDIENATION GENESIS</title>
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <title>NeuroSphere | Gerbang Kedaulatan</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #000; color: #fff; text-align: center; padding: 20px; }
-        .box { background: #111; padding: 30px; border: 1px solid #222; border-radius: 20px; max-width: 450px; margin: auto; box-shadow: 0 0 30px rgba(0,225,255,0.1); }
-        input { width: 100%; padding: 15px; margin: 20px 0; background: #000; color: #fff; border: 1px solid #333; border-radius: 10px; text-align: center; font-size: 1.2em; box-sizing: border-box; }
-        button { background: #fff; color: #000; border: none; padding: 15px; font-weight: bold; cursor: pointer; width: 100%; border-radius: 10px; font-size: 1.1em; transition: 0.3s; }
-        button:hover { background: #00e1ff; }
-        #result { margin-top: 30px; padding: 20px; border-radius: 15px; display: none; background: #080808; border: 1px solid #333; }
+        .aura-bg { background: radial-gradient(circle, #0f172a 0%, #000000 100%); }
+        .gold-border { border-color: #fbbf24; }
     </style>
 </head>
-<body>
-    <div style="margin-top:50px">
-        <h1 style="letter-spacing:5px; font-weight:900;">INDIENATION</h1>
-        <p style="color:#666; font-size:0.8em; margin-bottom:30px;">NEUROSPHERE SOVEREIGN LEDGER</p>
-        <div class="box">
-            <input type="text" id="walletId" placeholder="ENTER IID (e.g. 1)">
-            <button onclick="checkIID()">VERIFY IDENTITY</button>
-            <div id="result"></div>
+<body class="aura-bg text-white min-h-screen flex flex-col items-center justify-center p-4 font-sans">
+
+    <div id="auth-section" class="w-full max-w-md text-center">
+        <h1 class="text-4xl font-black mb-2 tracking-tighter text-amber-500">NEUROSPHERE</h1>
+        <p class="mb-8 text-slate-400 text-sm tracking-widest uppercase">Living Value Identity</p>
+        <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-800 backdrop-blur-md">
+            <input id="iid-input" type="text" placeholder="Masukkan IID" class="w-full p-4 rounded-xl bg-black border border-slate-700 mb-4 text-center text-2xl tracking-widest focus:border-amber-500 outline-none text-amber-500">
+            <button onclick="accessSovereignty()" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-amber-900/20">AKSES KEDAULATAN</button>
         </div>
     </div>
 
+    <div id="sovereign-section" class="hidden w-full max-w-lg text-center">
+        <div class="bg-white text-black p-8 rounded-2xl shadow-2xl border-t-8 border-amber-500 mb-6">
+            <h2 class="text-xl font-black mb-1">SOVEREIGNTY CERTIFICATE</h2>
+            <p class="text-[10px] uppercase tracking-widest border-b border-black/10 pb-4 mb-6">NeuroSphere Ecosystem | TM Identity</p>
+            
+            <p class="text-[10px] uppercase font-bold text-slate-400">Identity ID (IID)</p>
+            <p id="display-iid" class="text-2xl font-mono font-bold mb-6 tracking-wider"></p>
+
+            <div class="py-6 bg-slate-50 rounded-xl border border-slate-100 mb-6">
+                <p class="text-xs font-bold uppercase text-slate-500 mb-1">Entitlement Value</p>
+                <p class="text-5xl font-black text-amber-600">€100,000</p>
+                <p class="text-[10px] font-bold text-slate-400 mt-2">SYMBOL: IND-EUR</p>
+            </div>
+
+            <canvas id="qr-code" class="mx-auto"></canvas>
+            <p class="text-[9px] mt-6 opacity-40 font-mono">HASH SECURED BY AI GUARD | 01-02-2026</p>
+        </div>
+
+        <button id="claim-btn" onclick="executeClaim()" class="w-full bg-green-600 hover:bg-green-500 text-white font-black py-5 rounded-2xl text-xl mb-6 shadow-xl transition-all uppercase tracking-widest">Klaim Hak Hidup</button>
+        <button onclick="location.reload()" class="text-slate-500 text-xs hover:text-white transition-colors">LOGOUT & SELESAI</button>
+    </div>
+
     <script>
-        const SB_URL = "https://yyzymgkdqevkuhowjci.supabase.co";
-        const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5enltZ2tkcHFldmt1aG93amNpIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NjM4ODIwNCwiZXhwIjoyMDgxOTY0MjA0fQ.CpKZlLsH9uYRyHtrKCD_viIPmdfOhjzf-cIIKEFjotE";
+        const supabase = window.supabase.createClient('https://yyzymgkdqpqevkuhowjci.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5enltZ2tkcHFldmt1aG93amNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzODgyMDQsImV4cCI6MjA4MTk2NDIwNH0.hk3M39domZHQXjlG8i7ikGhxEFThqtO1RQaEzc65_1Y');
+        let iid = "";
 
-        // 2. INISIALISASI CLIENT RESMI (BYPASS CORS)
-        const supabase = window.supabase.createClient(SB_URL, SB_KEY);
-
-        async function checkIID() {
-            let val = document.getElementById('walletId').value.trim();
-            if(!val) return;
-            let id = isNaN(val) ? val : "INDIE-" + val.padStart(10, '0');
-            const isFounder = id.endsWith("0000000001");
-            const resDiv = document.getElementById('result');
-            resDiv.style.display = 'block';
-            resDiv.innerHTML = `
-                <div style="color:#888; font-size:0.7em">DETECTED:</div>
-                <div style="font-size:1.3em; font-weight:bold; color:${isFounder ? '#00e1ff' : '#fff'}">${isFounder ? 'INDIE-Founder' : 'INDIE-Citizen'}</div>
-                <p style="font-size:0.8em; color:#555">${id}</p>
-                <button onclick="claim('${id}')">ACTIVATE GENESIS</button>`;
+        function accessSovereignty() {
+            iid = document.getElementById('iid-input').value.trim();
+            if (!iid) return alert("IID tidak valid.");
+            document.getElementById('auth-section').classList.add('hidden');
+            document.getElementById('sovereign-section').classList.remove('hidden');
+            document.getElementById('display-iid').innerText = iid;
+            QRCode.toCanvas(document.getElementById('qr-code'), iid, { width: 140, margin: 2 });
         }
 
-        async function claim(id) {
-            document.getElementById('result').innerHTML = "🔄 WRITING TO LEDGER...";
-            try {
-                // 3. MENGGUNAKAN SDK (KEBAL BLOKIR)
-                const { error } = await supabase.from('claims').upsert([{ iid: id, status: 'ACTIVE', amount: 100000 }]);
-                if (error) throw error;
-                alert("✅ SUCCESS! INDIE-Founder Identity Activated.");
-                location.reload();
-            } catch (err) {
-                alert("❌ ERROR: " + err.message);
-                checkIID();
-            }
+        async function executeClaim() {
+            const btn = document.getElementById('claim-btn');
+            btn.disabled = true; btn.innerText = "MENGHUBUNGKAN...";
+            const { error } = await supabase.from('claims').insert({ iid: iid, status: 'ACTIVE' });
+            if (error) { alert("Error: " + error.message); btn.disabled = false; btn.innerText = "KLAIM HAK HIDUP"; }
+            else { btn.innerText = "TERKLAIM ✓"; btn.className = "w-full bg-slate-800 text-slate-400 font-bold py-5 rounded-2xl"; }
         }
     </script>
 </body>
