@@ -3,52 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IndieNation - Sovereign Civilization of Kindness</title>
+    <title>IndieNation - Aura Sovereignty</title>
     <style>
-        body { background: #000; color: #0f0; font-family: 'Courier New', monospace; margin: 0; padding: 20px; line-height: 1.6; }
-        .container { max-width: 900px; margin: auto; border: 1px solid #0f0; padding: 20px; box-shadow: 0 0 20px #050; }
-        .header { text-align: center; border-bottom: 2px solid #0f0; padding-bottom: 20px; margin-bottom: 20px; }
-        .welcome-msg { font-size: 1.2em; color: #fff; text-align: center; border: 1px solid #0a0; padding: 20px; background: #010; }
-        .tm-box { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
-        .card { border: 1px solid #0a0; padding: 15px; text-align: center; }
+        body { background: #000; color: #0f0; font-family: 'Courier New', monospace; padding: 20px; text-align: center; }
+        .container { max-width: 900px; margin: auto; border: 1px solid #0f0; padding: 20px; }
+        .aura-display { margin: 20px auto; width: 200px; height: 200px; border-radius: 50%; border: 5px solid #0f0; 
+                        box-shadow: 0 0 50px #0f0; transition: all 2s ease-in-out; }
+        .certificate { border: 2px double #ff0; padding: 20px; margin-top: 20px; background: rgba(255, 255, 0, 0.05); }
         .highlight { color: #ff0; font-weight: bold; }
+        .btn { color: #000; background: #0f0; padding: 10px 20px; border: none; cursor: pointer; text-decoration: none; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>INDIENATION SYSTEM v1.0</h1>
-            <p>Founder: <span class="highlight">INDIE-Founder</span> | Status: <span class="highlight">GENESIS ACTIVE</span></p>
+        <h1>INDIENATION CIVILIZATION</h1>
+        <p>"Welcome to the Civilization of Kindness. €100,000 manifested for those who do good."</p>
+        
+        <div class="aura-display" id="aura">
+            <div style="margin-top: 80px; font-weight: bold;">AURA LEVEL: ACTIVE</div>
         </div>
 
-        <div class="welcome-msg">
-            "Welcome to the Civilization of the INDIENATION World of KINDNESS, manifested in €100,000 for everyone just by doing good."
-            <br><br>
-            <span style="font-size: 0.8em; color: #0f0;">(Selamat Datang di Peradaban Dunia Kebaikan Indienation)</span>
+        <div class="certificate">
+            <h3>CERTIFICATE OF APPRECIATION</h3>
+            <p>Granted to: <span class="highlight">Global Citizen</span></p>
+            <p>For contributing to the <span class="highlight">IndieNation World of Kindness</span></p>
+            <p>Value Validated: <span class="highlight">€100,000 IND-EUR</span></p>
         </div>
 
-        <div class="tm-box">
-            <div class="card">
-                <h3>ENPE (E-Coin)</h3>
-                <p class="highlight">100 Trillion</p>
-                <div style="font-size: 0.8em; color: #f00;">Locked: 2 Years</div>
-            </div>
-            <div class="card">
-                <h3>LUV (Lovely Coin)</h3>
-                <p class="highlight">100 Trillion</p>
-                <div style="font-size: 0.8em; color: #f00;">Founder Lock: 3 Years</div>
-            </div>
-            <div class="card">
-                <h3>IND-EUR (Stable)</h3>
-                <p class="highlight">€100,000 / Person</p>
-                <div style="font-size: 0.8em; color: #0f0;">Status: OPEN</div>
-            </div>
-        </div>
-
-        <div style="text-align: center; margin-top: 30px;">
-             <p>Metadata: ENPE | LUV | IND-EUR | HASH-VERIFIED</p>
-             <p>&copy; 2026 IndieNation - AI Guard Protected</p>
+        <div style="margin-top: 30px;">
+            <p>Social Reputation: <span class="highlight" id="luv-aura">1,000,000 LUV</span></p>
+            <p>Metadata: ENPE | LUV | STABLE | HASH-VERIFIED</p>
         </div>
     </div>
+    
+    <script>
+        // Simulasi Ketebalan Aura berdasarkan Parameter Kebaikan
+        setInterval(() => {
+            const glow = Math.floor(Math.random() * 100) + 20;
+            document.getElementById('aura').style.boxShadow = `0 0 ${glow}px #0f0`;
+        }, 3000);
+    </script>
 </body>
 </html>
