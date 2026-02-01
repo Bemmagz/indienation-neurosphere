@@ -1,0 +1,21 @@
+import json
+import os
+
+pioneers = [
+    {"iid": "INDIE-0000000001", "alias": "INDIE-Founder", "status": "ACTIVE"},
+    {"iid": "INDIE-0000000002", "alias": "Perintis-02", "status": "ACTIVE"},
+    {"iid": "INDIE-0000000003", "alias": "Perintis-03", "status": "ACTIVE"},
+    {"iid": "INDIE-0000000004", "alias": "Perintis-04", "status": "ACTIVE"},
+    {"iid": "INDIE-0000000005", "alias": "Perintis-05", "status": "ACTIVE"},
+    {"iid": "INDIE-0000000006", "alias": "Perintis-06", "status": "ACTIVE"},
+    {"iid": "INDIE-0000000007", "alias": "Perintis-07", "status": "ACTIVE"},
+    {"iid": "INDIE-0000000008", "alias": "Perintis-08", "status": "ACTIVE"},
+    {"iid": "INDIE-0000000009", "alias": "Perintis-09", "status": "ACTIVE"},
+    {"iid": "INDIE-0000000010", "alias": "Perintis-10", "status": "ACTIVE"}
+]
+
+os.makedirs('logs', exist_ok=True)
+with open('logs/pioneer_ledger.json', 'w') as f:
+    json.dump(pioneers, f, indent=2)
+
+print(f"SINKRONISASI TOTAL BERHASIL: {len(pioneers)} Identitas Genesis diamankan.")
