@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <script src="https://unpkg.com/html5-qrcode"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NEUROSPHERE | SOVEREIGN GATEWAY</title>
@@ -59,3 +60,20 @@
     </div>
 </body>
 </html>
+<script>
+    function startScan() {
+        const html5QrCode = new Html5Qrcode("reader");
+        html5QrCode.start(
+            { facingMode: "environment" }, 
+            { fps: 10, qrbox: { width: 250, height: 250 } },
+            (decodedText) => {
+                // Asumsi QR berisi IID seperti "INDIE-0000084304"
+                alert("Identitas Terverifikasi: " + decodedText);
+                window.location.href = "?iid=" + decodedText;
+                html5QrCode.stop();
+            },
+            (errorMessage) => { /* scanning... */ }
+        );
+        document.getElementById('scan-btn').style.display = 'none';
+    }
+</script>
