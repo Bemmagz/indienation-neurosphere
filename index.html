@@ -13,45 +13,25 @@
         @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
         .container { padding: 40px 20px; max-width: 1000px; margin: auto; }
         .stat-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
-        .stat-box { border: 1px solid #00ff88; padding: 20px; flex: 1; min-width: 280px; border-radius: 12px; background: rgba(0, 255, 136, 0.03); box-shadow: 0 0 15px rgba(0, 255, 136, 0.1); }
+        .stat-box { border: 1px solid #00ff88; padding: 20px; flex: 1; min-width: 280px; border-radius: 12px; background: rgba(0, 255, 136, 0.03); }
         .highlight { font-size: 2.2em; color: #fff; text-shadow: 0 0 10px #00ff88; font-weight: bold; }
         h1 { letter-spacing: 7px; text-transform: uppercase; color: #fff; margin: 20px 0 5px 0; }
         .chart-container { background: rgba(10,10,10,0.8); border: 1px solid #222; border-radius: 12px; padding: 20px; margin-top: 30px; }
-        .search-container { margin-top: 40px; padding: 30px; border-top: 1px dashed #222; }
-        input { background: #111; border: 1px solid #00ff88; color: #fff; padding: 12px; font-family: 'Courier New'; width: 250px; text-align: center; outline: none; }
-        button { background: #00ff88; border: none; padding: 12px 25px; font-family: 'Courier New'; font-weight: bold; cursor: pointer; }
         .footer { color: #333; padding: 40px; font-size: 0.85em; }
     </style>
 </head>
 <body>
-    <div class="ticker-wrap"><div id="news-ticker" class="ticker">Connecting to NeuroSphere Ledger...</div></div>
-    
+    <div class="ticker-wrap"><div id="news-ticker" class="ticker">Syncing with Sovereign Ledger...</div></div>
     <div class="container">
         <h1>NEUROSPHERE</h1>
         <p style="color: #00ff88; letter-spacing: 2px;">LIVING VALUE IDENTITY • AUTONOMY MODE</p>
-
         <div class="stat-grid">
-            <div class="stat-box"><div>ACTIVE CITIZENS</div><div id="active-citizens" class="highlight">...</div></div>
-            <div class="stat-box"><div>LIQUID DISTRIBUTION</div><div id="total-liquid" class="highlight">...</div></div>
-            <div class="stat-box"><div>SOVEREIGNTY RESERVE</div><div id="total-reserve" class="highlight">...</div></div>
+            <div class="stat-box"><div>ACTIVE CITIZENS</div><div id="active-citizens" class="highlight">Syncing...</div></div>
+            <div class="stat-box"><div>LIQUID DISTRIBUTION</div><div id="total-liquid" class="highlight">Syncing...</div></div>
+            <div class="stat-box"><div>SOVEREIGNTY RESERVE</div><div id="total-reserve" class="highlight">Syncing...</div></div>
         </div>
-
-        <div class="chart-container">
-            <canvas id="growthChart"></canvas>
-        </div>
-
-        <div class="search-container">
-            <h3>IID VERIFICATION GATE</h3>
-            <input type="text" id="iid-input" placeholder="Enter IID">
-            <button onclick="checkBalance()">VERIFY</button>
-            <div id="result" style="margin-top:20px;"></div>
-        </div>
+        <div class="chart-container"><canvas id="growthChart"></canvas></div>
     </div>
-
-    <div class="footer">
-        <p>© 2026 NeuroSphere Ecosystem • Managed by INDIE-Founder</p>
-    </div>
-
     <script>
         const URL = "https://yyzymgkdpqevkuhowjci.supabase.co/rest/v1/wallets";
         const KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5enltZ2tkcHFldmt1aG93amNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzODgyMDQsImV4cCI6MjA4MTk2NDIwNH0.hk3M39domZHQXjlG8i7ikGhxEFThqtO1RQaEzc65_1Y";
@@ -61,18 +41,8 @@
             const ctx = document.getElementById('growthChart').getContext('2d');
             growthChart = new Chart(ctx, {
                 type: 'line',
-                data: {
-                    labels: ['Start', 'Current'],
-                    datasets: [{
-                        label: 'Citizen Activation Growth',
-                        data: [0, 0],
-                        borderColor: '#00ff88',
-                        backgroundColor: 'rgba(0, 255, 136, 0.1)',
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: { responsive: true, scales: { y: { beginAtZero: true, grid: {color: '#222'} }, x: { grid: {color: '#222'} } } }
+                data: { labels: ['Start', 'Current'], datasets: [{ label: 'Growth', data: [0, 0], borderColor: '#00ff88', fill: true, tension: 0.4 }] },
+                options: { responsive: true, scales: { y: { beginAtZero: true } } }
             });
         }
 
@@ -88,40 +58,27 @@
                 data.forEach(item => {
                     if (item.status === 'ACTIVE_STREAMING') {
                         activeCount++;
+                        liquidSum += item.ind_eur_balance;
                         activeIIDs.push(item.iid);
                     }
-                    if (item.status === "ACTIVE_STREAMING") { if (item.status === "ACTIVE_STREAMING") { liquidSum += item.ind_eur_balance; } }
                     reserveSum += item.amount_ind_eur;
                 });
 
-                document.getElementById('active-citizens').innerText = activeCount.toLocaleString();
+                document.getElementById('active-citizens').innerText = activeCount.toLocaleString() + " / 100,000";
                 document.getElementById('total-liquid').innerText = "€ " + liquidSum.toLocaleString();
                 document.getElementById('total-reserve').innerText = "€ " + (reserveSum / 1000000000).toFixed(2) + " B";
                 
                 if(activeIIDs.length > 0) {
-                    document.getElementById('news-ticker').innerText = "LATEST: " + activeIIDs.slice(0, 5).join(" • ") + " ACTIVATED SECURELY";
+                    document.getElementById('news-ticker').innerText = "LATEST ACTIVATIONS: " + activeIIDs.slice(0, 5).join(" • ");
                     growthChart.data.datasets[0].data[1] = activeCount;
                     growthChart.update();
                 }
             } catch (err) { console.error(err); }
         }
 
-        async function checkBalance() {
-            const iid = document.getElementById('iid-input').value;
-            const response = await fetch(`${URL}?iid=eq.${iid}&select=*`, {
-                headers: { "apikey": KEY, "Authorization": "Bearer " + KEY }
-            });
-            const data = await response.json();
-            const resDiv = document.getElementById('result');
-            if(data.length > 0) {
-                const user = data[0];
-                resDiv.innerHTML = `<div style="border: 1px solid #00ff88; padding: 10px;">ID: ${user.iid} | STATUS: ${user.status}<br>LIQUID: €${user.ind_eur_balance.toLocaleString()}</div>`;
-            } else { resDiv.innerHTML = "NOT FOUND"; }
-        }
-
         initChart();
-        setInterval(updateData, 10000);
         updateData();
+        setInterval(updateData, 2000); // Percepat Detak Visual
     </script>
 </body>
 </html>
