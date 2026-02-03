@@ -23,7 +23,7 @@
 <body>
     <div class="ticker-wrap"><div id="news-ticker" class="ticker">Syncing with Sovereign Ledger...</div></div>
     <div class="container">
-        <h1>NEUROSPHERE</h1>
+        <h1>NEUROSPHERE <span id="pulse" style="font-size: 0.3em; color: #00ff88; vertical-align: middle; opacity: 0.5;">●</span></h1>
         <p style="color: #00ff88; letter-spacing: 2px;">LIVING VALUE IDENTITY • AUTONOMY MODE</p>
         <div class="stat-grid">
             <div class="stat-box"><div>ACTIVE CITIZENS</div><div id="active-citizens" class="highlight">Syncing...</div></div>
@@ -48,7 +48,7 @@
 
         async function updateData() {
             try {
-                const response = await fetch(`${URL}?select=ind_eur_balance,amount_ind_eur,status,iid&order=iid.desc`, {
+                const response = await fetch(`${URL}?ts=${Date.now()}&?select=ind_eur_balance,amount_ind_eur,status,iid&order=iid.desc`, {
                     headers: { "apikey": KEY, "Authorization": "Bearer " + KEY }
                 });
                 const data = await response.json();
