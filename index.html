@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>v2.0 - INDIENATION | PUSAT KEDAULATAN DIGITAL</title>
-    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/instascan/1.0.0/instascan.min.js"></script>
     <style>
         :root { --neon: #00ff88; --bg: #000; --card: #050505; }
         body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
@@ -27,7 +27,7 @@
         /* QR Scanner */
         #reader { width: 100%; max-width: 400px; margin: 0 auto; background: #111; border-radius: 10px; overflow: hidden; }
     </style>
-    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/instascan/1.0.0/instascan.min.js"></script>
 </head>
 <body>
 
@@ -46,7 +46,7 @@
             <div class="label">SCAN IID TO ENTER THE VAULT</div>
             <div id="reader"></div>
             <button class="btn" id="start-btn" onmousedown="startScan()" ontouchstart="startScan()" onclick="startScan()" style="margin-top: 20px; width: 100%;">MENGINISIALISASI KAMERA...</button>
-<div id="debug-log" style="color: #00ff00; font-family: monospace; font-size: 10px; margin-top: 10px; text-align: center;">System Ready...</div>
+<div id="debug-log" style="color: #00ff00; font-family: monospace; font-size: 10px; margin-top: 10px; text-align: center;">MENUNGGU IZIN KAMERA...</div>
         </div>
     </section>
 
@@ -64,11 +64,11 @@
 
         <div class="nexus-nav">
             <button class="btn" onclick="generateCertificate()">CLAIM CERTIFICATE</button>
-<div id="debug-log" style="color: #00ff00; font-family: monospace; font-size: 10px; margin-top: 10px; text-align: center;">System Ready...</div>
+<div id="debug-log" style="color: #00ff00; font-family: monospace; font-size: 10px; margin-top: 10px; text-align: center;">MENUNGGU IZIN KAMERA...</div>
             <a href="https://indiescan-explorer.vercel.app" class="btn" target="_blank">INDIESCAN EXPLORER</a>
             <a href="https://neurosphere-media.vercel.app" class="btn" target="_blank">E-MEDIA (33 SECTOR)</a>
             <button class="btn" onclick="location.reload()" style="color: #ff4444;">SIGN OUT</button>
-<div id="debug-log" style="color: #00ff00; font-family: monospace; font-size: 10px; margin-top: 10px; text-align: center;">System Ready...</div>
+<div id="debug-log" style="color: #00ff00; font-family: monospace; font-size: 10px; margin-top: 10px; text-align: center;">MENUNGGU IZIN KAMERA...</div>
         </div>
     </section>
 
