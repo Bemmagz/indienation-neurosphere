@@ -152,7 +152,7 @@ function showPermissionGuide() {
 </script>
 
 </head>
-<body>
+<body><div id="auth-screen">
 
     <section id="landing-page" class="page active">
         <div style="margin-bottom: 50px; text-align: center;">
@@ -355,6 +355,46 @@ function processManualIID() {
 }
 setTimeout(() => { document.getElementById('manual-fallback').style.display = 'block'; }, 5000);
 </script>
+</div>
+<div id="dashboard" style="display: none; padding: 20px; font-family: 'Courier New', monospace; color: #00ff00;">
+    <header style="border-bottom: 2px solid #00ff00; padding-bottom: 10px; margin-bottom: 20px;">
+        <h2 style="margin:0;">SOVEREIGN DASHBOARD</h2>
+        <small>FOUNDER: INDIE-FOUNDER | STATUS: AUTHORIZED</small>
+    </header>
+
+    <div style="background: rgba(0, 255, 0, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+        <h3 style="margin-top:0; color: #fff;">TOTAL TM (Technology Money)</h3>
+        <div style="font-size: 24px; font-weight: bold;">IDN 200,000,000,000,000.00</div>
+        <p style="font-size: 12px; color: #888;">Value Identity Umbrella</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <div style="border: 1px solid #00ff00; padding: 10px; border-radius: 5px;">
+            <small>ENPE (E-COIN)</small>
+            <div style="font-size: 16px;">100T E</div>
+            <div style="font-size: 10px; color: #888;">SWF: 80% | Staking: 20%</div>
+        </div>
+        <div style="border: 1px solid #00ff00; padding: 10px; border-radius: 5px;">
+            <small>LUV (LOVELY COIN)</small>
+            <div style="font-size: 16px;">100T LUV</div>
+            <div style="font-size: 10px; color: #888;">Social Reputation Layer</div>
+        </div>
+    </div>
+
+    <div style="margin-top: 20px; border: 1px solid #3B82F6; padding: 10px; border-radius: 5px; color: #60A5FA;">
+        <small>IND-EUR (STABLE COIN)</small>
+        <div style="font-size: 16px;">Supply: Unlimited</div>
+        <div style="font-size: 10px;">Anchor: €100,000 / Person</div>
+    </div>
+
+    <div style="margin-top: 30px; padding: 15px; background: #000; border-left: 5px solid #ff0000;">
+        <h4 style="margin:0; color: #ff0000;">AI GUARD STATUS</h4>
+        <p style="font-size: 12px;">Phase: Aggressive Growth (Year 1)<br>Auto-Pilot Takeover: 01-02-2029</p>
+        <div style="width: 100%; background: #333; height: 5px; margin-top: 5px;">
+            <div style="width: 5%; background: #ff0000; height: 100%;"></div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
 
