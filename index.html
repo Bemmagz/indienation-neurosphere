@@ -1,28 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NeuroSphere | Human Sovereignty</title>
     <style>
-        body { background: #050505; color: #00ff88; font-family: 'Courier New', monospace; text-align: center; }
-        .stat-box { border: 1px solid #00ff88; padding: 20px; margin: 20px; display: inline-block; min-width: 250px; }
-        .highlight { font-size: 2em; color: #fff; text-shadow: 0 0 10px #00ff88; }
+        body { background: #050505; color: #00ff88; font-family: 'Courier New', monospace; text-align: center; padding: 20px; }
+        .stat-box { border: 1px solid #00ff88; padding: 20px; margin: 10px; display: inline-block; min-width: 280px; border-radius: 8px; background: rgba(0, 255, 136, 0.05); }
+        .highlight { font-size: 2.2em; color: #fff; text-shadow: 0 0 15px #00ff88; font-weight: bold; }
+        .loading { font-style: italic; color: #555; }
+        h1 { letter-spacing: 5px; text-transform: uppercase; }
+        .footer { color: #444; margin-top: 50px; font-size: 0.8em; }
     </style>
 </head>
 <body>
     <h1>NEUROSPHERE GENESIS</h1>
     <p>Living Value Identity - Autonomy Mode</p>
+
     <div class="stat-box">
         <p>WARGA AKTIF</p>
-        <div class="highlight">100 / 100.000</div>
+        <div id="active-citizens" class="highlight">...</div>
     </div>
+
     <div class="stat-box">
         <p>TOTAL DISTRIBUSI LIKUID</p>
-        <div class="highlight">€ 100.000,00</div>
+        <div id="total-liquid" class="highlight">...</div>
     </div>
+
     <div class="stat-box">
         <p>CADANGAN KEDAULATAN</p>
-        <div class="highlight">€ 9,99 Miliar+</div>
+        <div id="total-reserve" class="highlight">...</div>
     </div>
-    <p style="color: #555; margin-top: 50px;">Powered by Auralang & AI Guard</p>
+
+    <div class="footer">
+        <p>Data dikalibrasi secara real-time dari IID Ledger.</p>
+        <p>Powered by Auralang & AI Guard</p>
+    </div>
+
+    <script>
+        const URL = "https://yyzymgkdpqevkuhowjci.supabase.co/rest/v1/wallets";
+        const KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5enltZ2tkcHFldmt1aG93amNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzODgyMDQsImV4cCI6MjA4MTk2NDIwNH0.hk3M39domZHQXjlG8i7ikGhxEFThqtO1RQaEzc65_1Y";
+
+        async function updateStats() {
+            try {
+                const response = await fetch(`${URL}?select=ind_eur_balance,amount_ind_eur,status`, {
+                    headers: { "apikey": KEY, "Authorization": "Bearer " + KEY }
+                });
+                const data = await response.json();
+
+                let activeCount = 0;
+                let liquidSum = 0;
+                let reserveSum = 0;
+
+                data.forEach(item => {
+                    if (item.status === 'ACTIVE_STREAMING') activeCount++;
+                    liquidSum += item.ind_eur_balance;
+                    reserveSum += item.amount_ind_eur;
+                });
+
+                document.getElementById('active-citizens').innerText = activeCount.toLocaleString() + " / 100.000";
+                document.getElementById('total-liquid').innerText = "€ " + liquidSum.toLocaleString();
+                document.getElementById('total-reserve').innerText = "€ " + (reserveSum / 1000000000).toFixed(2) + " Miliar";
+
+            } catch (err) {
+                console.error("Sinkronisasi gagal:", err);
+            }
+        }
+
+        setInterval(updateStats, 5000);
+        updateStats();
+    </script>
 </body>
 </html>
