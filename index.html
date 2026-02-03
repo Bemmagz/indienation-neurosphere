@@ -4,17 +4,44 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">    document.getElementById("start-btn").addEventListener("touchstart", startScan);
 </script>
 <script>
-async function requestCameraPermission() {
-    const btn = document.getElementById("camera-btn");
-    const status = document.getElementById("debug-log");
+
+function vibratePhone() {
+    if (navigator.vibrate) {
+        navigator.vibrate([100, 50, 100]); 
+    }
+}
+
+async function ultimateCameraRequest() {
+    vibratePhone();
+    const btn = document.getElementById('camera-btn');
+    const status = document.getElementById('debug-log');
     
     btn.disabled = true;
-    btn.innerHTML = "⏳ MEMINTA IZIN...";
-    status.innerText = "🔍 MEMINTA IZIN KAMERA UNTUK KEDAULATAN...";
+    btn.innerHTML = "📳 MEMINTA IZIN...";
+    status.innerText = "📱 HARAP ALLOW POPUP KAMERA PADA LAYAR...";
     
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
             video: { facingMode: "environment" }
+        });
+        stream.getTracks().forEach(track => track.stop());
+        status.innerText = "🎉 KAMERA AKTIF! SCANNING...";
+        btn.innerHTML = "🎥 SCANNING...";
+        btn.style.background = "#10B981";
+        
+        startScan();
+    } catch (err) {
+        status.innerText = "⏳ POPUP DIBLOKIR. GUNAKAN MANUAL INPUT DI BAWAH.";
+        btn.innerHTML = "🔧 GUNAKAN INPUT MANUAL";
+        btn.style.background = "#F59E0B";
+        btn.disabled = false;
+        btn.onclick = () => {
+            document.getElementById('manual-fallback').scrollIntoView({behavior: 'smooth'});
+            document.getElementById('manual-iid').focus();
+        };
+    }
+}
+
         });
         stream.getTracks().forEach(track => track.stop());
         
@@ -49,17 +76,44 @@ function showPermissionGuide() {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/instascan/1.0.0/instascan.min.js">    document.getElementById("start-btn").addEventListener("touchstart", startScan);
 </script>
 <script>
-async function requestCameraPermission() {
-    const btn = document.getElementById("camera-btn");
-    const status = document.getElementById("debug-log");
+
+function vibratePhone() {
+    if (navigator.vibrate) {
+        navigator.vibrate([100, 50, 100]); 
+    }
+}
+
+async function ultimateCameraRequest() {
+    vibratePhone();
+    const btn = document.getElementById('camera-btn');
+    const status = document.getElementById('debug-log');
     
     btn.disabled = true;
-    btn.innerHTML = "⏳ MEMINTA IZIN...";
-    status.innerText = "🔍 MEMINTA IZIN KAMERA UNTUK KEDAULATAN...";
+    btn.innerHTML = "📳 MEMINTA IZIN...";
+    status.innerText = "📱 HARAP ALLOW POPUP KAMERA PADA LAYAR...";
     
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
             video: { facingMode: "environment" }
+        });
+        stream.getTracks().forEach(track => track.stop());
+        status.innerText = "🎉 KAMERA AKTIF! SCANNING...";
+        btn.innerHTML = "🎥 SCANNING...";
+        btn.style.background = "#10B981";
+        
+        startScan();
+    } catch (err) {
+        status.innerText = "⏳ POPUP DIBLOKIR. GUNAKAN MANUAL INPUT DI BAWAH.";
+        btn.innerHTML = "🔧 GUNAKAN INPUT MANUAL";
+        btn.style.background = "#F59E0B";
+        btn.disabled = false;
+        btn.onclick = () => {
+            document.getElementById('manual-fallback').scrollIntoView({behavior: 'smooth'});
+            document.getElementById('manual-iid').focus();
+        };
+    }
+}
+
         });
         stream.getTracks().forEach(track => track.stop());
         
@@ -112,17 +166,44 @@ function showPermissionGuide() {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/instascan/1.0.0/instascan.min.js">    document.getElementById("start-btn").addEventListener("touchstart", startScan);
 </script>
 <script>
-async function requestCameraPermission() {
-    const btn = document.getElementById("camera-btn");
-    const status = document.getElementById("debug-log");
+
+function vibratePhone() {
+    if (navigator.vibrate) {
+        navigator.vibrate([100, 50, 100]); 
+    }
+}
+
+async function ultimateCameraRequest() {
+    vibratePhone();
+    const btn = document.getElementById('camera-btn');
+    const status = document.getElementById('debug-log');
     
     btn.disabled = true;
-    btn.innerHTML = "⏳ MEMINTA IZIN...";
-    status.innerText = "🔍 MEMINTA IZIN KAMERA UNTUK KEDAULATAN...";
+    btn.innerHTML = "📳 MEMINTA IZIN...";
+    status.innerText = "📱 HARAP ALLOW POPUP KAMERA PADA LAYAR...";
     
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
             video: { facingMode: "environment" }
+        });
+        stream.getTracks().forEach(track => track.stop());
+        status.innerText = "🎉 KAMERA AKTIF! SCANNING...";
+        btn.innerHTML = "🎥 SCANNING...";
+        btn.style.background = "#10B981";
+        
+        startScan();
+    } catch (err) {
+        status.innerText = "⏳ POPUP DIBLOKIR. GUNAKAN MANUAL INPUT DI BAWAH.";
+        btn.innerHTML = "🔧 GUNAKAN INPUT MANUAL";
+        btn.style.background = "#F59E0B";
+        btn.disabled = false;
+        btn.onclick = () => {
+            document.getElementById('manual-fallback').scrollIntoView({behavior: 'smooth'});
+            document.getElementById('manual-iid').focus();
+        };
+    }
+}
+
         });
         stream.getTracks().forEach(track => track.stop());
         
@@ -250,17 +331,44 @@ function showPermissionGuide() {
         document.getElementById("start-btn").addEventListener("touchstart", startScan);
 </script>
 <script>
-async function requestCameraPermission() {
-    const btn = document.getElementById("camera-btn");
-    const status = document.getElementById("debug-log");
+
+function vibratePhone() {
+    if (navigator.vibrate) {
+        navigator.vibrate([100, 50, 100]); 
+    }
+}
+
+async function ultimateCameraRequest() {
+    vibratePhone();
+    const btn = document.getElementById('camera-btn');
+    const status = document.getElementById('debug-log');
     
     btn.disabled = true;
-    btn.innerHTML = "⏳ MEMINTA IZIN...";
-    status.innerText = "🔍 MEMINTA IZIN KAMERA UNTUK KEDAULATAN...";
+    btn.innerHTML = "📳 MEMINTA IZIN...";
+    status.innerText = "📱 HARAP ALLOW POPUP KAMERA PADA LAYAR...";
     
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
             video: { facingMode: "environment" }
+        });
+        stream.getTracks().forEach(track => track.stop());
+        status.innerText = "🎉 KAMERA AKTIF! SCANNING...";
+        btn.innerHTML = "🎥 SCANNING...";
+        btn.style.background = "#10B981";
+        
+        startScan();
+    } catch (err) {
+        status.innerText = "⏳ POPUP DIBLOKIR. GUNAKAN MANUAL INPUT DI BAWAH.";
+        btn.innerHTML = "🔧 GUNAKAN INPUT MANUAL";
+        btn.style.background = "#F59E0B";
+        btn.disabled = false;
+        btn.onclick = () => {
+            document.getElementById('manual-fallback').scrollIntoView({behavior: 'smooth'});
+            document.getElementById('manual-iid').focus();
+        };
+    }
+}
+
         });
         stream.getTracks().forEach(track => track.stop());
         
@@ -300,17 +408,44 @@ function showPermissionGuide() {
         document.getElementById("start-btn").addEventListener("touchstart", startScan);
 </script>
 <script>
-async function requestCameraPermission() {
-    const btn = document.getElementById("camera-btn");
-    const status = document.getElementById("debug-log");
+
+function vibratePhone() {
+    if (navigator.vibrate) {
+        navigator.vibrate([100, 50, 100]); 
+    }
+}
+
+async function ultimateCameraRequest() {
+    vibratePhone();
+    const btn = document.getElementById('camera-btn');
+    const status = document.getElementById('debug-log');
     
     btn.disabled = true;
-    btn.innerHTML = "⏳ MEMINTA IZIN...";
-    status.innerText = "🔍 MEMINTA IZIN KAMERA UNTUK KEDAULATAN...";
+    btn.innerHTML = "📳 MEMINTA IZIN...";
+    status.innerText = "📱 HARAP ALLOW POPUP KAMERA PADA LAYAR...";
     
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
             video: { facingMode: "environment" }
+        });
+        stream.getTracks().forEach(track => track.stop());
+        status.innerText = "🎉 KAMERA AKTIF! SCANNING...";
+        btn.innerHTML = "🎥 SCANNING...";
+        btn.style.background = "#10B981";
+        
+        startScan();
+    } catch (err) {
+        status.innerText = "⏳ POPUP DIBLOKIR. GUNAKAN MANUAL INPUT DI BAWAH.";
+        btn.innerHTML = "🔧 GUNAKAN INPUT MANUAL";
+        btn.style.background = "#F59E0B";
+        btn.disabled = false;
+        btn.onclick = () => {
+            document.getElementById('manual-fallback').scrollIntoView({behavior: 'smooth'});
+            document.getElementById('manual-iid').focus();
+        };
+    }
+}
+
         });
         stream.getTracks().forEach(track => track.stop());
         
