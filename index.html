@@ -1,84 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-site-verification" content="KODE_DARI_GOOGLE">
-    <title>NeuroSphere | Human Sovereignty Portal</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>NEUROSPHERE | SOVEREIGN GATEWAY</title>
     <style>
-        body { background: #050505; color: #00ff88; font-family: 'Courier New', monospace; text-align: center; padding: 0; margin: 0; overflow-x: hidden; }
-        .ticker-wrap { background: rgba(0, 255, 136, 0.1); padding: 10px 0; border-bottom: 1px solid #00ff88; }
-        .ticker { white-space: nowrap; display: inline-block; animation: marquee 30s linear infinite; font-size: 0.9em; color: #fff; }
-        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-        .container { padding: 40px 20px; max-width: 1000px; margin: auto; }
-        .stat-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
-        .stat-box { border: 1px solid #00ff88; padding: 20px; flex: 1; min-width: 280px; border-radius: 12px; background: rgba(0, 255, 136, 0.03); }
-        .highlight { font-size: 2.2em; color: #fff; text-shadow: 0 0 10px #00ff88; font-weight: bold; }
-        h1 { letter-spacing: 7px; text-transform: uppercase; color: #fff; margin: 20px 0 5px 0; }
-        .chart-container { background: rgba(10,10,10,0.8); border: 1px solid #222; border-radius: 12px; padding: 20px; margin-top: 30px; }
-        .footer { color: #333; padding: 40px; font-size: 0.85em; }
+        :root { --neon: #00ff88; --bg: #000; }
+        body { background: var(--bg); color: #fff; font-family: 'Segoe UI', monospace; text-align: center; margin: 0; padding: 20px; }
+        .header { border-bottom: 1px solid #222; padding-bottom: 20px; margin-bottom: 30px; }
+        .system-status { font-size: 0.8em; color: var(--neon); letter-spacing: 2px; }
+        .stat-container { display: flex; flex-direction: column; gap: 30px; align-items: center; margin-top: 50px; }
+        .stat-box { width: 80%; max-width: 400px; padding: 20px; border: 1px solid #111; background: #050505; border-radius: 10px; }
+        .label { font-size: 0.7em; color: #888; text-transform: uppercase; margin-bottom: 10px; }
+        .value { font-size: 1.8em; font-weight: bold; color: #fff; }
+        .highlight { color: var(--neon); }
+        .nexus-btn { margin-top: 40px; padding: 15px 30px; background: transparent; border: 1px solid var(--neon); color: var(--neon); cursor: pointer; text-decoration: none; display: inline-block; border-radius: 5px; }
     </style>
 </head>
 <body>
-    <div class="ticker-wrap"><div id="news-ticker" class="ticker">SYSTEM INITIALIZATION: Phase 1 (Distribution)</div></div>
-    <div class="container">
-        <h1>NEUROSPHERE <span id="pulse" style="font-size: 0.3em; color: #00ff88; vertical-align: middle; opacity: 0.5;">●</span></h1>
-        <p style="color: #00ff88; letter-spacing: 2px;">LIVING VALUE IDENTITY • AUTONOMY MODE</p>
-        <div class="stat-grid">
-            <div class="stat-box"><div>ACTIVATED SOVEREIGN NODES</div><div id="active-citizens" class="highlight">9.922</div></div>
-            <div class="stat-box"><div>LIQUID DISTRIBUTION</div><div id="total-liquid" class="highlight">9.922</div></div>
-            <div class="stat-box"><div>SOVEREIGNTY RESERVE</div><div id="total-reserve" class="highlight">9.922</div></div>
-        </div>
-        <div class="chart-container"><canvas id="growthChart"></canvas></div>
+    <div class="header">
+        <div class="system-status">SYSTEM INITIALIZATION: Phase 1 (Distribution)</div>
+        <h1 style="letter-spacing: 5px;">NEUROSPHERE <span style="color:var(--neon)">●</span></h1>
+        <div style="font-size: 0.6em; color: #555;">LIVING VALUE IDENTITY • AUTONOMY MODE</div>
     </div>
+
+    <div class="stat-container">
+        <div class="stat-box">
+            <div class="label">ACTIVATED SOVEREIGN NODES</div>
+            <div class="value">9.922</div>
+        </div>
+
+        <div class="stat-box">
+            <div class="label">LIQUID DISTRIBUTION</div>
+            <div class="value highlight">€ 9.922.000</div>
+        </div>
+
+        <div class="stat-box">
+            <div class="label">SOVEREIGNTY RESERVE</div>
+            <div class="value">€ 100.000.000</div>
+        </div>
+    </div>
+
+    <a href="https://indiescan-explorer.vercel.app" class="nexus-btn">EXPLORE INDIESCAN ↗</a>
+    <br><br>
+    <div style="font-size: 0.5em; color: #333;">Powered by Auralang & Neuro-Engine</div>
+
     <script>
-        const URL = "https://yyzymgkdpqevkuhowjci.supabase.co/rest/v1/wallets";
-        const KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5enltZ2tkcHFldmt1aG93amNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzODgyMDQsImV4cCI6MjA4MTk2NDIwNH0.hk3M39domZHQXjlG8i7ikGhxEFThqtO1RQaEzc65_1Y";
-        let growthChart;
-
-        function initChart() {
-            const ctx = document.getElementById('growthChart').getContext('2d');
-            growthChart = new Chart(ctx, {
-                type: 'line',
-                data: { labels: ['Start', 'Current'], datasets: [{ label: 'Growth', data: [0, 0], borderColor: '#00ff88', fill: true, tension: 0.4 }] },
-                options: { responsive: true, scales: { y: { beginAtZero: true } } }
-            });
-        }
-
-        async function updateData() {
-            try {
-                const response = await fetch(`${URL}?ts=${Date.now()}&?select=ind_eur_balance,amount_ind_eur,status,iid&order=iid.desc`, {
-                    headers: { "apikey": KEY, "Authorization": "Bearer " + KEY }
-                });
-                const data = await response.json();
-                let activeCount = data.length; let liquidSum = 0; let reserveSum = 0;
-                let activeIIDs = [];
-
-                data.forEach(item => {
-                    if (item.status === 'ACTIVE_STREAMING') {
-                        activeCount++;
-                        liquidSum += item.ind_eur_balance;
-                        activeIIDs.push(item.iid);
-                    }
-                    reserveSum += item.amount_ind_eur;
-                });
-
-                document.getElementById('active-citizens').innerText = activeCount.toLocaleString() + " / 100,000";
-                document.getElementById('total-liquid').innerText = "€ " + liquidSum.toLocaleString();
-                document.getElementById('total-reserve').innerText = "€ " + (reserveSum / 1000000000).toFixed(2) + " B";
-                
-                if(activeIIDs.length > 0) {
-                    document.getElementById('news-ticker').innerText = "LATEST ACTIVATIONS: " + activeIIDs.slice(0, 5).join(" • ");
-                    growthChart.data.datasets[0].data[1] = activeCount;
-                    growthChart.update();
-                }
-            } catch (err) { console.error(err); }
-        }
-
-        initChart();
-        updateData();
-        setInterval(updateData, 2000); // Percepat Detak Visual
+        console.log("NeuroSphere Gateway Active.");
     </script>
 </body>
 </html>
