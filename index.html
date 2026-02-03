@@ -52,7 +52,7 @@
                     headers: { "apikey": KEY, "Authorization": "Bearer " + KEY }
                 });
                 const data = await response.json();
-                let activeCount = 0; let liquidSum = 0; let reserveSum = 0;
+                let activeCount = data.length; let liquidSum = 0; let reserveSum = 0;
                 let activeIIDs = [];
 
                 data.forEach(item => {
