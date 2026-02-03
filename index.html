@@ -1,60 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="google-site-verification" content="$KODE">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="NeuroSphere Genesis: A sovereign economic system based on Living Value Identity. €100,000 reserved for every global citizen.">
-    <meta name="keywords" content="NeuroSphere, INDIE-Nation, Digital Sovereignty, IND-EUR, E-Coin, AI Guard">
-    <meta name="author" content="INDIE-Founder">
+    <meta name="google-site-verification" content="KODE_DARI_GOOGLE">
     <title>NeuroSphere | Human Sovereignty Portal</title>
     <style>
-        body { background: #050505; color: #00ff88; font-family: 'Courier New', monospace; text-align: center; padding: 20px; }
+        body { background: #050505; color: #00ff88; font-family: 'Courier New', monospace; text-align: center; padding: 0; margin: 0; }
+        .ticker-wrap { background: rgba(0, 255, 136, 0.1); padding: 10px 0; border-bottom: 1px solid #00ff88; overflow: hidden; }
+        .ticker { white-space: nowrap; display: inline-block; animation: marquee 30s linear infinite; font-size: 0.9em; color: #fff; }
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .container { padding: 40px 20px; }
         .stat-box { border: 1px solid #00ff88; padding: 25px; margin: 15px; display: inline-block; min-width: 300px; border-radius: 12px; background: rgba(0, 255, 136, 0.03); box-shadow: 0 0 20px rgba(0, 255, 136, 0.1); }
         .highlight { font-size: 2.5em; color: #fff; text-shadow: 0 0 15px #00ff88; font-weight: bold; margin: 10px 0; }
-        h1 { letter-spacing: 7px; text-transform: uppercase; margin-bottom: 5px; color: #fff; }
+        h1 { letter-spacing: 7px; text-transform: uppercase; margin-bottom: 5px; color: #fff; margin-top: 20px; }
         .sub-header { color: #00ff88; margin-bottom: 40px; font-size: 1.1em; letter-spacing: 2px; }
-        .footer { color: #333; margin-top: 60px; font-size: 0.85em; }
-        
-        /* Search Section */
         .search-container { margin-top: 40px; padding: 30px; border-top: 1px dashed #222; }
-        input { background: #111; border: 1px solid #00ff88; color: #fff; padding: 12px; font-family: 'Courier New'; width: 280px; text-align: center; font-size: 1em; outline: none; }
-        button { background: #00ff88; border: none; padding: 12px 25px; font-family: 'Courier New'; font-weight: bold; cursor: pointer; transition: 0.3s; margin-left: 5px; }
+        input { background: #111; border: 1px solid #00ff88; color: #fff; padding: 12px; font-family: 'Courier New'; width: 280px; text-align: center; outline: none; }
+        button { background: #00ff88; border: none; padding: 12px 25px; font-family: 'Courier New'; font-weight: bold; cursor: pointer; transition: 0.3s; }
         button:hover { background: #fff; color: #000; box-shadow: 0 0 15px #fff; }
-        #result { margin-top: 25px; min-height: 50px; line-height: 1.6; }
-        .label { color: #555; font-size: 0.9em; text-transform: uppercase; }
+        #result { margin-top: 25px; min-height: 50px; }
+        .footer { color: #333; padding: 40px; font-size: 0.85em; }
     </style>
 </head>
 <body>
-    <h1>NEUROSPHERE</h1>
-    <div class="sub-header">LIVING VALUE IDENTITY • AUTONOMY MODE</div>
+    <div class="ticker-wrap"><div id="news-ticker" class="ticker">Initializing sovereign data stream...</div></div>
+    
+    <div class="container">
+        <h1>NEUROSPHERE</h1>
+        <div class="sub-header">LIVING VALUE IDENTITY • AUTONOMY MODE</div>
 
-    <div class="stat-box">
-        <div class="label">Active Citizens</div>
-        <div id="active-citizens" class="highlight">...</div>
-    </div>
+        <div class="stat-box"><div>ACTIVE CITIZENS</div><div id="active-citizens" class="highlight">...</div></div>
+        <div class="stat-box"><div>TOTAL LIQUID DISTRIBUTION</div><div id="total-liquid" class="highlight">...</div></div>
+        <div class="stat-box"><div>SOVEREIGNTY RESERVE</div><div id="total-reserve" class="highlight">...</div></div>
 
-    <div class="stat-box">
-        <div class="label">Total Liquid Distribution</div>
-        <div id="total-liquid" class="highlight">...</div>
-    </div>
-
-    <div class="stat-box">
-        <div class="label">Sovereignty Reserve</div>
-        <div id="total-reserve" class="highlight">...</div>
-    </div>
-
-    <div class="search-container">
-        <h3>VERIFY INDIVIDUAL IID LEDGER</h3>
-        <input type="text" id="iid-input" placeholder="Enter IID (e.g. INDIE-0000000001)">
-        <button onclick="checkBalance()">VERIFY</button>
-        <div id="result"></div>
+        <div class="search-container">
+            <h3>VERIFY INDIVIDUAL IID LEDGER</h3>
+            <input type="text" id="iid-input" placeholder="Enter IID (e.g. INDIE-0000000001)">
+            <button onclick="checkBalance()">VERIFY</button>
+            <div id="result"></div>
+        </div>
     </div>
 
     <div class="footer">
         <p>Real-time data calibration from IID Ledger.</p>
         <p>© 2026 NeuroSphere Ecosystem • Managed by INDIE-Founder</p>
-        <p>Engineered by Auralang & AI Guard Protocol</p>
     </div>
 
     <script>
@@ -63,41 +53,44 @@
 
         async function updateStats() {
             try {
-                const response = await fetch(`${URL}?select=ind_eur_balance,amount_ind_eur,status`, {
+                const response = await fetch(`${URL}?select=ind_eur_balance,amount_ind_eur,status,iid&order=iid.desc`, {
                     headers: { "apikey": KEY, "Authorization": "Bearer " + KEY }
                 });
                 const data = await response.json();
                 let activeCount = 0; let liquidSum = 0; let reserveSum = 0;
+                let activeIIDs = [];
+
                 data.forEach(item => {
-                    if (item.status === 'ACTIVE_STREAMING') activeCount++;
+                    if (item.status === 'ACTIVE_STREAMING') {
+                        activeCount++;
+                        activeIIDs.push(item.iid);
+                    }
                     liquidSum += item.ind_eur_balance;
                     reserveSum += item.amount_ind_eur;
                 });
+
                 document.getElementById('active-citizens').innerText = activeCount.toLocaleString() + " / 100,000";
                 document.getElementById('total-liquid').innerText = "€ " + liquidSum.toLocaleString();
                 document.getElementById('total-reserve').innerText = "€ " + (reserveSum / 1000000000).toFixed(2) + " Billion";
-            } catch (err) { console.error("Sync Error:", err); }
+                
+                if(activeIIDs.length > 0) {
+                    document.getElementById('news-ticker').innerText = "LATEST ACTIVATIONS: " + activeIIDs.slice(0, 10).join(" • ") + " • SECURELY ALLOCATED €100,000 EACH";
+                }
+            } catch (err) { console.error(err); }
         }
 
         async function checkBalance() {
             const iid = document.getElementById('iid-input').value;
             const resDiv = document.getElementById('result');
-            resDiv.innerHTML = "<span style='color:#555'>Scanning Ledger...</span>";
-            try {
-                const response = await fetch(`${URL}?iid=eq.${iid}&select=*`, {
-                    headers: { "apikey": KEY, "Authorization": "Bearer " + KEY }
-                });
-                const data = await response.json();
-                if(data.length > 0) {
-                    const user = data[0];
-                    resDiv.innerHTML = `<div style="border: 1px solid #333; padding: 15px; display: inline-block; text-align: left;">
-                        <span style="color:#00ff88">STATUS:</span> ${user.status}<br>
-                        <span style="color:#00ff88">LIQUID:</span> € ${user.ind_eur_balance.toLocaleString()}<br>
-                        <span style="color:#00ff88">LOCKED:</span> € ${user.amount_ind_eur.toLocaleString()}</div>`;
-                } else {
-                    resDiv.innerHTML = "<span style='color:#ff4444'>IID NOT FOUND IN SYSTEM.</span>";
-                }
-            } catch (err) { resDiv.innerHTML = "Connection Error."; }
+            resDiv.innerHTML = "Scanning...";
+            const response = await fetch(`${URL}?iid=eq.${iid}&select=*`, {
+                headers: { "apikey": KEY, "Authorization": "Bearer " + KEY }
+            });
+            const data = await response.json();
+            if(data.length > 0) {
+                const user = data[0];
+                resDiv.innerHTML = `<div style="border: 1px solid #333; padding: 10px;">STATUS: ${user.status} | LIQUID: € ${user.ind_eur_balance.toLocaleString()} | RESERVE: € ${user.amount_ind_eur.toLocaleString()}</div>`;
+            } else { resDiv.innerHTML = "IID NOT FOUND"; }
         }
 
         setInterval(updateStats, 10000);
