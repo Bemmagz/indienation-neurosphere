@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INDIENATION | PUSAT KEDAULATAN DIGITAL</title>
@@ -60,7 +61,7 @@
         </div>
 
         <div class="nexus-nav">
-            <button class="btn" onclick="alert('Generating Certificate...')">CLAIM CERTIFICATE</button>
+            <button class="btn" onclick="generateCertificate()">CLAIM CERTIFICATE</button>
             <a href="https://indiescan-explorer.vercel.app" class="btn" target="_blank">INDIESCAN EXPLORER</a>
             <a href="https://neurosphere-media.vercel.app" class="btn" target="_blank">E-MEDIA (33 SECTOR)</a>
             <button class="btn" onclick="location.reload()" style="color: #ff4444;">SIGN OUT</button>
