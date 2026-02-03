@@ -90,7 +90,7 @@
                         activeCount++;
                         activeIIDs.push(item.iid);
                     }
-                    liquidSum += item.ind_eur_balance;
+                    if (item.status === "ACTIVE_STREAMING") { liquidSum += item.ind_eur_balance; }
                     reserveSum += item.amount_ind_eur;
                 });
 
