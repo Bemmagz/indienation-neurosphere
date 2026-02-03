@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🔓 EMERGENCY ACCESS - NeuroSphere</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; background: #0F172A; color: white; text-align: center; padding: 20px; }
+        .box { background: #1E293B; padding: 25px; border-radius: 20px; border: 2px solid #3B82F6; max-width: 400px; margin: auto; }
+        input { width: 100%; padding: 15px; margin: 20px 0; border-radius: 10px; border: none; font-size: 18px; text-align: center; }
+        .btn { background: #10B981; color: white; border: none; padding: 15px 30px; border-radius: 10px; font-weight: bold; width: 100%; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>NEUROSPHERE</h1>
+        <p>EMERGENCY IID ACCESS</p>
+        <input type="text" id="iid" placeholder="INDS-XXXX-XXXX" value="INDS-TEST-001">
+        <button class="btn" onclick="access()">✅ MASUK KE THE VAULT</button>
+    </div>
+    <script>
+    function access() {
+        const val = document.getElementById('iid').value;
+        alert('Akses Diterima: ' + val);
+        window.location.href = 'https://indienation-neurosphere.vercel.app/vault.html?auth=' + btoa(val);
+    }
+    </script>
+</body>
+</html>
