@@ -1,39 +1,35 @@
-import requests
 import time
+import requests
+import json
 
-URL = "https://yyzymgkdpqevkuhowjci.supabase.co"
+URL = "https://yyzymgkdpqevkuhowjci.supabase.co/rest/v1/wallets"
 KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5enltZ2tkcHFldmt1aG93amNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzODgyMDQsImV4cCI6MjA4MTk2NDIwNH0.hk3M39domZHQXjlG8i7ikGhxEFThqtO1RQaEzc65_1Y"
-headers = {"apikey": KEY, "Authorization": f"Bearer {KEY}", "Content-Type": "application/json"}
+HEADERS = {
+    "apikey": KEY,
+    "Authorization": f"Bearer {KEY}",
+    "Content-Type": "application/json",
+    "Prefer": "return=minimal"
+}
 
-def run_auto_batch(limit=1000):
-    print(f"🚀 Mencari {limit} warga berikutnya untuk aktivasi...")
+def process_shard(start_idx, size=1000):
+    print(f"🚀 Processing Shard: {start_idx} to {start_idx + size}")
+    # Ambil 1000 warga yang masih INACTIVE
+    resp = requests.get(f"{URL}?status=eq.INACTIVE&limit={size}", headers=HEADERS)
+    citizens = resp.json()
     
-    # 1. Ambil IID yang masih INACTIVE
-    r_get = requests.get(f"{URL}/rest/v1/wallets?status=eq.INACTIVE&limit={limit}", headers=headers)
-    targets = r_get.json()
-    
-    if not targets:
-        print("✅ Semua warga sudah aktif!")
-        return
+    for c in citizens:
+        iid = c['iid']
+        # Update status & kucurkan likuiditas awal €1.000
+        payload = {"status": "ACTIVE_STREAMING", "ind_eur_balance": 1000}
+        requests.patch(f"{URL}?iid=eq.{iid}", headers=HEADERS, json=payload)
+        with open("batch_log.txt", "a") as f:
+            f.write(f"✅ {iid} Activated.\n")
+        print(f"Aktivasi: {iid}")
 
-    print(f"📦 Memproses {len(targets)} warga...")
-    
-    for citizen in targets:
-        iid = citizen['iid']
-        payload = {
-            "ind_eur_balance": 1000,
-            "amount_ind_eur": 99000,
-            "status": "ACTIVE_STREAMING"
-        }
-        r_patch = requests.patch(f"{URL}/rest/v1/wallets?iid=eq.{iid}", headers=headers, json=payload)
-        
-        if r_patch.status_code in [200, 204]:
-            print(f"✅ {iid} Activated.")
-        else:
-            print(f"❌ {iid} Failed.")
-        
-        # Jeda 0.05 detik untuk menjaga kesehatan API
-        time.sleep(0.05)
+# Main Logic: 5.000 divided into 5 shards
+for i in range(5):
+    process_shard(i * 1000)
+    print("⏳ Shard complete. Cooling down for 60 seconds...")
+    time.sleep(60) # Cooldown untuk menghindari Rate Limit Free Tier
 
-if __name__ == "__main__":
-    run_auto_batch()
+print("💤 Mega Batch 5.000 Selesai. Sistem hibernasi.")
