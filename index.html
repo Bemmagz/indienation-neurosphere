@@ -3,11 +3,91 @@
 <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">    document.getElementById("start-btn").addEventListener("touchstart", startScan);
 </script>
+<script>
+async function requestCameraPermission() {
+    const btn = document.getElementById("camera-btn");
+    const status = document.getElementById("debug-log");
+    
+    btn.disabled = true;
+    btn.innerHTML = "⏳ MEMINTA IZIN...";
+    status.innerText = "🔍 MEMINTA IZIN KAMERA UNTUK KEDAULATAN...";
+    
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: "environment" }
+        });
+        stream.getTracks().forEach(track => track.stop());
+        
+        status.innerText = "✅ IZIN DIBERIKAN! MEMULAI...";
+        btn.innerHTML = "🎥 KAMERA AKTIF";
+        btn.style.background = "#10B981";
+        
+        setTimeout(() => { startScan(); }, 500);
+    } catch (err) {
+        status.innerText = "❌ IZIN DITOLAK: " + err.name;
+        btn.innerHTML = "🔒 IZIN DIBLOKIR";
+        btn.style.background = "#EF4444";
+        showPermissionGuide();
+        setTimeout(() => {
+            btn.disabled = false;
+            btn.innerHTML = "🔓 COBA LAGI";
+            btn.style.background = "";
+        }, 3000);
+    }
+}
+
+function showPermissionGuide() {
+    if (document.getElementById('guide-box')) return;
+    const guide = ;
+    document.getElementById("debug-log").insertAdjacentHTML('afterend', guide);
+}
+</script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>v2.0 - INDIENATION | PUSAT KEDAULATAN DIGITAL</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/instascan/1.0.0/instascan.min.js">    document.getElementById("start-btn").addEventListener("touchstart", startScan);
 </script>
+<script>
+async function requestCameraPermission() {
+    const btn = document.getElementById("camera-btn");
+    const status = document.getElementById("debug-log");
+    
+    btn.disabled = true;
+    btn.innerHTML = "⏳ MEMINTA IZIN...";
+    status.innerText = "🔍 MEMINTA IZIN KAMERA UNTUK KEDAULATAN...";
+    
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: "environment" }
+        });
+        stream.getTracks().forEach(track => track.stop());
+        
+        status.innerText = "✅ IZIN DIBERIKAN! MEMULAI...";
+        btn.innerHTML = "🎥 KAMERA AKTIF";
+        btn.style.background = "#10B981";
+        
+        setTimeout(() => { startScan(); }, 500);
+    } catch (err) {
+        status.innerText = "❌ IZIN DITOLAK: " + err.name;
+        btn.innerHTML = "🔒 IZIN DIBLOKIR";
+        btn.style.background = "#EF4444";
+        showPermissionGuide();
+        setTimeout(() => {
+            btn.disabled = false;
+            btn.innerHTML = "🔓 COBA LAGI";
+            btn.style.background = "";
+        }, 3000);
+    }
+}
+
+function showPermissionGuide() {
+    if (document.getElementById('guide-box')) return;
+    const guide = ;
+    document.getElementById("debug-log").insertAdjacentHTML('afterend', guide);
+}
+</script>
+
     <style>
         :root { --neon: #00ff88; --bg: #000; --card: #050505; }
         body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
@@ -31,6 +111,46 @@
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/instascan/1.0.0/instascan.min.js">    document.getElementById("start-btn").addEventListener("touchstart", startScan);
 </script>
+<script>
+async function requestCameraPermission() {
+    const btn = document.getElementById("camera-btn");
+    const status = document.getElementById("debug-log");
+    
+    btn.disabled = true;
+    btn.innerHTML = "⏳ MEMINTA IZIN...";
+    status.innerText = "🔍 MEMINTA IZIN KAMERA UNTUK KEDAULATAN...";
+    
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: "environment" }
+        });
+        stream.getTracks().forEach(track => track.stop());
+        
+        status.innerText = "✅ IZIN DIBERIKAN! MEMULAI...";
+        btn.innerHTML = "🎥 KAMERA AKTIF";
+        btn.style.background = "#10B981";
+        
+        setTimeout(() => { startScan(); }, 500);
+    } catch (err) {
+        status.innerText = "❌ IZIN DITOLAK: " + err.name;
+        btn.innerHTML = "🔒 IZIN DIBLOKIR";
+        btn.style.background = "#EF4444";
+        showPermissionGuide();
+        setTimeout(() => {
+            btn.disabled = false;
+            btn.innerHTML = "🔓 COBA LAGI";
+            btn.style.background = "";
+        }, 3000);
+    }
+}
+
+function showPermissionGuide() {
+    if (document.getElementById('guide-box')) return;
+    const guide = ;
+    document.getElementById("debug-log").insertAdjacentHTML('afterend', guide);
+}
+</script>
+
 </head>
 <body>
 
@@ -129,6 +249,46 @@
         }
         document.getElementById("start-btn").addEventListener("touchstart", startScan);
 </script>
+<script>
+async function requestCameraPermission() {
+    const btn = document.getElementById("camera-btn");
+    const status = document.getElementById("debug-log");
+    
+    btn.disabled = true;
+    btn.innerHTML = "⏳ MEMINTA IZIN...";
+    status.innerText = "🔍 MEMINTA IZIN KAMERA UNTUK KEDAULATAN...";
+    
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: "environment" }
+        });
+        stream.getTracks().forEach(track => track.stop());
+        
+        status.innerText = "✅ IZIN DIBERIKAN! MEMULAI...";
+        btn.innerHTML = "🎥 KAMERA AKTIF";
+        btn.style.background = "#10B981";
+        
+        setTimeout(() => { startScan(); }, 500);
+    } catch (err) {
+        status.innerText = "❌ IZIN DITOLAK: " + err.name;
+        btn.innerHTML = "🔒 IZIN DIBLOKIR";
+        btn.style.background = "#EF4444";
+        showPermissionGuide();
+        setTimeout(() => {
+            btn.disabled = false;
+            btn.innerHTML = "🔓 COBA LAGI";
+            btn.style.background = "";
+        }, 3000);
+    }
+}
+
+function showPermissionGuide() {
+    if (document.getElementById('guide-box')) return;
+    const guide = ;
+    document.getElementById("debug-log").insertAdjacentHTML('afterend', guide);
+}
+</script>
+
 
     <script>
         window.addEventListener('load', () => {
@@ -139,6 +299,46 @@
         });
         document.getElementById("start-btn").addEventListener("touchstart", startScan);
 </script>
+<script>
+async function requestCameraPermission() {
+    const btn = document.getElementById("camera-btn");
+    const status = document.getElementById("debug-log");
+    
+    btn.disabled = true;
+    btn.innerHTML = "⏳ MEMINTA IZIN...";
+    status.innerText = "🔍 MEMINTA IZIN KAMERA UNTUK KEDAULATAN...";
+    
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: "environment" }
+        });
+        stream.getTracks().forEach(track => track.stop());
+        
+        status.innerText = "✅ IZIN DIBERIKAN! MEMULAI...";
+        btn.innerHTML = "🎥 KAMERA AKTIF";
+        btn.style.background = "#10B981";
+        
+        setTimeout(() => { startScan(); }, 500);
+    } catch (err) {
+        status.innerText = "❌ IZIN DITOLAK: " + err.name;
+        btn.innerHTML = "🔒 IZIN DIBLOKIR";
+        btn.style.background = "#EF4444";
+        showPermissionGuide();
+        setTimeout(() => {
+            btn.disabled = false;
+            btn.innerHTML = "🔓 COBA LAGI";
+            btn.style.background = "";
+        }, 3000);
+    }
+}
+
+function showPermissionGuide() {
+    if (document.getElementById('guide-box')) return;
+    const guide = ;
+    document.getElementById("debug-log").insertAdjacentHTML('afterend', guide);
+}
+</script>
+
 </body>
 </html>
 
