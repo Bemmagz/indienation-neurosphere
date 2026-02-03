@@ -1,79 +1,98 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <script src="https://unpkg.com/html5-qrcode"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEUROSPHERE | SOVEREIGN GATEWAY</title>
+    <title>INDIENATION | PUSAT KEDAULATAN DIGITAL</title>
+    <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
-        :root { --neon: #00ff88; --bg: #000; --glass: rgba(255,255,255,0.03); }
-        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; text-align: center; margin: 0; padding: 40px 20px; }
-        .header { margin-bottom: 50px; border-bottom: 1px solid #111; padding-bottom: 30px; }
-        .sys-init { font-size: 10px; letter-spacing: 3px; color: #444; margin-bottom: 10px; }
-        h1 { letter-spacing: 10px; font-weight: 200; margin: 0; }
-        .status-bar { font-size: 10px; color: var(--neon); margin-top: 10px; opacity: 0.8; }
-        
-        .grid { display: flex; flex-direction: column; gap: 20px; align-items: center; margin-top: 40px; }
-        .card { width: 100%; max-width: 450px; padding: 30px; background: var(--glass); border: 1px solid #111; border-radius: 4px; transition: 0.3s; }
-        .card:hover { border-color: var(--neon); background: rgba(0,255,136,0.02); }
-        
-        .label { font-size: 10px; color: #666; letter-spacing: 2px; margin-bottom: 15px; text-transform: uppercase; }
-        .value { font-size: 2.2rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
-        .value.highlight { color: var(--neon); text-shadow: 0 0 20px rgba(0,255,136,0.3); }
-        
-        .footer-nav { margin-top: 60px; display: flex; justify-content: center; gap: 20px; }
-        .btn { padding: 12px 25px; border: 1px solid #222; color: #888; text-decoration: none; font-size: 11px; letter-spacing: 1px; transition: 0.3s; }
+        :root { --neon: #00ff88; --bg: #000; --card: #050505; }
+        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
+        .page { display: none; padding: 40px 20px; animation: fadeIn 0.5s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* UI Elements */
+        .glass-card { background: var(--card); border: 1px solid #111; padding: 30px; border-radius: 8px; margin-bottom: 20px; text-align: center; }
+        .label { font-size: 10px; color: #666; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; }
+        .value { font-size: 2.5rem; font-weight: bold; font-family: 'JetBrains Mono', monospace; }
+        .highlight { color: var(--neon); text-shadow: 0 0 20px rgba(0,255,136,0.3); }
+
+        /* Navigation */
+        .nexus-nav { margin-top: 40px; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
+        .btn { padding: 12px 20px; border: 1px solid #222; color: #888; text-decoration: none; font-size: 11px; cursor: pointer; transition: 0.3s; }
         .btn:hover { border-color: var(--neon); color: var(--neon); }
+
+        /* QR Scanner */
+        #reader { width: 100%; max-width: 400px; margin: 0 auto; background: #111; border-radius: 10px; overflow: hidden; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="sys-init">SYSTEM INITIALIZATION: PHASE 1</div>
-        <h1>NEUROSPHERE <span style="color:var(--neon)">●</span></h1>
-        <div class="status-bar">LIVING VALUE IDENTITY • AUTONOMY MODE</div>
-    </div>
 
-    <div class="grid">
-        <div class="card">
+    <section id="landing-page" class="page active">
+        <div style="margin-bottom: 50px; text-align: center;">
+            <div style="font-size: 10px; color: #444; letter-spacing: 3px;">SYSTEM INITIALIZATION: PHASE 1</div>
+            <h1 style="letter-spacing: 10px; font-weight: 200;">INDIENATION <span style="color:var(--neon)">●</span></h1>
+        </div>
+
+        <div class="glass-card">
             <div class="label">ACTIVATED SOVEREIGN NODES</div>
             <div class="value">9.922</div>
         </div>
 
-        <div class="card">
-            <div class="label">LIQUID DISTRIBUTION (TM)</div>
-            <div class="value highlight">€ 9.922.000</div>
+        <div id="qr-entrance" class="glass-card" style="border: 1px dashed #333;">
+            <div class="label">SCAN IID TO ENTER THE VAULT</div>
+            <div id="reader"></div>
+            <button class="btn" id="start-btn" onclick="startScan()" style="margin-top: 20px; width: 100%;">AKTIFKAN KAMERA</button>
+        </div>
+    </section>
+
+    <section id="vault-page" class="page">
+        <div class="header" style="text-align: center; margin-bottom: 40px;">
+            <div class="label" id="user-iid">CITIZEN: INDIE-000000</div>
+            <h2 style="font-weight: 200;">THE SOVEREIGN VAULT</h2>
         </div>
 
-        <div class="card">
-            <div class="label">SOVEREIGNTY RESERVE</div>
-            <div class="value">€ 100.000.000</div>
+        <div class="glass-card">
+            <div class="label">PERSONAL LIQUID BALANCE</div>
+            <div class="value highlight">€ <span id="balance-display">1000.00</span></div>
+            <div style="font-size: 10px; color: var(--neon); margin-top: 10px;">STREAMING: +€ 0.003125 / SEC</div>
         </div>
-    </div>
 
-    <div class="footer-nav">
-        <a href="https://indiescan-explorer.vercel.app" class="btn">INDIESCAN EXPLORER</a>
-        <a href="#" class="btn" style="opacity: 0.3; cursor: not-allowed;">NEURO-MARKET (LOCKED)</a>
-    </div>
+        <div class="nexus-nav">
+            <button class="btn" onclick="alert('Generating Certificate...')">CLAIM CERTIFICATE</button>
+            <a href="https://indiescan-explorer.vercel.app" class="btn" target="_blank">INDIESCAN EXPLORER</a>
+            <a href="https://neurosphere-media.vercel.app" class="btn" target="_blank">E-MEDIA (33 SECTOR)</a>
+            <button class="btn" onclick="location.reload()" style="color: #ff4444;">SIGN OUT</button>
+        </div>
+    </section>
 
-    <div style="margin-top: 100px; font-size: 9px; color: #222; letter-spacing: 2px;">
-        POWERED BY NEUROLANG | FOUNDER: INDIE-FOUNDER
-    </div>
+    <script>
+        let balance = 1000.00;
+        const streamRate = 270 / 86400; // €0.003125 per detik
+
+        function startScan() {
+            const html5QrCode = new Html5Qrcode("reader");
+            html5QrCode.start(
+                { facingMode: "environment" }, 
+                { fps: 10, qrbox: { width: 250, height: 250 } },
+                (decodedText) => {
+                    document.getElementById('user-iid').innerText = "CITIZEN: " + decodedText;
+                    document.getElementById('landing-page').classList.remove('active');
+                    document.getElementById('vault-page').classList.add('active');
+                    html5QrCode.stop();
+                    startStreaming();
+                }
+            ).catch(err => alert("Kamera Error: " + err));
+            document.getElementById('start-btn').style.display = 'none';
+        }
+
+        function startStreaming() {
+            setInterval(() => {
+                balance += streamRate;
+                document.getElementById('balance-display').innerText = balance.toFixed(6);
+            }, 1000);
+        }
+    </script>
 </body>
 </html>
-<script>
-    function startScan() {
-        const html5QrCode = new Html5Qrcode("reader");
-        html5QrCode.start(
-            { facingMode: "environment" }, 
-            { fps: 10, qrbox: { width: 250, height: 250 } },
-            (decodedText) => {
-                // Asumsi QR berisi IID seperti "INDIE-0000084304"
-                alert("Identitas Terverifikasi: " + decodedText);
-                window.location.href = "?iid=" + decodedText;
-                html5QrCode.stop();
-            },
-            (errorMessage) => { /* scanning... */ }
-        );
-        document.getElementById('scan-btn').style.display = 'none';
-    }
-</script>
