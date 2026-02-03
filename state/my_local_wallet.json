@@ -1,0 +1,11 @@
+{
+  "iid": "INDIE-0000000001",
+  "balance": 1000,
+  "history": [
+    {
+      "date": "2026-02-01",
+      "amount": 1000,
+      "note": "Daily Kindness Grant"
+    }
+  ]
+}
