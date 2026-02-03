@@ -1,6 +1,3 @@
 User-agent: *
 Allow: /
 Sitemap: https://indienation-neurosphere.vercel.app/sitemap.xml
-
-# NeuroSphere Sovereignty Protocol
-# Priority: 1.000.000 LUV & €100.000 IND-EUR
