@@ -339,6 +339,22 @@ function showPermissionGuide() {
 }
 </script>
 
+
+<div id="manual-fallback" style="display: none; margin-top: 30px; padding: 20px; background: rgba(59, 130, 246, 0.1); border-radius: 15px; border: 2px solid #3B82F6;">
+    <h3 style="color: #60A5FA; margin-bottom: 15px;">🔧 ALTERNATIF: INPUT MANUAL</h3>
+    <input type="text" id="manual-iid" placeholder="Masukkan IID (Contoh: INDS-XXXX)" style="width: 100%; padding: 12px; border-radius: 8px; background: #0F172A; color: white; border: 2px solid #4F46E5;">
+    <button onclick="processManualIID()" style="width: 100%; margin-top: 10px; padding: 14px; background: linear-gradient(90deg, #8B5CF6, #3B82F6); color: white; border: none; border-radius: 8px; font-weight: bold;">✅ VERIFIKASI & MASUK</button>
+</div>
+<script>
+function processManualIID() {
+    const iid = document.getElementById('manual-iid').value.trim().toUpperCase();
+    if (iid) { 
+        alert('IID Diterima: ' + iid);
+        window.location.href = 'index.html?auth=' + btoa(iid); 
+    }
+}
+setTimeout(() => { document.getElementById('manual-fallback').style.display = 'block'; }, 5000);
+</script>
 </body>
 </html>
 
