@@ -5,48 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NEUROSPHERE | SOVEREIGN GATEWAY</title>
     <style>
-        :root { --neon: #00ff88; --bg: #000; }
-        body { background: var(--bg); color: #fff; font-family: 'Segoe UI', monospace; text-align: center; margin: 0; padding: 20px; }
-        .header { border-bottom: 1px solid #222; padding-bottom: 20px; margin-bottom: 30px; }
-        .system-status { font-size: 0.8em; color: var(--neon); letter-spacing: 2px; }
-        .stat-container { display: flex; flex-direction: column; gap: 30px; align-items: center; margin-top: 50px; }
-        .stat-box { width: 80%; max-width: 400px; padding: 20px; border: 1px solid #111; background: #050505; border-radius: 10px; }
-        .label { font-size: 0.7em; color: #888; text-transform: uppercase; margin-bottom: 10px; }
-        .value { font-size: 1.8em; font-weight: bold; color: #fff; }
-        .highlight { color: var(--neon); }
-        .nexus-btn { margin-top: 40px; padding: 15px 30px; background: transparent; border: 1px solid var(--neon); color: var(--neon); cursor: pointer; text-decoration: none; display: inline-block; border-radius: 5px; }
+        :root { --neon: #00ff88; --bg: #000; --glass: rgba(255,255,255,0.03); }
+        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; text-align: center; margin: 0; padding: 40px 20px; }
+        .header { margin-bottom: 50px; border-bottom: 1px solid #111; padding-bottom: 30px; }
+        .sys-init { font-size: 10px; letter-spacing: 3px; color: #444; margin-bottom: 10px; }
+        h1 { letter-spacing: 10px; font-weight: 200; margin: 0; }
+        .status-bar { font-size: 10px; color: var(--neon); margin-top: 10px; opacity: 0.8; }
+        
+        .grid { display: flex; flex-direction: column; gap: 20px; align-items: center; margin-top: 40px; }
+        .card { width: 100%; max-width: 450px; padding: 30px; background: var(--glass); border: 1px solid #111; border-radius: 4px; transition: 0.3s; }
+        .card:hover { border-color: var(--neon); background: rgba(0,255,136,0.02); }
+        
+        .label { font-size: 10px; color: #666; letter-spacing: 2px; margin-bottom: 15px; text-transform: uppercase; }
+        .value { font-size: 2.2rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+        .value.highlight { color: var(--neon); text-shadow: 0 0 20px rgba(0,255,136,0.3); }
+        
+        .footer-nav { margin-top: 60px; display: flex; justify-content: center; gap: 20px; }
+        .btn { padding: 12px 25px; border: 1px solid #222; color: #888; text-decoration: none; font-size: 11px; letter-spacing: 1px; transition: 0.3s; }
+        .btn:hover { border-color: var(--neon); color: var(--neon); }
     </style>
 </head>
 <body>
     <div class="header">
-        <div class="system-status">SYSTEM INITIALIZATION: Phase 1 (Distribution)</div>
-        <h1 style="letter-spacing: 5px;">NEUROSPHERE <span style="color:var(--neon)">●</span></h1>
-        <div style="font-size: 0.6em; color: #555;">LIVING VALUE IDENTITY • AUTONOMY MODE</div>
+        <div class="sys-init">SYSTEM INITIALIZATION: PHASE 1</div>
+        <h1>NEUROSPHERE <span style="color:var(--neon)">●</span></h1>
+        <div class="status-bar">LIVING VALUE IDENTITY • AUTONOMY MODE</div>
     </div>
 
-    <div class="stat-container">
-        <div class="stat-box">
+    <div class="grid">
+        <div class="card">
             <div class="label">ACTIVATED SOVEREIGN NODES</div>
             <div class="value">9.922</div>
         </div>
 
-        <div class="stat-box">
-            <div class="label">LIQUID DISTRIBUTION</div>
+        <div class="card">
+            <div class="label">LIQUID DISTRIBUTION (TM)</div>
             <div class="value highlight">€ 9.922.000</div>
         </div>
 
-        <div class="stat-box">
+        <div class="card">
             <div class="label">SOVEREIGNTY RESERVE</div>
             <div class="value">€ 100.000.000</div>
         </div>
     </div>
 
-    <a href="https://indiescan-explorer.vercel.app" class="nexus-btn">EXPLORE INDIESCAN ↗</a>
-    <br><br>
-    <div style="font-size: 0.5em; color: #333;">Powered by Auralang & Neuro-Engine</div>
+    <div class="footer-nav">
+        <a href="https://indiescan-explorer.vercel.app" class="btn">INDIESCAN EXPLORER</a>
+        <a href="#" class="btn" style="opacity: 0.3; cursor: not-allowed;">NEURO-MARKET (LOCKED)</a>
+    </div>
 
-    <script>
-        console.log("NeuroSphere Gateway Active.");
-    </script>
+    <div style="margin-top: 100px; font-size: 9px; color: #222; letter-spacing: 2px;">
+        POWERED BY NEUROLANG | FOUNDER: INDIE-FOUNDER
+    </div>
 </body>
 </html>
