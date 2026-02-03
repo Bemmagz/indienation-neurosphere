@@ -3,19 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeuroSphere | Human Sovereignty</title>
+    <meta name="description" content="NeuroSphere Genesis: Sistem kedaulatan ekonomi digital berbasis Living Value Identity. €100.000 dicadangkan untuk setiap warga.">
+    <meta name="keywords" content="NeuroSphere, INDIE-Nation, Kedaulatan Digital, IND-EUR, E-Coin">
+    <meta name="author" content="INDIE-Founder">
+    <title>NeuroSphere | Gerbang Kedaulatan Manusia</title>
     <style>
         body { background: #050505; color: #00ff88; font-family: 'Courier New', monospace; text-align: center; padding: 20px; }
-        .stat-box { border: 1px solid #00ff88; padding: 20px; margin: 10px; display: inline-block; min-width: 280px; border-radius: 8px; background: rgba(0, 255, 136, 0.05); }
+        .stat-box { border: 1px solid #00ff88; padding: 20px; margin: 10px; display: inline-block; min-width: 280px; border-radius: 8px; background: rgba(0, 255, 136, 0.05); box-shadow: 0 0 10px rgba(0, 255, 136, 0.2); }
         .highlight { font-size: 2.2em; color: #fff; text-shadow: 0 0 15px #00ff88; font-weight: bold; }
-        .loading { font-style: italic; color: #555; }
-        h1 { letter-spacing: 5px; text-transform: uppercase; }
+        h1 { letter-spacing: 5px; text-transform: uppercase; margin-bottom: 0; }
         .footer { color: #444; margin-top: 50px; font-size: 0.8em; }
+        input { background: #111; border: 1px solid #00ff88; color: #fff; padding: 10px; font-family: 'Courier New'; width: 250px; text-align: center; }
+        button { background: #00ff88; border: none; padding: 10px 20px; font-family: 'Courier New'; font-weight: bold; cursor: pointer; }
+        #result { margin-top: 20px; font-size: 1.1em; }
     </style>
 </head>
 <body>
     <h1>NEUROSPHERE GENESIS</h1>
-    <p>Living Value Identity - Autonomy Mode</p>
+    <p style="color: #fff;">Living Value Identity - Autonomy Mode</p>
 
     <div class="stat-box">
         <p>WARGA AKTIF</p>
@@ -32,9 +37,16 @@
         <div id="total-reserve" class="highlight">...</div>
     </div>
 
+    <hr style="border: 0.5px solid #222; margin: 40px 0;">
+
+    <h3>CEK SALDO IID ANDA</h3>
+    <input type="text" id="iid-input" placeholder="Contoh: INDIE-0000000001">
+    <button onclick="checkBalance()">VERIFIKASI</button>
+    <div id="result"></div>
+
     <div class="footer">
         <p>Data dikalibrasi secara real-time dari IID Ledger.</p>
-        <p>Powered by Auralang & AI Guard</p>
+        <p>© 2026 Neurosphere - Managed by INDIE-Founder</p>
     </div>
 
     <script>
@@ -47,27 +59,37 @@
                     headers: { "apikey": KEY, "Authorization": "Bearer " + KEY }
                 });
                 const data = await response.json();
-
-                let activeCount = 0;
-                let liquidSum = 0;
-                let reserveSum = 0;
-
+                let activeCount = 0; let liquidSum = 0; let reserveSum = 0;
                 data.forEach(item => {
                     if (item.status === 'ACTIVE_STREAMING') activeCount++;
                     liquidSum += item.ind_eur_balance;
                     reserveSum += item.amount_ind_eur;
                 });
-
                 document.getElementById('active-citizens').innerText = activeCount.toLocaleString() + " / 100.000";
                 document.getElementById('total-liquid').innerText = "€ " + liquidSum.toLocaleString();
                 document.getElementById('total-reserve').innerText = "€ " + (reserveSum / 1000000000).toFixed(2) + " Miliar";
-
-            } catch (err) {
-                console.error("Sinkronisasi gagal:", err);
-            }
+            } catch (err) { console.error(err); }
         }
 
-        setInterval(updateStats, 5000);
+        async function checkBalance() {
+            const iid = document.getElementById('iid-input').value;
+            const resDiv = document.getElementById('result');
+            resDiv.innerHTML = "Mencari data...";
+            try {
+                const response = await fetch(`${URL}?iid=eq.${iid}&select=*`, {
+                    headers: { "apikey": KEY, "Authorization": "Bearer " + KEY }
+                });
+                const data = await response.json();
+                if(data.length > 0) {
+                    const user = data[0];
+                    resDiv.innerHTML = `<span style="color:#fff">Status: ${user.status}</span><br>Likuid: € ${user.ind_eur_balance}<br>Cadangan: € ${user.amount_ind_eur}`;
+                } else {
+                    resDiv.innerHTML = "IID tidak ditemukan.";
+                }
+            } catch (err) { resDiv.innerHTML = "Error koneksi."; }
+        }
+
+        setInterval(updateStats, 10000);
         updateStats();
     </script>
 </body>
