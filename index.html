@@ -45,7 +45,7 @@
         <div id="qr-entrance" class="glass-card" style="border: 1px dashed #333;">
             <div class="label">SCAN IID TO ENTER THE VAULT</div>
             <div id="reader"></div>
-            <button class="btn" id="start-btn" onclick="startScan()" style="margin-top: 20px; width: 100%;">AKTIFKAN KAMERA</button>
+            <button class="btn" id="start-btn" onmousedown="startScan()" ontouchstart="startScan()" onclick="startScan()" style="margin-top: 20px; width: 100%;">AKTIFKAN KAMERA</button>
 <div id="debug-log" style="color: #00ff00; font-family: monospace; font-size: 10px; margin-top: 10px; text-align: center;">System Ready...</div>
         </div>
     </section>
