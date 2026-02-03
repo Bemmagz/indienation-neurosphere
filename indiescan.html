@@ -3,118 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IndieScan v1.2 | Audit-Grade SSOT</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>INDIESCAN - NeuroSphere Transparency</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root { --neon: #00ff88; --gold: #ffcc00; --bg: #050505; }
-        body { background: var(--bg); color: #e0e0e0; font-family: 'Courier New', monospace; padding: 15px; margin: 0; }
-        .header { border-bottom: 2px solid var(--neon); padding: 10px 0; margin-bottom: 20px; display: flex; justify-content: space-between; }
-        .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
-        .card { background: #111; border: 1px solid #333; padding: 15px; border-radius: 5px; text-align: center; }
-        .val { font-size: 1.1em; color: var(--neon); font-weight: bold; }
-        input { width: 60%; padding: 12px; background: #000; border: 1px solid var(--neon); color: var(--neon); border-radius: 4px; }
-        button { padding: 12px; background: var(--neon); color: #000; border: none; font-weight: bold; cursor: pointer; border-radius: 4px; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.8em; }
-        th { border-bottom: 1px solid var(--neon); color: var(--neon); text-align: left; padding: 10px; }
-        td { padding: 10px; border-bottom: 1px solid #222; }
-        .founder-tag { color: var(--gold); font-size: 0.8em; border: 1px solid var(--gold); padding: 2px 5px; }
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap');
+        body { font-family: 'Space Grotesk', sans-serif; background: #0a0a0a; color: #ffffff; }
+        .glow-blue { box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); }
+        .pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
     </style>
 </head>
-<body>
+<body class="p-6 md:p-12">
+    <header class="mb-12 text-center">
+        <h1 class="text-4xl font-bold tracking-tighter italic">
+            <span class="text-blue-500">INDIE</span>SCAN
+        </h1>
+        <p class="text-slate-400 mt-2">Public Transparency Engine • Real-time Monitoring</p>
+    </header>
 
-    <div class="header">
-        <div>
-            <h2 style="margin:0; color:var(--neon);">IndieScan <small style="font-size:0.4em;">v1.2 Audit-Grade</small></h2>
-            <div id="market-ticker" style="font-size:0.7em; color:#888;">Connecting to Market...</div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-slate-900 p-6 rounded-2xl glow-blue">
+            <h3 class="text-slate-500 text-sm font-bold uppercase mb-4 tracking-widest">Active Citizens</h3>
+            <div class="text-5xl font-mono font-bold text-white mb-2">9.922</div>
+            <div class="text-green-400 text-xs flex items-center gap-2">
+                <span class="w-2 h-2 bg-green-400 rounded-full pulse"></span> Live System Online
+            </div>
         </div>
-        <div style="text-align:right; font-size:0.7em;">
-            <div style="color:var(--neon);">● SSOT ACTIVE</div>
-            <div id="clock"></div>
+
+        <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800">
+            <h3 class="text-slate-500 text-sm font-bold mb-4 tracking-widest">ENPE Distribution</h3>
+            <div class="text-4xl font-mono text-emerald-400 font-bold">100T</div>
+            <div class="mt-4 space-y-2">
+                <div class="flex justify-between text-xs"><p>SWF (Locked)</p><p>80%</p></div>
+                <div class="w-full bg-slate-800 h-1.5 rounded-full">
+                    <div class="bg-emerald-500 h-full w-[80%]"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800">
+            <h3 class="text-slate-500 text-sm font-bold mb-4 tracking-widest">System Health</h3>
+            <div class="space-y-3 text-sm">
+                <div class="flex justify-between"><span>The Vault</span><span class="text-green-400">100% UP</span></div>
+                <div class="flex justify-between"><span>QR Gateway</span><span class="text-green-400">ACTIVE</span></div>
+                <div class="flex justify-between"><span>Supabase Sync</span><span class="text-blue-400 italic">SYNCING...</span></div>
+            </div>
         </div>
     </div>
 
-    <div class="stat-grid">
-        <div class="card"><small>CITIZENS</small><br><span id="total-citizens" class="val">0</span></div>
-        <div class="card"><small>PUBLIC LUV</small><br><span id="sum-luv" class="val">0</span></div>
-        <div class="card"><small>PUBLIC IND-EUR</small><br><span id="sum-ind" class="val">€0</span></div>
+    <div class="mt-10 bg-slate-900/50 p-6 rounded-2xl border border-slate-800">
+        <h2 class="text-xl font-bold mb-6">Recent Sovereign Activity</h2>
+        <div class="space-y-4 font-mono text-sm">
+            <div class="p-3 bg-slate-800/30 rounded-lg flex justify-between border-l-4 border-blue-500">
+                <span>Citizen IID Activation: INDS-9A3B...</span>
+                <span class="text-slate-500">2m ago</span>
+            </div>
+            <div class="p-3 bg-slate-800/30 rounded-lg flex justify-between border-l-4 border-emerald-500">
+                <span>Asset Allocation: 10.000 ENPE Staked</span>
+                <span class="text-slate-500">14m ago</span>
+            </div>
+        </div>
     </div>
 
-    <div style="margin-bottom:20px;">
-        <input type="text" id="searchIID" placeholder="Cari Identitas (IID)...">
-        <button onclick="performSearch()">CARI</button>
-    </div>
-
-    <table>
-        <thead>
-            <tr><th>IDENTITY</th><th>STATUS</th><th>LUV BALANCE</th><th>STABLE ANCHOR</th></tr>
-        </thead>
-        <tbody id="main-ledger"></tbody>
-    </table>
-
-    <script>
-        const client = supabase.createClient("https://shnyerogcqqscmqzqqsu.supabase.co", "YOUR_SUPABASE_ANON_KEY");
-        let btcPrice = 0;
-
-        async function updateStats() {
-            // Ambil semua data untuk agregasi bersih
-            const { data } = await client.from('wallets').select('iid, luv_balance, ind_eur_balance');
-            if(data) {
-                // LOGIKA KRUSIAL: Memisahkan Warga dari Founder
-                const citizens = data.filter(w => !w.iid.includes('FOUNDER'));
-                
-                const totalLuv = citizens.reduce((a,b) => a + Number(b.luv_balance), 0);
-                const totalInd = citizens.reduce((a,b) => a + Number(b.ind_eur_balance), 0);
-
-                document.getElementById('total-citizens').innerText = citizens.length.toLocaleString();
-                document.getElementById('sum-luv').innerText = totalLuv.toLocaleString();
-                document.getElementById('sum-ind').innerText = "€" + totalInd.toLocaleString();
-            }
-        }
-
-        async function loadLedger(query = null) {
-            let req = client.from('wallets').select('*').order('last_update', {ascending: false});
-            if(query) req = req.ilike('iid', `%${query}%`);
-            else req = req.limit(15);
-
-            const { data } = await req;
-            if(data) {
-                document.getElementById('main-ledger').innerHTML = data.map(w => {
-                    const isFounder = w.iid.includes('FOUNDER');
-                    return `
-                    <tr style="${isFounder ? 'background:rgba(255,204,0,0.05)' : ''}">
-                        <td>${w.iid}</td>
-                        <td>${isFounder ? '<span class="founder-tag">GENESIS</span>' : 'CITIZEN'}</td>
-                        <td>${Number(w.luv_balance).toLocaleString()}</td>
-                        <td>
-                            €${Number(w.ind_eur_balance).toLocaleString()}
-                            <div style="font-size:0.7em; color:#666;">
-                                ≈ ₿${btcPrice > 0 ? (w.ind_eur_balance/btcPrice).toFixed(6) : '0'}
-                            </div>
-                        </td>
-                    </tr>`;
-                }).join('');
-            }
-        }
-
-        async function getMarket() {
-            try {
-                const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether&vs_currencies=eur,usd');
-                const d = await r.json();
-                btcPrice = d.bitcoin.eur;
-                document.getElementById('market-ticker').innerText = `BTC: €${d.bitcoin.eur.toLocaleString()} | USDT: $${d.tether.usd}`;
-                updateStats();
-            } catch(e) {}
-        }
-
-        function performSearch() { loadLedger(document.getElementById('searchIID').value); }
-
-        // Real-time Update
-        client.channel('audit').on('postgres_changes', {event:'UPDATE', schema:'public', table:'wallets'}, () => {
-            loadLedger(); updateStats();
-        }).subscribe();
-
-        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
-        getMarket(); loadLedger(); setInterval(getMarket, 60000);
-    </script>
+    <footer class="mt-12 text-center text-slate-600 text-xs">
+        <p>© 2026 NeuroSphere Ecosystem • Verified by INDIE-Founder</p>
+        <div class="mt-4 flex justify-center gap-6 underline">
+            <a href="index.html">Gateway</a>
+            <a href="vault.html">The Vault</a>
+        </div>
+    </footer>
 </body>
 </html>
