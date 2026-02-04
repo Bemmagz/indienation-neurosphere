@@ -3,50 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEUROSPHERE | Founder Dashboard</title>
+    <title>NEUROSPHERE | Core Control</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #000; color: #fff; font-family: 'Inter', sans-serif; }
-        .stat-card { background: linear-gradient(145deg, #050505, #0a0a0a); border: 1px solid #10b98133; border-radius: 20px; padding: 25px; transition: 0.3s; }
-        .stat-card:hover { border-color: #10b981; box-shadow: 0 0 20px #10b98122; }
-        .glow { text-shadow: 0 0 10px #10b981; }
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&display=swap');
+        body { background: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; }
+        .emerald-glow { box-shadow: 0 0 20px rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .token-pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+        .gradient-text { background: linear-gradient(to right, #10b981, #059669); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     </style>
 </head>
-<body class="p-6 max-w-lg mx-auto">
-    <header class="mb-10 text-center">
-        <h1 class="text-3xl font-black text-emerald-500 glow">NEUROSPHERE</h1>
-        <p class="text-[9px] text-emerald-800 tracking-[0.4em] uppercase mt-1">Founder Identity Verified</p>
-    </header>
-
-    <div class="space-y-6">
-        <div class="stat-card">
-            <h2 class="text-xs text-slate-500 uppercase tracking-widest mb-1">E Coin (ENPE)</h2>
-            <div class="text-3xl font-bold mb-4">100.000.000.000.000</div>
-            <div class="grid grid-cols-2 gap-2 text-[10px] uppercase text-emerald-600">
-                <div class="bg-emerald-950/30 p-2 rounded">Staking: 20%</div>
-                <div class="bg-emerald-950/30 p-2 rounded">SWF: 80%</div>
-            </div>
+<body class="bg-black min-h-screen p-4 flex flex-col items-center">
+    <div class="w-full max-w-md mt-6 mb-8 flex justify-between items-end border-b border-emerald-900 pb-4">
+        <div>
+            <h1 class="text-3xl font-bold tracking-tighter gradient-text">NEUROSPHERE</h1>
+            <p class="text-[10px] text-emerald-700 tracking-[0.3em]">CORE IDENTITY: INDIE-FOUNDER</p>
         </div>
-
-        <div class="stat-card">
-            <h2 class="text-xs text-slate-500 uppercase tracking-widest mb-1">Lovely Coin (LUV)</h2>
-            <div class="text-3xl font-bold mb-4">100.000.000.000.000</div>
-            <div class="grid grid-cols-2 gap-2 text-[10px] uppercase text-emerald-600">
-                <div class="bg-emerald-950/30 p-2 rounded">Locked: 2 Years</div>
-                <div class="bg-emerald-950/30 p-2 rounded">Donation: 15%</div>
-            </div>
-        </div>
-
-        <div class="stat-card border-dashed border-emerald-900">
-            <h2 class="text-xs text-slate-500 uppercase tracking-widest mb-1">IndieNation Stable (IND-EUR)</h2>
-            <div class="text-2xl font-bold text-slate-300">UNLIMITED SUPPLY</div>
-            <p class="text-[9px] text-slate-600 mt-2 italic">Anchor: €100.000 Distribution Plan</p>
+        <div class="text-right">
+            <p class="text-[8px] text-slate-500 uppercase">System Status</p>
+            <p class="text-[10px] text-emerald-500 font-mono">ENCRYPTED SOURCE</p>
         </div>
     </div>
 
-    <footer class="mt-12 text-center">
-        <div class="text-[10px] text-emerald-900 uppercase tracking-widest mb-2 font-mono">System Integrity: 100%</div>
-        <button onclick="window.location.href='index.html'" class="text-[10px] text-slate-500 underline uppercase">Logout Gateway</button>
+    <div class="w-full max-w-md space-y-4">
+        <div class="emerald-glow rounded-3xl p-6 bg-zinc-950/50">
+            <p class="text-[10px] text-emerald-800 uppercase tracking-widest mb-2 font-bold">Native Engine (ENPE)</p>
+            <div class="flex items-baseline gap-2">
+                <span class="text-4xl font-black token-pulse">100</span>
+                <span class="text-xl font-light text-emerald-600">TRILLION E</span>
+            </div>
+            <div class="mt-4 h-1 w-full bg-zinc-900 rounded-full overflow-hidden">
+                <div class="bg-emerald-500 h-full w-[20%]" title="Staking Allocation"></div>
+            </div>
+            <div class="flex justify-between mt-2 text-[9px] text-zinc-500 font-mono">
+                <span>STAKING: 20T</span>
+                <span>SWF: 80T</span>
+            </div>
+        </div>
+
+        <div class="emerald-glow rounded-3xl p-6 bg-zinc-950/50">
+            <p class="text-[10px] text-emerald-800 uppercase tracking-widest mb-2 font-bold">Lovely Coin (LUV)</p>
+            <div class="flex items-baseline gap-2">
+                <span class="text-4xl font-black">100</span>
+                <span class="text-xl font-light text-emerald-600">TRILLION LUV</span>
+            </div>
+            <p class="text-[10px] mt-3 text-zinc-400 italic">"Estafet Media: 0-10 Coins Daily Rewards"</p>
+        </div>
+
+        <div class="emerald-glow rounded-3xl p-6 bg-emerald-950/20 border-dashed">
+            <p class="text-[10px] text-emerald-500 uppercase tracking-widest mb-2 font-bold">Sovereign Stable (IND-EUR)</p>
+            <div class="text-2xl font-bold italic text-zinc-300">€100,000 / IND</div>
+            <p class="text-[10px] text-zinc-600 mt-2">Distribution Start: 01-02-2026 | Target: 10M People</p>
+        </div>
+    </div>
+
+    <div class="w-full max-w-md mt-8 grid grid-cols-2 gap-4">
+        <button class="p-4 bg-emerald-900/20 border border-emerald-900 rounded-2xl text-[10px] font-bold text-emerald-500 uppercase tracking-tighter hover:bg-emerald-900/40 transition">Distribute LUV</button>
+        <button class="p-4 bg-zinc-900/50 border border-zinc-800 rounded-2xl text-[10px] font-bold text-zinc-500 uppercase tracking-tighter hover:bg-zinc-800 transition">Network Stats</button>
+    </div>
+
+    <footer class="mt-auto mb-6 text-center">
+        <p class="text-[8px] text-zinc-800 uppercase tracking-[0.5em] mb-4">Auralang Interpreter v1.0 - NeuroSphere Core</p>
+        <button onclick="window.location.href='index.html'" class="px-6 py-2 border border-zinc-900 rounded-full text-[9px] text-zinc-700 hover:text-red-900 hover:border-red-900 transition">DISCONNECT NODE</button>
     </footer>
 </body>
 </html>
+/* Update Stamp: Wed Feb  4 13:26:06 WIB 2026 */
