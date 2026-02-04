@@ -2,82 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Identity Initialization - NeuroSphere</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identity Initialization - IndieNation</title>
     <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script></head>
-<body class="bg-black text-green-500 font-mono flex flex-col items-center justify-center min-h-screen p-6">
-    <div class="w-full max-w-xs border border-green-500 p-6 bg-green-950/10">
-        <h1 class="text-xs font-bold tracking-[0.3em] uppercase mb-6 text-center">Identity Enrollment</h1>
-        <input type="text" id="username" placeholder="INPUT IDENTITY NAME" class="w-full bg-black border border-green-500 p-2 mb-4 text-white text-[10px] outline-none">
-        <button onclick="startBiometricAuth()" class="w-full py-3 bg-green-600 text-black font-bold text-[10px] uppercase">Initialize & Save</button>
-        <p class="text-[7px] mt-4 opacity-50 text-center">SYSTEM: AI GUARD AUTO-SAVE ACTIVE</p>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+    <style>
+        body { background: #000; color: #00ff41; font-family: 'JetBrains Mono', monospace; }
+        input { background: #111; border: 1px solid #00ff41; color: #00ff41; padding: 10px; width: 100%; }
+        .nav-btn { font-size: 8px; border: 1px solid #00ff41; padding: 5px 10px; }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-6">
+    <div class="fixed top-6 flex gap-4 w-full justify-center">
+        <a href="/" class="nav-btn">HOME</a>
+        <a href="/vault" class="nav-btn text-white">VAULT</a>
+        <a href="/certificate" class="nav-btn text-white">CERTIFICATE</a>
+    </div>
+
+    <div class="w-full max-w-xs text-center space-y-6">
+        <h1 class="text-xs tracking-widest uppercase">Register Your Sovereign IID</h1>
+        <input type="text" id="username" placeholder="ENTER NAME / FOUNDER ID">
+        <button onclick="forceSave()" class="w-full bg-green-600 text-black py-3 font-bold text-xs uppercase hover:bg-white transition">Initialize & Save</button>
+        
+        <div id="qr-result" class="hidden mt-6 p-4 border border-dashed border-green-800">
+            <p class="text-[8px] mb-2">ACCESS GRANTED. SCAN/SAVE QR BELOW:</p>
+            <canvas id="qrcode" class="mx-auto bg-white p-2"></canvas>
+            <p class="text-[10px] mt-4 text-white">ID: <span id="iid-val"></span></p>
+        </div>
     </div>
 
     <script>
-        function startBiometricAuth() {
-            const user = document.getElementById('username').value;
-            if(!user) return alert("IDENTITY NAME REQUIRED");
-
-            // Generate IID & Timestamp [cite: 2025-12-23]
-            const iid = "NS-USER-" + Math.floor(1000 + Math.random() * 9000) + "-X";
-            const timestamp = new Date().toISOString();
+        function forceSave() {
+            const name = document.getElementById('username').value;
+            if(!name) return alert("Name required");
             
-            // Logic: Auto-calculate H+3 Claim [cite: 2026-01-25]
-            const initialClaim = 1540; 
-
-            // Auto-Save to LocalStorage (Persistence)
-            const userData = {
-                iid: iid,
-                username: user,
-                balance: initialClaim,
-                joined: timestamp,
-                status: "ACTIVE"
-            };
+            const iid = "IID-" + Math.random().toString(36).substr(2, 9).toUpperCase();
+            const userData = { username: name, iid: iid, balance: 1540 };
             
+            // Simpan Paksa ke LocalStorage [cite: 2026-01-25]
             localStorage.setItem('neuro_identity', JSON.stringify(userData));
             
-            // Log to console for audit [cite: 2026-01-25]
-            console.log("AI Guard: Identity Auto-Saved", userData);
+            // Munculkan QR [cite: 2025-12-23]
+            document.getElementById('iid-val').innerText = iid;
+            const qrCanvas = document.getElementById('qrcode');
+            QRCode.toCanvas(qrCanvas, "https://indienation-neurosphere.vercel.app/vault", { width: 150 });
+            document.getElementById('qr-result').classList.remove('hidden');
             
-            alert("SUCCESS: Identity " + iid + " has been auto-saved to Sovereign Ledger.");
-            window.location.href = 'vault.html';
+            alert("SUCCESS: Identity Locked! Go to CERTIFICATE menu.");
         }
     </script>
 </body>
 </html>
-<script>
-async function startBiometricAuth() {
-    if (!window.PublicKeyCredential) {
-        alert("Biometrics not supported. Falling back to Nano-Save.");
-        return autoSaveIdentity();
-    }
-    
-    // Inisialisasi Biometrik lewat Hardware [cite: 2025-12-23]
-    try {
-        console.log("AI Guard: Requesting Hardware Bio-Auth...");
-        // Simulasi Handshake Hardware (WebAuthn Bridge)
-        alert("Please verify your identity (Fingerprint/FaceID)");
-        autoSaveIdentity();
-    } catch (err) {
-        autoSaveIdentity();
-    }
-}
-</script>
-<div id="qr-result" class="mt-4 flex flex-col items-center hidden">
-    <p class="text-[8px] mb-2">SCAN TO ACCESS YOUR IDENTITY</p>
-    <canvas id="qrcode" class="border-2 border-green-500 p-2 bg-white"></canvas>
-    <button onclick="window.print()" class="mt-2 text-[8px] underline">DOWNLOAD QR ACCESS</button>
-</div>
-
-<script>
-function generateAccessQR(iid) {
-    const qrCanvas = document.getElementById('qrcode');
-    const url = "https://indienation-neurosphere.vercel.app/vault";
-    QRCode.toCanvas(qrCanvas, url, { width: 128 }, function (error) {
-        if (error) console.error(error);
-        document.getElementById('qr-result').classList.remove('hidden');
-    });
-}
-</script>
