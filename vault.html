@@ -63,3 +63,13 @@
     </button>
 </body>
 </html>
+<script>
+function checkAgeAndLock() {
+    const userAge = getUserAgeFromIID(); // Simulasi cek data IID
+    if(userAge < 17) {
+        document.getElementById('balance-status').innerHTML = "STATUS: LOCKED (UNDERAGE)";
+        document.getElementById('spend-button').disabled = true;
+        console.log("AI Guard: Access denied for underage user.");
+    }
+}
+</script>
