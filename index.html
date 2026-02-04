@@ -5,53 +5,117 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INDIE-NATION | Sovereign App</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        body { background: #020617; color: #e2e8f0; font-family: 'Inter', sans-serif; }
-        .genesis-border { border: 2px solid #10b981; box-shadow: 0 0 15px #10b98133; }
+        body { font-family: 'Space Grotesk', sans-serif; background: #050505; color: #e5e7eb; }
+        .glow-emerald { box-shadow: 0 0 30px rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .hidden { display: none; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center p-4">
-    <nav class="w-full max-w-lg flex justify-between items-center py-6 border-b border-slate-800 mb-8">
-        <span class="font-black tracking-tighter text-xl text-emerald-500">INDIE-NATION</span>
-        <span class="text-[10px] bg-emerald-900/30 text-emerald-400 px-2 py-1 rounded">V.1.0 GENESIS</span>
-    </nav>
+<body class="min-h-screen flex items-center justify-center p-4">
 
-    <main class="w-full max-w-md space-y-6">
-        <section class="p-8 rounded-3xl genesis-border bg-slate-900/50 text-center">
-            <h2 class="text-xs uppercase tracking-[0.3em] text-slate-500 mb-2">Total Living Value</h2>
-            <div id="balance" class="text-5xl font-bold text-white mb-2">€ 0</div>
-            <div class="text-emerald-400 text-sm font-mono tracking-widest uppercase">Indienation Stable Coin (IND-EUR)</div>
-        </section>
-
-        <section class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
-            <h3 class="text-sm font-bold text-emerald-500 uppercase tracking-wider">Pesan Konstitusi</h3>
-            <p class="text-xs leading-relaxed text-slate-400">
-                Kekayaan di NeuroSphere bukan "hadiah cuma-cuma" dari internet. Ini adalah **hak ekonomi** yang diberikan secara disiplin berdasarkan algoritma waktu.
-            </p>
-            <ul class="text-[11px] space-y-2 text-slate-300 italic">
-                <li>• €1.000 Initial Grant (Tersedia hari ini)</li>
-                <li>• €270 Jatah Harian (Diakumulasi dengan kejujuran)</li>
-                <li>• 15% Alokasi Donasi Bencana Aktif</li>
-            </ul>
-        </section>
-
-        <div class="space-y-3">
-            <button class="w-full py-4 bg-emerald-600 rounded-xl font-bold text-sm uppercase tracking-widest hover:bg-emerald-500 transition-all">
-                Klaim Hak Harian (€270)
-            </button>
-            <p class="text-center text-[10px] text-slate-600">IID: INDIE-0000000001 | Status: Founder Verified</p>
+    <div id="app-container" class="w-full max-w-md bg-zinc-900/50 p-8 rounded-[2rem] glow-emerald">
+        
+        <div id="view-login" class="space-y-6">
+            <div class="text-center">
+                <h1 class="text-2xl font-bold tracking-tighter text-emerald-500">ACCESS GATEWAY</h1>
+                <p class="text-[10px] text-zinc-500 uppercase tracking-widest mt-2">NeuroSphere Identity Protocol</p>
+            </div>
+            <div class="space-y-3">
+                <input id="iid" type="text" placeholder="IID (INDIE-000...)" class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-sm focus:border-emerald-500 outline-none transition-all">
+                <input id="phone" type="tel" placeholder="Nomor Telepon" class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-sm focus:border-emerald-500 outline-none transition-all">
+            </div>
+            <div class="p-4 bg-emerald-900/10 border border-emerald-900/30 rounded-xl text-center">
+                <p class="text-[10px] text-emerald-400 mb-2">SISTEM SIAP PINDAI BIOMETRIK</p>
+                <div class="flex justify-center gap-4">
+                    <span class="text-xl">👤</span> <span class="text-xl">☝️</span>
+                </div>
+            </div>
+            <button onclick="handleLogin()" class="w-full bg-emerald-600 hover:bg-emerald-500 py-4 rounded-xl font-bold transition-all shadow-lg shadow-emerald-900/20">MASUK KE SISTEM</button>
         </div>
-    </main>
+
+        <div id="view-dashboard" class="hidden space-y-8 text-center">
+            <div class="flex justify-between items-center">
+                <span class="text-[10px] font-bold text-emerald-500" id="display-iid"></span>
+                <button onclick="handleSignOut()" class="text-[10px] text-zinc-500 hover:text-red-500">SIGN OUT</button>
+            </div>
+            <div>
+                <p class="text-[10px] text-zinc-500 uppercase tracking-[0.4em]">Total Living Value (IND-EUR)</p>
+                <h2 id="balance" class="text-5xl font-black mt-2 text-white">€ 0</h2>
+                <p class="text-emerald-500 text-[10px] mt-2">● Aura Aktif: Menghitung Real-time</p>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <button id="btn-claim" onclick="handleClaim()" class="bg-emerald-600 p-4 rounded-2xl font-bold text-xs uppercase">Klaim Jatah (€270)</button>
+                <button onclick="showCert()" class="bg-zinc-800 p-4 rounded-2xl font-bold text-xs uppercase">Sertifikat</button>
+            </div>
+        </div>
+
+        <div id="view-cert" class="hidden space-y-6">
+            <h2 class="text-center text-sm font-bold text-emerald-500">SOVEREIGNTY CERTIFICATE</h2>
+            <div class="bg-black p-6 rounded-2xl border border-zinc-800 text-[10px] space-y-4 font-mono">
+                <div class="border-b border-zinc-900 pb-2">
+                    <p class="text-zinc-600 uppercase text-[8px]">IndieNation Resident ID</p>
+                    <p id="cert-iid" class="text-emerald-400 font-bold"></p>
+                </div>
+                <div class="border-b border-zinc-900 pb-2">
+                    <p class="text-zinc-600 uppercase text-[8px]">Legal Asset Anchor</p>
+                    <p class="text-white">€100.000 Stable Coin (IND-EUR)</p>
+                </div>
+                <div>
+                    <p class="text-zinc-600 uppercase text-[8px]">Verification Hash</p>
+                    <p class="break-all text-zinc-400">SHA256:7D8A29F3E1B9C5A...0001</p>
+                </div>
+            </div>
+            <button onclick="backToDash()" class="w-full text-zinc-500 text-[10px] uppercase font-bold">Kembali ke Dashboard</button>
+        </div>
+
+    </div>
 
     <script>
-        const GENESIS = new Date('2026-02-01T00:00:00Z');
-        function sync() {
-            const days = Math.floor((new Date() - GENESIS) / (1000*60*60*24)) + 1;
-            const val = 1000 + ((days - 1) * 270);
-            document.getElementById('balance').innerText = "€ " + val.toLocaleString('de-DE');
+        const GENESIS_DATE = new Date('2026-02-01T00:00:00Z');
+        
+        function handleLogin() {
+            const iid = document.getElementById('iid').value;
+            const phone = document.getElementById('phone').value;
+            if(!iid || !phone) return alert("Mohon lengkapi ID dan Nomor Telepon!");
+            
+            // Simbolis: Proses Biometrik (Sesuai Konstitusi 2026-02-01)
+            document.getElementById('view-login').classList.add('hidden');
+            document.getElementById('view-dashboard').classList.remove('hidden');
+            document.getElementById('display-iid').innerText = iid;
+            updateBalance();
         }
-        sync();
-        setInterval(sync, 60000);
+
+        function updateBalance() {
+            const now = new Date();
+            const days = Math.floor((now - GENESIS_DATE) / (1000 * 60 * 60 * 24)) + 1;
+            const value = 1000 + ((days - 1) * 270); // Day 1: 1000, Day 2+: 270 [cite: 2026-02-01]
+            document.getElementById('balance').innerText = "€ " + value.toLocaleString('de-DE');
+        }
+
+        function handleClaim() {
+            document.getElementById('btn-claim').innerText = "KLAIM BERHASIL";
+            document.getElementById('btn-claim').disabled = true;
+            document.getElementById('btn-claim').classList.replace('bg-emerald-600', 'bg-zinc-800');
+            alert("Reward €270 telah masuk ke saldo hidup Anda.");
+        }
+
+        function showCert() {
+            document.getElementById('view-dashboard').classList.add('hidden');
+            document.getElementById('view-cert').classList.remove('hidden');
+            document.getElementById('cert-iid').innerText = document.getElementById('display-iid').innerText;
+        }
+
+        function backToDash() {
+            document.getElementById('view-cert').classList.add('hidden');
+            document.getElementById('view-dashboard').classList.remove('hidden');
+        }
+
+        function handleSignOut() {
+            if(confirm("Apakah Anda yakin ingin keluar? Sesi biometrik akan dihapus.")) {
+                location.reload();
+            }
+        }
     </script>
 </body>
 </html>
