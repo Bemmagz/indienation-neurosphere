@@ -6,33 +6,21 @@
     <title>INDIENATION | Sovereign Gateway</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #000; color: #fff; font-family: 'Inter', sans-serif; overflow: hidden; }
-        .qr-frame { border: 2px solid #10b981; padding: 20px; background: #050505; box-shadow: 0 0 30px rgba(16, 185, 129, 0.2); position: relative; }
-        .scan-line { width: 100%; height: 2px; background: #10b981; position: absolute; top: 0; left: 0; animation: scan 2s linear infinite; box-shadow: 0 0 10px #10b981; }
+        body { background: #000; color: #fff; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; min-height: screen; margin: 0; overflow: hidden; }
+        .qr-frame { border: 2px solid #10b981; padding: 20px; background: #050505; border-radius: 2rem; box-shadow: 0 0 30px rgba(16, 185, 129, 0.2); position: relative; }
+        .scan-line { width: 100%; height: 2px; background: #10b981; position: absolute; top: 0; left: 0; animation: scan 2s linear infinite; }
         @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-6">
+<body class="flex-col">
     <div class="text-center mb-10">
-        <h1 class="text-3xl font-black tracking-tighter text-emerald-500 mb-2">INDIENATION</h1>
-        <p class="text-[10px] text-emerald-800 uppercase tracking-[0.5em]">Digital Sovereignty Protocol</p>
+        <h1 class="text-3xl font-black text-emerald-500">INDIENATION</h1>
+        <p class="text-[10px] text-emerald-800 tracking-[0.5em]">DIGITAL SOVEREIGNTY</p>
     </div>
-
-    <div class="qr-frame rounded-3xl mb-12">
+    <div class="qr-frame">
         <div class="scan-line"></div>
-        <img src="https://quickchart.io/qr?text=INDIE-0000000001&dark=10b981&light=050505&ecLevel=H&size=300" 
-             alt="QR Gate" class="rounded-xl">
+        <img src="https://quickchart.io/qr?text=INDIE-0000000001&dark=10b981&light=050505&size=250" alt="QR Gate">
     </div>
-
-    <div class="w-full max-w-xs space-y-4 text-center">
-        <button onclick="window.location.reload()" class="w-full py-4 bg-emerald-600/10 border border-emerald-500/50 text-emerald-400 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-emerald-600 hover:text-white transition-all">
-            Verify Identity
-        </button>
-        <p class="text-[10px] text-slate-600 uppercase tracking-widest">Authorized: INDIE-FOUNDER</p>
-    </div>
-
-    <footer class="fixed bottom-8 text-[9px] text-slate-800 tracking-[0.3em]">
-        NEUROSPHERE GATEWAY SYSTEM © 2026
-    </footer>
+    <p class="mt-8 text-[10px] text-slate-600 tracking-widest uppercase">Authorized: INDIE-FOUNDER</p>
 </body>
 </html>
