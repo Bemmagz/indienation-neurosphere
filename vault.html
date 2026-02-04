@@ -2,26 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sovereign Vault - NeuroSphere</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sovereign TM Vault</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #050505; color: #00ff41; font-family: monospace; padding: 40px; }
-        .card { border: 1px solid #00ff41; padding: 20px; margin-bottom: 20px; background: rgba(0,255,65,0.05); }
-        .locked { color: #ff3333; font-size: 0.8em; }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=JetBrains+Mono&display=swap');
+        body { background: #050505; color: #00ff41; font-family: 'JetBrains Mono', monospace; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+        .aura-circle { 
+            width: 130px; height: 130px; border-radius: 50%; 
+            background: radial-gradient(circle, rgba(0,255,65,0.4) 0%, transparent 70%);
+            border: 2px solid #00ff41; box-shadow: 0 0 20px #00ff41;
+            display: flex; align-items: center; justify-content: center; margin: 10px auto;
+        }
+        .cyber-card { border: 1px solid #00ff41; background: rgba(0,255,65,0.05); padding: 10px; margin-bottom: 8px; }
     </style>
 </head>
-<body>
-    <h1>🔐 VAULT: INDIE-FOUNDER</h1>
-    <div class="card">
-        <h2>LOVELY COIN (LUV)</h2>
-        <div style="font-size: 2em;">100,000,000,000,000</div>
-        <p class="locked">[ STATUS: LOCKED FOR 3 YEARS ]</p>
-        <p>[ SOCIAL DIST: 1M LUV to 1M PEOPLE ]</p>
+<body class="p-4 justify-between">
+    <div class="text-center">
+        <h1 class="font-bold tracking-widest text-xs uppercase">TECHNOLOGY MONEY IDENTITY</h1>
+        <p class="text-[8px] opacity-60">VERIFIED BY AI GUARD</p>
     </div>
-    <div class="card">
-        <h2>ENPE (E COIN)</h2>
-        <div style="font-size: 2em;">20,000,000,000,000 E</div>
-        <p>[ STAKING: ACTIVE (20%) | SWF: 80T LOCKED ]</p>
+
+    <div class="aura-circle">
+        <div class="bg-white p-1.5">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=90x90&data=NEURO-TM-9921-X" alt="QR">
+        </div>
     </div>
-    <button onclick="location.href='/certificate'">VIEW NFT CONTAINER</button>
+
+    <div class="space-y-2">
+        <div class="cyber-card flex justify-between items-center"><span class="text-[9px]">STABLE (IND-EUR)</span><span class="text-xs font-bold">€100,000</span></div>
+        <div class="cyber-card flex justify-between items-center"><span class="text-[9px]">LOVELY (LUV)</span><span class="text-xs font-bold">1,000,000</span></div>
+        <div class="cyber-card flex justify-between items-center"><span class="text-[9px]">NATIVE (ENPE)</span><span class="text-xs font-bold">0.00 E</span></div>
+    </div>
+
+    <div class="text-[8px] opacity-70 border-t border-green-900 pt-2 space-y-1">
+        <p>TX_HASH: 0x8f3b...d9cc2b871</p>
+        <p>TS: 2026-02-04 19:49:00 UTC</p>
+        <p>IID: <span class="text-white font-bold">NS-USER-9921-X</span></p>
+    </div>
+
+    <button onclick="location.href='certificate.html'" class="w-full py-3 bg-green-600 text-black font-bold text-[10px] uppercase tracking-widest mt-2">
+        VIEW IDENTITY NFT
+    </button>
 </body>
 </html>
