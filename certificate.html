@@ -1,34 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="robots" content="noindex, nofollow">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sovereign Identity NFT</title>
+    <title>NFT Walking Wallet - Sovereign Certificate</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: black; color: #00ff41; font-family: 'JetBrains Mono', monospace; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; margin: 0; }
-        .nft-container { width: 85vw; max-width: 320px; border: 2px solid #00ff41; background: linear-gradient(180deg, #0a0a0a 0%, #000 100%); position: relative; box-shadow: 0 0 30px rgba(0,255,65,0.2); }
-        .tm-mark { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); font-size: 7px; border: 1px solid #00ff41; padding: 2px 8px; border-radius: 10px; }
+        body { background: #000; color: #00ff41; font-family: 'JetBrains Mono', monospace; }
+        .nft-card { border: 2px solid #00ff41; box-shadow: 0 0 20px rgba(0,255,65,0.3); background: rgba(0,255,65,0.05); }
+        .progress-bg { background: #111; height: 10px; width: 100%; border-radius: 5px; overflow: hidden; }
+        .progress-fill { background: #00ff41; height: 100%; width: 1.54%; } /* 1.540 dari 100.000 */
     </style>
 </head>
-<body class="p-6">
-    <div class="nft-container p-6 text-center">
-        <div class="tm-mark uppercase">Technology Identity</div>
-        <h2 class="text-[9px] tracking-[0.3em] uppercase mt-6 border-b border-green-900 pb-2">Walking Wallet NFT</h2>
+<body class="flex items-center justify-center min-h-screen p-6">
+    <div id="cert-container" class="nft-card w-full max-w-sm p-8 text-center relative">
+        <div class="absolute top-2 right-4 text-[8px] text-yellow-500">IID VERIFIED</div>
         
-        <div class="bg-white p-2 my-6 mx-auto w-32 h-32">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=112x112&data=IID-NS-USER-9921-X" alt="QR">
-        </div>
+        <h1 class="text-[12px] tracking-[0.6em] uppercase mb-8 font-bold text-white">SOVEREIGN IDENTITY</h1>
+        
+        <div class="text-left space-y-4 text-[11px]">
+            <p class="opacity-70">NAME: <span id="disp-name" class="text-white font-bold uppercase">...</span></p>
+            <p class="opacity-70">IID: <span id="disp-iid" class="text-yellow-500 font-bold">...</span></p>
+            
+            <hr class="border-green-900">
+            
+            <div class="py-2">
+                <p class="text-[9px] mb-1">ACCUMULATED BALANCE (IND-EUR)</p>
+                <p class="text-3xl font-bold text-white">€1.540,00</p>
+            </div>
 
-        <div class="text-left text-[9px] space-y-2 uppercase">
-            <p>> HOLDER: <span class="text-white">SOVEREIGN CITIZEN</span></p>
-            <p>> IID: <span class="text-white">NS-USER-9921-X</span></p>
-            <p>> VALUE: TM-DIALECTS-SYNCED</p>
-            <p>> STATUS: AURALANG-COMPLIANT</p>
+            <div>
+                <p class="text-[8px] mb-1 opacity-70">TOTAL SOVEREIGN GRANT PROGRESS: €100.000</p>
+                <div class="progress-bg">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
         </div>
-
-        <button onclick="location.href='vault.html'" class="mt-6 py-2 border border-green-500 w-full text-[8px] uppercase tracking-widest hover:bg-green-500 hover:text-black transition">BACK TO VAULT</button>
+        
+        <p class="text-[7px] mt-10 opacity-40 leading-relaxed">
+            ENPE NATIVE: 100T | LUV AURA: 100T<br>
+            SECURED BY NEUROSPHERE AI GUARD
+        </p>
     </div>
+
+    <script>
+        const data = JSON.parse(localStorage.getItem('neuro_identity'));
+        if(data) {
+            document.getElementById('disp-name').innerText = data.username;
+            document.getElementById('disp-iid').innerText = data.iid;
+        } else {
+            document.getElementById('cert-container').innerHTML = "<h1 class='text-xs'>IDENTITY NOT FOUND.<br>REGISTER AT /AUTH</h1>";
+        }
+    </script>
 </body>
 </html>
