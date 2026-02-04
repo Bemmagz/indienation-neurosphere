@@ -3,80 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEUROSPHERE | THE AWAKENING</title>
+    <title>NeuroSphere - New Civilization</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        body { background: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; overflow: hidden; margin: 0; }
-        .fade-content { opacity: 0; transition: opacity 1.2s ease-in-out; position: absolute; width: 100%; text-align: center; top: 50%; transform: translateY(-50%); }
-        .active { opacity: 1 !important; }
-        .bg-overlay {
-            position: fixed; inset: 0;
-            background: radial-gradient(circle at center, #002b0f 0%, #000 80%);
-            opacity: 0; transition: opacity 2s ease-in-out;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background: #000; color: #fff; overflow: hidden; }
+        
+        /* Splash Screen Logic */
+        #splash {
+            position: fixed; inset: 0; z-index: 100;
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .footer-logo { position: fixed; bottom: 10%; width: 100%; text-align: center; opacity: 0; transition: opacity 1s ease-in-out; }
+        .fade-in { animation: fadeIn 1.5s ease-out forwards; opacity: 0; }
+        .fade-out { animation: fadeOut 1s ease-in forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; visibility: hidden; } }
+        
+        .ai-guard-glow { box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); border: 1px solid #3b82f6; }
     </style>
 </head>
 <body>
 
-    <div id="bg" class="bg-overlay"></div>
-
-    <div id="p1" class="fade-content">
-        <h1 class="text-2xl font-light tracking-[0.4em] mb-3">Welcome</h1>
-        <p class="text-4xl font-bold tracking-tight">to the New Civilization</p>
-    </div>
-
-    <div id="p2" class="fade-content">
-        <h2 class="text-[#00ff41] text-[10px] font-bold tracking-[0.6em] mb-6 uppercase">Keys of Kindness — Estafet</h2>
-        <p class="text-sm font-light tracking-widest text-zinc-400 mb-4">Through your kindness, you receive</p>
-        <h1 class="text-6xl font-black text-white mb-6">€ 100.000</h1>
-        <p class="text-sm font-light tracking-[0.2em] italic text-zinc-500">To restore your rights as a true human being</p>
-    </div>
-
-    <div id="footer" class="footer-logo">
-        <div class="mb-4">
-             <div class="w-10 h-10 border border-[#00ff41]/40 rounded-full mx-auto flex items-center justify-center">
-                <div class="w-4 h-4 bg-[#00ff41] rounded-full animate-pulse"></div>
-            </div>
+    <div id="splash">
+        <div id="text-phase-1" class="hidden text-center p-6">
+            <h1 class="text-3xl font-light tracking-[0.2em] uppercase">Welcome to the New Civilization</h1>
         </div>
-        <p class="text-[9px] text-zinc-700 uppercase tracking-[0.4em] leading-relaxed">
-            powered by<br>
-            <span class="text-zinc-500">1001NDONESIA INVESTMENT</span> & <span class="text-zinc-500">INDIENATION Foundation</span>
-        </p>
+        <div id="text-phase-2" class="hidden text-center p-6">
+            <h2 class="text-2xl font-bold mb-4">Claiming your €100,000 rights via Keys of Kindness</h2>
+            <p class="text-blue-400 italic">Restoring your rights as a true human being</p>
+        </div>
+        
+        <footer class="absolute bottom-10 text-[10px] tracking-widest text-slate-500 uppercase">
+            By 1001NDONESIA INVESTMENT & INDIENATION Foundation
+        </footer>
     </div>
+
+    <main id="app-content" class="min-h-screen flex flex-col items-center justify-center p-6 opacity-0">
+        <header class="mb-8 text-center">
+            <div class="w-16 h-16 bg-blue-600 rounded-full mx-auto mb-4 ai-guard-glow flex items-center justify-center">
+                <span class="text-xs font-bold">AI GUARD</span>
+            </div>
+            <h1 class="text-xl font-bold tracking-tighter">SECURE ACCESS</h1>
+        </header>
+
+        <div class="w-full max-w-sm space-y-4">
+            <button class="w-full py-4 bg-slate-900 border border-slate-800 rounded-xl flex items-center px-6 hover:bg-slate-800 transition">
+                <span class="mr-4">🖐️</span> Fingerprint Recognition
+            </button>
+            <button class="w-full py-4 bg-slate-900 border border-slate-800 rounded-xl flex items-center px-6 hover:bg-slate-800 transition">
+                <span class="mr-4">👤</span> Face ID Authentication
+            </button>
+            <div class="relative py-2 text-center text-xs text-slate-600 uppercase">
+                <span class="bg-black px-4 relative z-10">Credentials</span>
+                <hr class="absolute top-1/2 w-full border-slate-800">
+            </div>
+            <input type="tel" placeholder="Phone Number" class="w-full py-4 bg-slate-900 border border-slate-800 rounded-xl px-6 focus:outline-none focus:border-blue-500">
+            <input type="text" placeholder="Nationality ID (NIK/SSN/Passport)" class="w-full py-4 bg-slate-900 border border-slate-800 rounded-xl px-6 focus:outline-none focus:border-blue-500">
+            
+            <button onclick="location.href='vault.html'" class="w-full py-4 bg-blue-600 rounded-xl font-bold mt-6 shadow-lg shadow-blue-900/20">
+                AUTHORIZE ACCESS
+            </button>
+        </div>
+
+        <p class="mt-8 text-[10px] text-slate-500">System Protected by NeuroSphere AI Guard v2.0</p>
+    </main>
 
     <script>
-        const bg = document.getElementById('bg');
-        const p1 = document.getElementById('p1');
-        const p2 = document.getElementById('p2');
-        const footer = document.getElementById('footer');
+        const splash = document.getElementById('splash');
+        const phase1 = document.getElementById('text-phase-1');
+        const phase2 = document.getElementById('text-phase-2');
+        const content = document.getElementById('app-content');
 
-        // TIMING LOGIC (8 SECONDS FIXED)
-        
-        // 0s - 1.2s: Silence & Fade Background
-        setTimeout(() => { bg.style.opacity = '1'; }, 200);
-
-        // 1.2s - 3.5s: New Civilization
-        setTimeout(() => { p1.classList.add('active'); }, 1200);
-        setTimeout(() => { p1.classList.remove('active'); }, 3500);
-
-        // 4.5s - 6.8s: Keys of Kindness Statement
-        setTimeout(() => { p2.classList.add('active'); }, 4500);
-        setTimeout(() => { p2.classList.remove('active'); }, 6800);
-
-        // 6.8s - 8.0s: Formal Attribution
-        setTimeout(() => { footer.classList.add('active'); }, 6800);
-
-        // 8.0s: Transition to Access Gate
+        // Splash Screen Timing Logic
         setTimeout(() => {
-            document.body.style.transition = 'opacity 1.5s ease';
-            document.body.style.opacity = '0';
-            setTimeout(() => {
-                // Pindah ke Login Utama / Dashboard
-                window.location.href = 'dashboard.html'; 
-            }, 1500);
-        }, 8000);
+            phase1.classList.remove('hidden');
+            phase1.classList.add('fade-in');
+        }, 1200); // Start 1.2s
+
+        setTimeout(() => {
+            phase1.classList.replace('fade-in', 'fade-out');
+        }, 3500); // End 3.5s
+
+        setTimeout(() => {
+            phase2.classList.remove('hidden');
+            phase2.classList.add('fade-in');
+        }, 4500); // Start 4.5s
+
+        setTimeout(() => {
+            splash.classList.add('fade-out');
+            content.style.opacity = '1';
+            content.classList.add('fade-in');
+        }, 8000); // Complete Transition
     </script>
 </body>
 </html>
