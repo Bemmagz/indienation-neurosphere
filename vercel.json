@@ -2,16 +2,18 @@
   "version": 2,
   "public": true,
   "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
+    { "source": "/", "destination": "/index.html" },
     { "source": "/vault", "destination": "/vault.html" },
-    { "source": "/certificate", "destination": "/certificate.html" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/certificate", "destination": "/certificate.html" }
   ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "no-store, max-age=0" }
+        { "key": "Cache-Control", "value": "no-store, max-age=0" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" }
       ]
     }
   ]
