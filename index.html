@@ -8,68 +8,74 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         body { background: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; overflow: hidden; margin: 0; }
-        .fade-text { opacity: 0; transition: opacity 1.5s ease-in-out; position: absolute; width: 100%; text-align: center; }
+        .fade-content { opacity: 0; transition: opacity 1.2s ease-in-out; position: absolute; width: 100%; text-align: center; top: 50%; transform: translateY(-50%); }
         .active { opacity: 1 !important; }
-        .aura-bg {
+        .bg-overlay {
             position: fixed; inset: 0;
-            background: radial-gradient(circle at center, #004d1a 0%, #000 70%);
+            background: radial-gradient(circle at center, #002b0f 0%, #000 80%);
             opacity: 0; transition: opacity 2s ease-in-out;
         }
+        .footer-logo { position: fixed; bottom: 10%; width: 100%; text-align: center; opacity: 0; transition: opacity 1s ease-in-out; }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen">
+<body>
 
-    <div id="aura" class="aura-bg"></div>
+    <div id="bg" class="bg-overlay"></div>
 
-    <div id="phase1" class="fade-text">
-        <h1 class="text-2xl font-light tracking-[0.3em] mb-2">Welcome Home</h1>
-        <p class="text-4xl font-bold tracking-tighter">to the New Civilization</p>
+    <div id="p1" class="fade-content">
+        <h1 class="text-2xl font-light tracking-[0.4em] mb-3">Welcome</h1>
+        <p class="text-4xl font-bold tracking-tight">to the New Civilization</p>
     </div>
 
-    <div id="phase2" class="fade-text">
-        <h2 class="text-[#00ff41] text-xs font-bold tracking-[0.5em] mb-4">KEYS OF KINDNESS — ESTAFET</h2>
-        <h1 class="text-5xl font-black mb-4">€ 100.000</h1>
-        <p class="text-sm font-light tracking-widest text-zinc-400">Reclaiming your rights as a human being</p>
+    <div id="p2" class="fade-content">
+        <h2 class="text-[#00ff41] text-[10px] font-bold tracking-[0.6em] mb-6 uppercase">Keys of Kindness — Estafet</h2>
+        <p class="text-sm font-light tracking-widest text-zinc-400 mb-4">Through your kindness, you receive</p>
+        <h1 class="text-6xl font-black text-white mb-6">€ 100.000</h1>
+        <p class="text-sm font-light tracking-[0.2em] italic text-zinc-500">To restore your rights as a true human being</p>
     </div>
 
-    <div id="phase3" class="fade-text">
-        <div class="mb-12">
-            <div class="w-16 h-16 border-2 border-[#00ff41] rounded-full mx-auto flex items-center justify-center">
-                <div class="w-8 h-8 bg-[#00ff41] rounded-full animate-pulse"></div>
+    <div id="footer" class="footer-logo">
+        <div class="mb-4">
+             <div class="w-10 h-10 border border-[#00ff41]/40 rounded-full mx-auto flex items-center justify-center">
+                <div class="w-4 h-4 bg-[#00ff41] rounded-full animate-pulse"></div>
             </div>
         </div>
-        <div class="text-[10px] text-zinc-600 uppercase tracking-[0.3em] leading-relaxed">
+        <p class="text-[9px] text-zinc-700 uppercase tracking-[0.4em] leading-relaxed">
             powered by<br>
-            <span class="text-zinc-400">1001NDONESIA INVESTMENT</span><br>
-            <span class="text-zinc-400">INDIENATION Foundation</span>
-        </div>
+            <span class="text-zinc-500">1001NDONESIA INVESTMENT</span> & <span class="text-zinc-500">INDIENATION Foundation</span>
+        </p>
     </div>
 
     <script>
-        const p1 = document.getElementById('phase1');
-        const p2 = document.getElementById('phase2');
-        const p3 = document.getElementById('phase3');
-        const aura = document.getElementById('aura');
+        const bg = document.getElementById('bg');
+        const p1 = document.getElementById('p1');
+        const p2 = document.getElementById('p2');
+        const footer = document.getElementById('footer');
 
-        // Timing Logic
-        setTimeout(() => { aura.style.opacity = '0.4'; }, 500); // 0.5s - Fade aura
-        setTimeout(() => { p1.classList.add('active'); }, 1500); // 1.5s - Show P1
-        setTimeout(() => { p1.classList.remove('active'); }, 4000); // 4.0s - Hide P1
+        // TIMING LOGIC (8 SECONDS FIXED)
         
-        setTimeout(() => { p2.classList.add('active'); }, 4500); // 4.5s - Show P2
-        setTimeout(() => { p2.classList.remove('active'); }, 6000); // 6.0s - Hide P2
-        
-        setTimeout(() => { p3.classList.add('active'); }, 6500); // 6.5s - Show P3
-        
-        // Final Transition to Login
+        // 0s - 1.2s: Silence & Fade Background
+        setTimeout(() => { bg.style.opacity = '1'; }, 200);
+
+        // 1.2s - 3.5s: New Civilization
+        setTimeout(() => { p1.classList.add('active'); }, 1200);
+        setTimeout(() => { p1.classList.remove('active'); }, 3500);
+
+        // 4.5s - 6.8s: Keys of Kindness Statement
+        setTimeout(() => { p2.classList.add('active'); }, 4500);
+        setTimeout(() => { p2.classList.remove('active'); }, 6800);
+
+        // 6.8s - 8.0s: Formal Attribution
+        setTimeout(() => { footer.classList.add('active'); }, 6800);
+
+        // 8.0s: Transition to Access Gate
         setTimeout(() => {
-            document.body.style.transition = 'opacity 1s';
+            document.body.style.transition = 'opacity 1.5s ease';
             document.body.style.opacity = '0';
             setTimeout(() => {
-                // Sesuai kesepakatan: Pindah ke Dashboard/Login
-                window.location.href = '#login'; // Placeholder transition
-                alert("Transitioning to Access Gate...");
-            }, 1000);
+                // Pindah ke Login Utama / Dashboard
+                window.location.href = 'dashboard.html'; 
+            }, 1500);
         }, 8000);
     </script>
 </body>
