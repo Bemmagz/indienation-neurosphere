@@ -1,0 +1,6 @@
+<!-- BLOCK ALL SEARCH ENGINES -->
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noodp, noimageindex">
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot-news" content="nosnippet">
+<meta name="slurp" content="noydir, noodp">
+<meta http-equiv="X-Robots-Tag" content="none">

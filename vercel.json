@@ -2,17 +2,28 @@
   "version": 2,
   "public": true,
   "cleanUrls": true,
-  "headers": [
+  "trailingSlash": false,
+  
+  "routes": [
     {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" },
-        { "key": "Cache-Control", "value": "no-store, max-age=0, must-revalidate" }
-      ]
+      "src": "/robots.txt",
+      "dest": "/api/robots",
+      "headers": {
+        "Content-Type": "text/plain"
+      }
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html",
+      "headers": {
+        "X-Robots-Tag": "noindex, nofollow, noarchive",
+        "Cache-Control": "no-store, max-age=0"
+      }
     }
   ],
+  
   "rewrites": [
-    { "source": "/robots.txt", "destination": "/api/robots" },
-    { "source": "/vault", "destination": "/vault.html" }
+    { "source": "/vault", "destination": "/vault.html" },
+    { "source": "/certificate", "destination": "/certificate.html" }
   ]
 }
