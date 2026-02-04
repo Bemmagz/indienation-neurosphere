@@ -3,118 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEUROSPHERE | OFFICIAL ACCESS</title>
+    <title>NEUROSPHERE | SOVEREIGN CORE</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap');
-        body { background: #0b0b0f; color: #ffffff; font-family: 'Space Grotesk', sans-serif; overflow-x: hidden; }
+        :root {
+            --aura-green: #00ff41;
+            --aura-glow: rgba(0, 255, 65, 0.4);
+            --bg-black: #030303;
+        }
+        body { 
+            background: var(--bg-black); 
+            color: #ffffff; 
+            font-family: 'Space Grotesk', sans-serif; 
+            overflow-x: hidden;
+        }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        
+        /* AURA HIJAU TERANG (IDENTITAS) */
+        .aura-sphere {
+            width: 180px; height: 180px;
+            background: radial-gradient(circle, var(--aura-green) 0%, #004d1a 70%, #000 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 60px 20px var(--aura-glow);
+            margin: 0 auto;
+            animation: pulse-aura 4s infinite ease-in-out;
+        }
+        @keyframes pulse-aura {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.05); filter: brightness(1.4); }
+        }
+
+        .glass-container {
+            background: rgba(15, 15, 15, 0.8);
+            border: 1px solid rgba(0, 255, 65, 0.15);
+            backdrop-filter: blur(30px);
+            border-radius: 3rem;
+            padding: 2.5rem;
+        }
+
+        .input-sovereign {
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            border-radius: 1.25rem;
+            padding: 1.25rem;
+            width: 100%;
+            outline: none;
+            font-family: 'JetBrains Mono', monospace;
+            transition: 0.3s;
+        }
+        .input-sovereign:focus { border-color: var(--aura-green); box-shadow: 0 0 15px var(--aura-glow); }
+
         .hidden { display: none !important; }
-        .input-field { background: #16161d; border: 1px solid #2a2a35; border-radius: 0.75rem; padding: 1rem; width: 100%; outline: none; transition: 0.3s; }
-        .input-field:focus { border-color: #10b981; box-shadow: 0 0 15px rgba(16, 185, 129, 0.2); }
-        .btn-gradient { background: linear-gradient(90deg, #10b981, #3b82f6); color: white; font-weight: 700; border-radius: 0.75rem; transition: 0.3s; }
-        .btn-gradient:hover { opacity: 0.9; transform: translateY(-2px); }
-        .glass-card { background: rgba(22, 22, 29, 0.7); border: 1px solid rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 2rem; }
-        .scan-line { width: 100%; height: 2px; background: #10b981; position: absolute; top: 0; animation: scan 2s infinite linear; box-shadow: 0 0 15px #10b981; }
-        @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
+        
+        /* TICKER / APPROVED SYMBOL */
+        .verified-ticker { color: var(--aura-green); font-weight: bold; }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
 
-    <div id="step-reg" class="w-full max-w-lg glass-card p-8 space-y-8 animate-fadeIn">
-        <div class="text-center space-y-2">
-            <div class="flex justify-center mb-4">
-                <div class="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center border border-emerald-500/50">
-                    <svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                </div>
+    <div id="splash" class="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center">
+        <div class="text-center space-y-4">
+            <h1 class="text-2xl font-bold tracking-[0.6em] text-[#00ff41]">NEUROSPHERE</h1>
+            <p class="text-4xl font-black text-white">REWARDS € 300.000</p>
+            <p class="text-[10px] tracking-[0.4em] text-zinc-500 uppercase">Keys of KINDNESS Estafet</p>
+            <div class="w-64 h-1 bg-zinc-900 mx-auto mt-8 rounded-full overflow-hidden">
+                <div id="p-bar" class="h-full bg-[#00ff41] w-0 transition-all duration-100"></div>
             </div>
-            <h1 class="text-2xl font-bold tracking-tight uppercase">NeuroSphere Access</h1>
-            <p class="text-zinc-500 text-sm uppercase tracking-widest">Official Identity Verification</p>
         </div>
+    </div>
 
+    <div id="login" class="hidden w-full max-w-lg glass-container space-y-8 animate-fadeIn">
+        <div class="text-center">
+            <h2 class="text-xs font-bold tracking-[0.4em] text-[#00ff41] uppercase mb-2">Sovereign Access</h2>
+            <p class="text-zinc-500 text-[10px] uppercase">Alpha Program Identity Verification</p>
+        </div>
         <div class="space-y-4">
-            <div class="relative">
-                <input type="text" placeholder="Full Legal Name" class="input-field" id="reg-name">
+            <input type="text" id="reg-name" placeholder="FULL LEGAL NAME" class="input-sovereign">
+            <div class="grid grid-cols-2 gap-4">
+                <input type="date" id="reg-dob" class="input-sovereign text-zinc-500">
+                <input type="text" id="parent-id" placeholder="PARENT IID (IF < 17)" class="input-sovereign text-[10px]">
             </div>
-            <div class="relative">
-                <input type="text" placeholder="Residential Address" class="input-field">
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input type="text" placeholder="Mobile Number" class="input-field">
-                <input type="email" placeholder="Email Address" class="input-field">
-            </div>
-            <div class="flex items-start gap-3 p-2">
-                <input type="checkbox" class="mt-1 accent-emerald-500">
-                <p class="text-[10px] text-zinc-500 leading-relaxed uppercase">I verify that this information is accurate and I agree to the 1001INDONESIA Ecosystem terms.</p>
-            </div>
-            <div class="pt-4 flex flex-col gap-3">
-                <button onclick="App.startBio()" class="btn-gradient w-full py-4 flex items-center justify-center gap-2">
-                    SUBMIT REGISTRATION <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                </button>
-                <button class="text-zinc-600 text-xs font-bold uppercase tracking-widest hover:text-zinc-400">Skip</button>
-            </div>
+            <button onclick="App.verify()" class="w-full py-5 bg-[#00ff41] text-black font-black rounded-2xl text-xs uppercase tracking-widest hover:scale-[1.02] transition">Authorize Identity</button>
         </div>
     </div>
 
-    <div id="step-bio" class="hidden w-full max-w-sm text-center space-y-8 animate-pulse">
-        <h2 class="text-xl font-bold uppercase tracking-widest text-emerald-500">Identity Bio-Verification</h2>
-        <div class="w-64 h-80 mx-auto bg-zinc-900 rounded-[3rem] border-4 border-emerald-900/30 relative overflow-hidden flex items-center justify-center">
-            <div class="scan-line"></div>
-            <svg class="w-32 h-32 text-emerald-900/50" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-            <div class="absolute bottom-4 left-0 w-full text-[10px] text-emerald-500 font-mono">SCANNING LIVENESS...</div>
-        </div>
-        <p class="text-xs text-zinc-500 uppercase tracking-widest">Hold Still. Analyzing Retinal & Facial Cadence.</p>
-    </div>
-
-    <div id="step-dash" class="hidden w-full max-w-5xl space-y-8 animate-fadeIn">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-emerald-900/30 pb-6">
+    <div id="dash" class="hidden w-full max-w-4xl space-y-10 animate-fadeIn">
+        <div class="text-center space-y-6">
+            <div class="aura-sphere"></div>
             <div>
-                <h1 class="text-4xl font-black text-emerald-500 italic">NEUROSPHERE</h1>
-                <p class="text-[10px] text-zinc-500 font-mono uppercase">Identity: <span id="display-name" class="text-zinc-300">INDIE-FOUNDER-01</span> | Status: Core_Active</p>
-            </div>
-            <div class="text-[10px] text-zinc-600 text-right uppercase">
-                Secure Access: Terminal 01<br>Time: 2026-02-04
+                <h1 class="text-4xl font-black text-white" id="user-display">FOUNDER</h1>
+                <p class="text-[10px] text-zinc-500 mono mt-1" id="iid-display">IID: FETCHING_FROM_SUPABASE...</p>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div class="glass-card p-10 border-l-4 border-emerald-500 space-y-6">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-xs font-bold text-emerald-500 uppercase tracking-widest">Native Engine (ENPE)</h3>
-                    <span class="bg-emerald-900/30 text-emerald-500 text-[8px] px-2 py-1 rounded">SUPPLY: 100T</span>
-                </div>
-                <div class="text-6xl font-black tracking-tighter">100.000.000.000.000</div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-black/50 p-4 rounded-2xl border border-emerald-900/10">
-                        <p class="text-[9px] text-zinc-500 mb-1">STAKING (20%)</p>
-                        <p class="text-xs font-bold text-emerald-500">20.000.000.000.000</p>
-                    </div>
-                    <div class="bg-black/50 p-4 rounded-2xl border border-emerald-900/10">
-                        <p class="text-[9px] text-zinc-500 mb-1">SWF (80%)</p>
-                        <p class="text-xs font-bold text-emerald-500">80.000.000.000.000</p>
-                    </div>
-                </div>
-            </div>
+        <div class="text-center bg-zinc-950/50 py-8 rounded-[3rem] border border-[#00ff41]/20">
+            <p class="text-[10px] text-zinc-500 uppercase tracking-widest mb-2">Total Project Reward</p>
+            <p class="text-5xl font-black text-white">€ 300.000</p>
+        </div>
 
-            <div class="glass-card p-10 border-l-4 border-emerald-500 space-y-6">
-                <h3 class="text-xs font-bold text-emerald-500 uppercase tracking-widest">Lovely Coin (LUV)</h3>
-                <div class="text-6xl font-black tracking-tighter">100.000.000.000.000</div>
-                <div class="grid grid-cols-3 gap-2">
-                    <div class="text-center">
-                        <p class="text-[8px] text-zinc-500">FOUNDER (20%)</p>
-                        <p class="text-[10px] font-bold text-emerald-500">20T (LOCKED 3Y)</p>
-                    </div>
-                    <div class="text-center">
-                        <p class="text-[8px] text-zinc-500">DONATION (15%)</p>
-                        <p class="text-[10px] font-bold text-emerald-500">15T (OPEN)</p>
-                    </div>
-                    <div class="text-center">
-                        <p class="text-[8px] text-zinc-500">RESERVE (10%)</p>
-                        <p class="text-[10px] font-bold text-emerald-500">10T (OPEN)</p>
-                    </div>
-                </div>
-                <div class="flex gap-4">
-                    <button class="bg-emerald-500 text-black font-black text-[10px] py-4 flex-1 rounded-xl uppercase">Distribute 1M Luv</button>
-                    <button class="bg-red-900/20 text-red-500 border border-red-900/50 font-black text-[10px] py-4 flex-1 rounded-xl uppercase">Emergency Relief</button>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="glass-container !p-6 border-l-4 border-[#00ff41]">
+                <p class="text-[9px] text-zinc-500 font-bold uppercase mb-2">Living Value (Stable)</p>
+                <p class="text-2xl font-black text-white">€ <span id="val-stable">0.00</span></p>
+                <p class="text-[8px] text-[#00ff41] mt-2">Daily: € 1.000 (Sovereign Phase)</p>
+            </div>
+            <div class="glass-container !p-6 border-l-4 border-[#00ff41]">
+                <p class="text-[9px] text-zinc-500 font-bold uppercase mb-2">Aura Reward (LUV)</p>
+                <p class="text-2xl font-black text-white" id="val-luv">0.00</p>
+                <p class="text-[8px] text-zinc-500 mt-2">Daily Claim: Fetching...</p>
+            </div>
+            <div class="glass-container !p-6 border-l-4 border-zinc-800">
+                <p class="text-[9px] text-zinc-500 font-bold uppercase mb-2">Native Engine (ENPE)</p>
+                <p class="text-2xl font-black text-zinc-700" id="val-enpe">0.00</p>
+                <p class="text-[8px] text-zinc-600 mt-2 italic">Status: Reserved</p>
+            </div>
+        </div>
+
+        <div class="glass-container !p-8 flex flex-wrap justify-around gap-6 text-center">
+            <div>
+                <p class="text-[8px] text-zinc-500 uppercase mb-1">BTC / EUR</p>
+                <p class="text-sm font-bold mono" id="price-btc">LOADING...</p>
+            </div>
+            <div>
+                <p class="text-[8px] text-zinc-500 uppercase mb-1">USDT / EUR</p>
+                <p class="text-sm font-bold mono" id="price-usdt">LOADING...</p>
+            </div>
+        </div>
+
+        <div class="glass-container !p-12 border-double border-4 border-[#00ff41]/30 relative overflow-hidden">
+            <div class="absolute top-4 right-4 verified-ticker text-xs">✓ APPROVED ALPHA</div>
+            <h3 class="text-xl font-black mb-4">SOVEREIGN CERTIFICATE</h3>
+            <div class="space-y-2 text-[10px] text-zinc-400 mono">
+                <p>PROJECT: KEYS OF KINDNESS ESTAFET</p>
+                <p>TX_HASH: <span id="tx-hash" class="text-zinc-600">NULL_SOT_DATA</span></p>
+                <p>TIMESTAMP: <span id="ts-now">00-00-00 00:00:00</span></p>
+                <div class="pt-6">
+                    <p class="text-zinc-500 mb-2">Digital Signature:</p>
+                    <p class="text-white border-b border-zinc-800 pb-2 italic">INDIE-Founder Authority</p>
                 </div>
             </div>
         </div>
@@ -122,19 +148,62 @@
 
     <script>
         const App = {
-            startBio: () => {
+            init: () => {
+                let p = 0;
+                const int = setInterval(() => {
+                    p += 2;
+                    document.getElementById('p-bar').style.width = p + '%';
+                    if(p >= 100) {
+                        clearInterval(int);
+                        document.getElementById('splash').classList.add('hidden');
+                        document.getElementById('login').classList.remove('hidden');
+                    }
+                }, 40);
+            },
+            
+            verify: () => {
                 const name = document.getElementById('reg-name').value;
-                if(!name) return alert("Please enter Legal Name.");
-                document.getElementById('display-name').innerText = name.toUpperCase();
-                document.getElementById('step-reg').classList.add('hidden');
-                document.getElementById('step-bio').classList.remove('hidden');
+                const dob = new Date(document.getElementById('reg-dob').value);
+                const parentId = document.getElementById('parent-id').value;
+                const age = new Date().getFullYear() - dob.getFullYear();
+
+                if(!name || isNaN(age)) return alert("Data tidak lengkap.");
                 
-                setTimeout(() => {
-                    document.getElementById('step-bio').classList.add('hidden');
-                    document.getElementById('step-dash').classList.remove('hidden');
-                }, 4000);
+                // AGE GATE & PARENT LINKAGE
+                if(age < 17 && !parentId) {
+                    return alert("Kedaulatan Anak: Wajib menautkan IID Orang Tua (Wali) untuk pendaftaran.");
+                }
+
+                // SINKRONISASI AWAL (SIMULASI TARIK DATA SSOT GITHUB/SUPABASE)
+                document.getElementById('user-display').innerText = name.toUpperCase();
+                document.getElementById('iid-display').innerText = `IID: NS-IDN-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+                document.getElementById('ts-now').innerText = new Date().toLocaleString();
+                document.getElementById('tx-hash').innerText = `NS-${Math.random().toString(16).substr(2, 32).toUpperCase()}`;
+                
+                // MENGISI DATA REAL (DARI SUPABASE/API)
+                App.fetchData();
+                
+                document.getElementById('login').classList.add('hidden');
+                document.getElementById('dash').classList.remove('hidden');
+            },
+
+            fetchData: async () => {
+                // Tarik Harga CoinGecko
+                try {
+                    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether&vs_currencies=eur');
+                    const data = await res.json();
+                    document.getElementById('price-btc').innerText = `€ ${data.bitcoin.eur.toLocaleString()}`;
+                    document.getElementById('price-usdt').innerText = `€ ${data.tether.eur.toFixed(4)}`;
+                } catch(e) { console.log("CoinGecko Error"); }
+
+                // Simulasi Tarik dari Supabase (Angka Kesepakatan)
+                document.getElementById('val-stable').innerText = "100.000,00"; // Saldo Anchor
+                document.getElementById('val-luv').innerText = "1.000.000,00"; // Alokasi Founder
+                document.getElementById('val-enpe').innerText = "0,00"; // Belum Dialokasikan
             }
         };
+
+        App.init();
     </script>
 </body>
 </html>
