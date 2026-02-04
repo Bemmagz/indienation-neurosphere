@@ -1,5 +1,11 @@
 {
   "version": 2,
+  "public": true,
   "cleanUrls": true,
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/vault", "destination": "/vault.html" },
+    { "source": "/certificate", "destination": "/certificate.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }
