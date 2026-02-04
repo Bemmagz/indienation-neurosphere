@@ -3,118 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INDIE-NATION | Sovereign App</title>
+    <title>OFFICIAL INDIE-NATION ACCESS</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Space Grotesk', sans-serif; background: #050505; color: #e5e7eb; }
-        .glow-emerald { box-shadow: 0 0 30px rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); }
-        .hidden { display: none; }
+        body { background: #000; color: #fff; font-family: monospace; }
+        .secure-gate { border: 2px solid #059669; box-shadow: 0 0 20px #059669; }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
 
-    <div id="app-container" class="w-full max-w-md bg-zinc-900/50 p-8 rounded-[2rem] glow-emerald">
+    <div id="app" class="w-full max-w-md p-8 rounded-xl secure-gate bg-zinc-950">
         
-        <div id="view-login" class="space-y-6">
-            <div class="text-center">
-                <h1 class="text-2xl font-bold tracking-tighter text-emerald-500">ACCESS GATEWAY</h1>
-                <p class="text-[10px] text-zinc-500 uppercase tracking-widest mt-2">NeuroSphere Identity Protocol</p>
-            </div>
-            <div class="space-y-3">
-                <input id="iid" type="text" placeholder="IID (INDIE-000...)" class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-sm focus:border-emerald-500 outline-none transition-all">
-                <input id="phone" type="tel" placeholder="Nomor Telepon" class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-sm focus:border-emerald-500 outline-none transition-all">
-            </div>
-            <div class="p-4 bg-emerald-900/10 border border-emerald-900/30 rounded-xl text-center">
-                <p class="text-[10px] text-emerald-400 mb-2">SISTEM SIAP PINDAI BIOMETRIK</p>
-                <div class="flex justify-center gap-4">
-                    <span class="text-xl">👤</span> <span class="text-xl">☝️</span>
+        <div id="auth-section">
+            <h1 class="text-emerald-500 font-bold text-center mb-6 tracking-widest uppercase">Otoritas Akses</h1>
+            <div class="space-y-4">
+                <input id="iid-login" type="text" placeholder="IID (INDIE-000...)" class="w-full bg-zinc-900 border border-emerald-900 p-4 rounded text-sm outline-none">
+                <input id="phone-login" type="tel" placeholder="Nomor Telepon" class="w-full bg-zinc-900 border border-emerald-900 p-4 rounded text-sm outline-none">
+                <div class="text-[10px] text-zinc-500 text-center py-2 border border-dashed border-zinc-800">
+                    SISTEM SIAP PINDAI WAJAH & SIDIK JARI
                 </div>
-            </div>
-            <button onclick="handleLogin()" class="w-full bg-emerald-600 hover:bg-emerald-500 py-4 rounded-xl font-bold transition-all shadow-lg shadow-emerald-900/20">MASUK KE SISTEM</button>
-        </div>
-
-        <div id="view-dashboard" class="hidden space-y-8 text-center">
-            <div class="flex justify-between items-center">
-                <span class="text-[10px] font-bold text-emerald-500" id="display-iid"></span>
-                <button onclick="handleSignOut()" class="text-[10px] text-zinc-500 hover:text-red-500">SIGN OUT</button>
-            </div>
-            <div>
-                <p class="text-[10px] text-zinc-500 uppercase tracking-[0.4em]">Total Living Value (IND-EUR)</p>
-                <h2 id="balance" class="text-5xl font-black mt-2 text-white">€ 0</h2>
-                <p class="text-emerald-500 text-[10px] mt-2">● Aura Aktif: Menghitung Real-time</p>
-            </div>
-            <div class="grid grid-cols-2 gap-3">
-                <button id="btn-claim" onclick="handleClaim()" class="bg-emerald-600 p-4 rounded-2xl font-bold text-xs uppercase">Klaim Jatah (€270)</button>
-                <button onclick="showCert()" class="bg-zinc-800 p-4 rounded-2xl font-bold text-xs uppercase">Sertifikat</button>
+                <button onclick="startSession()" class="w-full bg-emerald-600 p-4 font-bold uppercase tracking-widest hover:bg-emerald-500">Masuk & Verifikasi</button>
             </div>
         </div>
 
-        <div id="view-cert" class="hidden space-y-6">
-            <h2 class="text-center text-sm font-bold text-emerald-500">SOVEREIGNTY CERTIFICATE</h2>
-            <div class="bg-black p-6 rounded-2xl border border-zinc-800 text-[10px] space-y-4 font-mono">
-                <div class="border-b border-zinc-900 pb-2">
-                    <p class="text-zinc-600 uppercase text-[8px]">IndieNation Resident ID</p>
-                    <p id="cert-iid" class="text-emerald-400 font-bold"></p>
-                </div>
-                <div class="border-b border-zinc-900 pb-2">
-                    <p class="text-zinc-600 uppercase text-[8px]">Legal Asset Anchor</p>
-                    <p class="text-white">€100.000 Stable Coin (IND-EUR)</p>
-                </div>
-                <div>
-                    <p class="text-zinc-600 uppercase text-[8px]">Verification Hash</p>
-                    <p class="break-all text-zinc-400">SHA256:7D8A29F3E1B9C5A...0001</p>
-                </div>
+        <div id="main-section" class="hidden space-y-6">
+            <div class="flex justify-between text-[10px] text-emerald-500">
+                <span id="active-id"></span>
+                <button onclick="endSession()" class="text-red-500 underline">SIGN OUT</button>
             </div>
-            <button onclick="backToDash()" class="w-full text-zinc-500 text-[10px] uppercase font-bold">Kembali ke Dashboard</button>
+            <div class="text-center py-8">
+                <p class="text-[10px] text-zinc-500 uppercase">Total Reward (IND-EUR)</p>
+                <h2 id="total-val" class="text-4xl font-black mt-1">€ 0</h2>
+            </div>
+            <button id="claim-btn" onclick="processClaim()" class="w-full border-2 border-emerald-600 py-4 rounded font-bold uppercase hover:bg-emerald-900/20">Klaim Hak Harian (€270)</button>
+            <button onclick="openCert()" class="w-full text-zinc-500 text-[10px] uppercase">Lihat Sertifikat Lengkap</button>
+        </div>
+
+        <div id="cert-section" class="hidden space-y-4">
+            <h3 class="text-center text-emerald-500 font-bold text-sm">SERTIFIKAT KEDAULATAN</h3>
+            <div class="bg-zinc-900 p-4 rounded text-[10px] font-mono leading-relaxed border border-zinc-800">
+                <p>IID: <span id="cert-id-val"></span></p>
+                <p>ASSET ANCHOR: €100.000</p>
+                <p>STATUS: GENESIS PIONEER</p>
+                <p>VERIFIED BY: AI GUARD</p>
+                <p class="mt-2 text-zinc-600">HASH: SHA256:7D8A29F3E1B9...</p>
+            </div>
+            <button onclick="closeCert()" class="w-full text-zinc-500 text-[10px] uppercase">Kembali</button>
         </div>
 
     </div>
 
     <script>
-        const GENESIS_DATE = new Date('2026-02-01T00:00:00Z');
-        
-        function handleLogin() {
-            const iid = document.getElementById('iid').value;
-            const phone = document.getElementById('phone').value;
-            if(!iid || !phone) return alert("Mohon lengkapi ID dan Nomor Telepon!");
-            
-            // Simbolis: Proses Biometrik (Sesuai Konstitusi 2026-02-01)
-            document.getElementById('view-login').classList.add('hidden');
-            document.getElementById('view-dashboard').classList.remove('hidden');
-            document.getElementById('display-iid').innerText = iid;
-            updateBalance();
+        const GENESIS = new Date('2026-02-01T00:00:00Z');
+
+        function startSession() {
+            const id = document.getElementById('iid-login').value;
+            if(!id.startsWith('INDIE-')) return alert('IID Salah!');
+            document.getElementById('auth-section').classList.add('hidden');
+            document.getElementById('main-section').classList.remove('hidden');
+            document.getElementById('active-id').innerText = id;
+            updateCalc();
         }
 
-        function updateBalance() {
-            const now = new Date();
-            const days = Math.floor((now - GENESIS_DATE) / (1000 * 60 * 60 * 24)) + 1;
-            const value = 1000 + ((days - 1) * 270); // Day 1: 1000, Day 2+: 270 [cite: 2026-02-01]
-            document.getElementById('balance').innerText = "€ " + value.toLocaleString('de-DE');
+        function updateCalc() {
+            const days = Math.floor((new Date() - GENESIS) / (1000*60*60*24)) + 1;
+            const balance = 1000 + ((days - 1) * 270); 
+            document.getElementById('total-val').innerText = "€ " + balance.toLocaleString('de-DE');
         }
 
-        function handleClaim() {
-            document.getElementById('btn-claim').innerText = "KLAIM BERHASIL";
-            document.getElementById('btn-claim').disabled = true;
-            document.getElementById('btn-claim').classList.replace('bg-emerald-600', 'bg-zinc-800');
-            alert("Reward €270 telah masuk ke saldo hidup Anda.");
+        function processClaim() {
+            alert('Klaim Berhasil! Reward €270 ditambahkan.');
+            document.getElementById('claim-btn').innerText = "KLAIM HARI INI SELESAI";
+            document.getElementById('claim-btn').disabled = true;
         }
 
-        function showCert() {
-            document.getElementById('view-dashboard').classList.add('hidden');
-            document.getElementById('view-cert').classList.remove('hidden');
-            document.getElementById('cert-iid').innerText = document.getElementById('display-iid').innerText;
+        function openCert() {
+            document.getElementById('main-section').classList.add('hidden');
+            document.getElementById('cert-section').classList.remove('hidden');
+            document.getElementById('cert-id-val').innerText = document.getElementById('active-id').innerText;
         }
 
-        function backToDash() {
-            document.getElementById('view-cert').classList.add('hidden');
-            document.getElementById('view-dashboard').classList.remove('hidden');
+        function closeCert() {
+            document.getElementById('cert-section').classList.add('hidden');
+            document.getElementById('main-section').classList.remove('hidden');
         }
 
-        function handleSignOut() {
-            if(confirm("Apakah Anda yakin ingin keluar? Sesi biometrik akan dihapus.")) {
-                location.reload();
-            }
+        function endSession() {
+            if(confirm('Keluar sistem dan hapus sesi?')) location.reload();
         }
     </script>
 </body>
