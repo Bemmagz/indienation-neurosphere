@@ -1,97 +1,76 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEUROSPHERE | ULTIMATE ENTRY</title>
+    <title>NEUROSPHERE | THE AWAKENING</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        body { background: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; overflow: hidden; }
-        .hidden { display: none !important; }
-        
-        /* Bulatan Aura Hijau Terang */
-        .aura-circle {
-            width: 180px; height: 180px;
-            background: radial-gradient(circle, #00ff41 0%, transparent 75%);
-            border-radius: 50%;
-            position: relative; z-index: 10;
-            animation: pulse 3s infinite;
-        }
-        
-        /* QR Code di Belakang Aura */
-        .qr-background {
-            position: absolute; width: 140px; height: 140px;
-            opacity: 0.3; z-index: 5;
-            top: 50%; left: 50%; transform: translate(-50%, -50%);
-            filter: grayscale(1) invert(1);
-        }
-
-        @keyframes pulse { 0%, 100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.1); } }
-
-        /* Kotak Rapi Pemisah */
-        .asset-box {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(0, 255, 65, 0.15);
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            text-align: left;
+        body { background: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; overflow: hidden; margin: 0; }
+        .fade-text { opacity: 0; transition: opacity 1.5s ease-in-out; position: absolute; width: 100%; text-align: center; }
+        .active { opacity: 1 !important; }
+        .aura-bg {
+            position: fixed; inset: 0;
+            background: radial-gradient(circle at center, #004d1a 0%, #000 70%);
+            opacity: 0; transition: opacity 2s ease-in-out;
         }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4">
+<body class="flex items-center justify-center min-h-screen">
 
-    <div id="splash" class="fixed inset-0 bg-black flex flex-col items-center justify-center z-50">
-        <h1 class="text-xl tracking-[0.6em] text-[#00ff41] mb-2">NEUROSPHERE</h1>
-        <p class="text-3xl font-bold mb-8 uppercase">Rewards € 300.000</p>
-        <div class="w-48 h-[2px] bg-zinc-900 overflow-hidden">
-            <div id="bar" class="h-full bg-[#00ff41] w-0"></div>
-        </div>
+    <div id="aura" class="aura-bg"></div>
+
+    <div id="phase1" class="fade-text">
+        <h1 class="text-2xl font-light tracking-[0.3em] mb-2">Welcome Home</h1>
+        <p class="text-4xl font-bold tracking-tighter">to the New Civilization</p>
     </div>
 
-    <div id="main-ui" class="hidden w-full max-w-md space-y-6 text-center">
-        <div class="space-y-1">
-            <h2 class="text-2xl font-bold">INDIE-FOUNDER</h2>
-            <p class="text-[10px] text-zinc-500 font-mono uppercase tracking-widest">IID: NS-ALPHA-2026-0001</p>
-        </div>
+    <div id="phase2" class="fade-text">
+        <h2 class="text-[#00ff41] text-xs font-bold tracking-[0.5em] mb-4">KEYS OF KINDNESS — ESTAFET</h2>
+        <h1 class="text-5xl font-black mb-4">€ 100.000</h1>
+        <p class="text-sm font-light tracking-widest text-zinc-400">Reclaiming your rights as a human being</p>
+    </div>
 
-        <div class="relative flex justify-center py-8">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=TM-DEVELOPMENT" class="qr-background">
-            <div class="aura-circle"></div>
-        </div>
-
-        <div class="space-y-3">
-            <div class="asset-box">
-                <p class="text-[8px] text-zinc-500 uppercase font-bold tracking-widest">IND-EUR (Stable)</p>
-                <p class="text-2xl font-bold">€ 100.000</p>
-            </div>
-            <div class="asset-box">
-                <p class="text-[8px] text-zinc-500 uppercase font-bold tracking-widest">LUV (Social)</p>
-                <p class="text-2xl font-bold">1.000.000</p>
-            </div>
-            <div class="asset-box">
-                <p class="text-[8px] text-zinc-500 uppercase font-bold tracking-widest">ENPE (Native)</p>
-                <p class="text-2xl font-bold">1.000</p>
+    <div id="phase3" class="fade-text">
+        <div class="mb-12">
+            <div class="w-16 h-16 border-2 border-[#00ff41] rounded-full mx-auto flex items-center justify-center">
+                <div class="w-8 h-8 bg-[#00ff41] rounded-full animate-pulse"></div>
             </div>
         </div>
-
-        <div class="pt-4 flex gap-2">
-            <button class="flex-1 py-4 bg-[#00ff41] text-black font-bold rounded-xl text-xs uppercase">Claim Rewards</button>
-            <button class="px-6 py-4 border border-zinc-800 text-zinc-500 rounded-xl text-xs uppercase" onclick="location.reload()">Sign Out</button>
+        <div class="text-[10px] text-zinc-600 uppercase tracking-[0.3em] leading-relaxed">
+            powered by<br>
+            <span class="text-zinc-400">1001NDONESIA INVESTMENT</span><br>
+            <span class="text-zinc-400">INDIENATION Foundation</span>
         </div>
     </div>
 
     <script>
-        let p = 0;
-        const bar = document.getElementById('bar');
-        const interval = setInterval(() => {
-            p += 2; bar.style.width = p + '%';
-            if(p >= 100) {
-                clearInterval(interval);
-                document.getElementById('splash').classList.add('hidden');
-                document.getElementById('main-ui').classList.remove('hidden');
-            }
-        }, 30);
+        const p1 = document.getElementById('phase1');
+        const p2 = document.getElementById('phase2');
+        const p3 = document.getElementById('phase3');
+        const aura = document.getElementById('aura');
+
+        // Timing Logic
+        setTimeout(() => { aura.style.opacity = '0.4'; }, 500); // 0.5s - Fade aura
+        setTimeout(() => { p1.classList.add('active'); }, 1500); // 1.5s - Show P1
+        setTimeout(() => { p1.classList.remove('active'); }, 4000); // 4.0s - Hide P1
+        
+        setTimeout(() => { p2.classList.add('active'); }, 4500); // 4.5s - Show P2
+        setTimeout(() => { p2.classList.remove('active'); }, 6000); // 6.0s - Hide P2
+        
+        setTimeout(() => { p3.classList.add('active'); }, 6500); // 6.5s - Show P3
+        
+        // Final Transition to Login
+        setTimeout(() => {
+            document.body.style.transition = 'opacity 1s';
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                // Sesuai kesepakatan: Pindah ke Dashboard/Login
+                window.location.href = '#login'; // Placeholder transition
+                alert("Transitioning to Access Gate...");
+            }, 1000);
+        }, 8000);
     </script>
 </body>
 </html>
