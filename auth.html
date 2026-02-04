@@ -6,7 +6,7 @@
     <meta name="robots" content="noindex, nofollow">
     <title>Identity Initialization - NeuroSphere</title>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script></head>
 <body class="bg-black text-green-500 font-mono flex flex-col items-center justify-center min-h-screen p-6">
     <div class="w-full max-w-xs border border-green-500 p-6 bg-green-950/10">
         <h1 class="text-xs font-bold tracking-[0.3em] uppercase mb-6 text-center">Identity Enrollment</h1>
@@ -63,5 +63,21 @@ async function startBiometricAuth() {
     } catch (err) {
         alert("Auth Failed: " + err.message);
     }
+}
+</script>
+<div id="qr-result" class="mt-4 flex flex-col items-center hidden">
+    <p class="text-[8px] mb-2">SCAN TO ACCESS YOUR IDENTITY</p>
+    <canvas id="qrcode" class="border-2 border-green-500 p-2 bg-white"></canvas>
+    <button onclick="window.print()" class="mt-2 text-[8px] underline">DOWNLOAD QR ACCESS</button>
+</div>
+
+<script>
+function generateAccessQR(iid) {
+    const qrCanvas = document.getElementById('qrcode');
+    const url = "https://indienation-neurosphere.vercel.app/vault";
+    QRCode.toCanvas(qrCanvas, url, { width: 128 }, function (error) {
+        if (error) console.error(error);
+        document.getElementById('qr-result').classList.remove('hidden');
+    });
 }
 </script>
