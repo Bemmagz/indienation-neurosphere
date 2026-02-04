@@ -3,133 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEUROSPHERE | SOVEREIGN ACCESS</title>
+    <title>NEUROSPHERE | ULTIMATE ENTRY</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
-        :root { --aura: #00ff41; --bg: #000; }
-        body { background: var(--bg); color: #fff; font-family: 'Space Grotesk', sans-serif; overflow: hidden; }
-        .aura-glow { box-shadow: 0 0 50px rgba(0, 255, 65, 0.3); border: 1px solid rgba(0, 255, 65, 0.2); }
-        .fingerprint-scanner {
-            width: 120px; height: 120px;
-            border-radius: 50%;
-            border: 2px solid var(--aura);
-            display: flex; items-center; justify-content: center;
-            cursor: pointer; position: relative;
-            transition: 0.3s;
-        }
-        .scanner-line {
-            position: absolute; width: 100%; height: 2px;
-            background: var(--aura); top: 0;
-            animation: scan 2s infinite linear;
-        }
-        @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
+        body { background: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; overflow: hidden; }
         .hidden { display: none !important; }
-        .wallet-aura {
-            width: 150px; height: 150px;
-            background: radial-gradient(circle, var(--aura) 0%, transparent 70%);
-            border-radius: 50%; filter: blur(15px);
-            margin: 0 auto; animation: pulse 3s infinite;
+        
+        /* Bulatan Aura Hijau Terang */
+        .aura-circle {
+            width: 180px; height: 180px;
+            background: radial-gradient(circle, #00ff41 0%, transparent 75%);
+            border-radius: 50%;
+            position: relative; z-index: 10;
+            animation: pulse 3s infinite;
         }
-        @keyframes pulse { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.1); } }
+        
+        /* QR Code di Belakang Aura */
+        .qr-background {
+            position: absolute; width: 140px; height: 140px;
+            opacity: 0.3; z-index: 5;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            filter: grayscale(1) invert(1);
+        }
+
+        @keyframes pulse { 0%, 100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.1); } }
+
+        /* Kotak Rapi Pemisah */
+        .asset-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(0, 255, 65, 0.15);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            text-align: left;
+        }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
 
-    <div id="login-gate" class="text-center space-y-12">
-        <div class="space-y-2">
-            <h1 class="text-xl font-bold tracking-[0.8em] text-[#00ff41]">NEUROSPHERE</h1>
-            <p class="text-[10px] text-zinc-500 uppercase">Founder Trespass Protocol</p>
-        </div>
-
-        <div class="relative group" onclick="App.biometricLogin()">
-            <div class="scanner-line"></div>
-            <div class="fingerprint-scanner mx-auto bg-zinc-950 hover:bg-zinc-900">
-                <svg class="w-16 h-16 text-[#00ff41]" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-1 15l-4-4 1.41-1.41L11 13.17l5.59-5.59L18 9l-7 7z"/>
-                </svg>
-            </div>
-            <p class="mt-6 text-[10px] text-zinc-600 tracking-widest uppercase group-hover:text-[#00ff41] transition">Touch to Identify</p>
-        </div>
-        
-        <div class="flex flex-col gap-2">
-            <button onclick="App.showRegister()" class="text-[9px] text-zinc-700 hover:text-zinc-400 uppercase">User Access / ID Nationality</button>
+    <div id="splash" class="fixed inset-0 bg-black flex flex-col items-center justify-center z-50">
+        <h1 class="text-xl tracking-[0.6em] text-[#00ff41] mb-2">NEUROSPHERE</h1>
+        <p class="text-3xl font-bold mb-8 uppercase">Rewards € 300.000</p>
+        <div class="w-48 h-[2px] bg-zinc-900 overflow-hidden">
+            <div id="bar" class="h-full bg-[#00ff41] w-0"></div>
         </div>
     </div>
 
-    <div id="register-gate" class="hidden w-full max-w-md bg-zinc-950 p-10 rounded-[3rem] aura-glow space-y-8">
-        <h2 class="text-center font-bold text-sm tracking-widest uppercase">ID Nationality Registration</h2>
-        <div class="space-y-4">
-            <input type="text" placeholder="Full Name (Passport/KTP)" class="w-full bg-black border border-zinc-800 p-4 rounded-2xl outline-none focus:border-[#00ff41]">
-            <input type="date" id="dob" class="w-full bg-black border border-zinc-800 p-4 rounded-2xl outline-none text-zinc-500">
-            <button onclick="App.verifyUser()" class="w-full py-4 bg-[#00ff41] text-black font-black rounded-2xl text-xs">Verify & Encrypt</button>
-        </div>
-    </div>
-
-    <div id="dashboard" class="hidden w-full max-w-2xl space-y-10 animate-fadeIn text-center">
-        <div class="wallet-aura"></div>
-        <h2 class="text-3xl font-black" id="user-title">FOUNDER DASHBOARD</h2>
-        <p class="text-[10px] text-zinc-500 mono">IID: NS-ALPHA-2026-0001</p>
-
-        <div class="w-32 h-32 bg-white mx-auto p-2 rounded-xl mb-4">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=NEUROSPHERE_SOVEREIGN_ID_ALPHA" alt="Sovereign QR">
+    <div id="main-ui" class="hidden w-full max-w-md space-y-6 text-center">
+        <div class="space-y-1">
+            <h2 class="text-2xl font-bold">INDIE-FOUNDER</h2>
+            <p class="text-[10px] text-zinc-500 font-mono uppercase tracking-widest">IID: NS-ALPHA-2026-0001</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="bg-zinc-950 p-6 rounded-[2rem] border border-zinc-900">
-                <p class="text-[8px] text-zinc-500 uppercase mb-2">IND-EUR (Stable)</p>
-                <p class="text-xl font-bold">€ 100.000</p>
-                <p class="text-[7px] text-[#00ff41] mt-1">Daily: € 1.000</p>
+        <div class="relative flex justify-center py-8">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=TM-DEVELOPMENT" class="qr-background">
+            <div class="aura-circle"></div>
+        </div>
+
+        <div class="space-y-3">
+            <div class="asset-box">
+                <p class="text-[8px] text-zinc-500 uppercase font-bold tracking-widest">IND-EUR (Stable)</p>
+                <p class="text-2xl font-bold">€ 100.000</p>
             </div>
-            <div class="bg-zinc-950 p-6 rounded-[2rem] border border-zinc-900">
-                <p class="text-[8px] text-zinc-500 uppercase mb-2">LUV (Social)</p>
-                <p class="text-xl font-bold">1.000.000</p>
-                <p class="text-[7px] text-zinc-500 mt-1">Reward: 0-10/day</p>
+            <div class="asset-box">
+                <p class="text-[8px] text-zinc-500 uppercase font-bold tracking-widest">LUV (Social)</p>
+                <p class="text-2xl font-bold">1.000.000</p>
             </div>
-            <div class="bg-zinc-950 p-6 rounded-[2rem] border border-zinc-900">
-                <p class="text-[8px] text-zinc-500 uppercase mb-2">ENPE (Native)</p>
-                <p class="text-xl font-bold">1.000</p>
-                <p class="text-[7px] text-zinc-400 mt-1 italic">Engine Power</p>
+            <div class="asset-box">
+                <p class="text-[8px] text-zinc-500 uppercase font-bold tracking-widest">ENPE (Native)</p>
+                <p class="text-2xl font-bold">1.000</p>
             </div>
         </div>
 
-        <div class="flex justify-center gap-4">
-            <button onclick="App.claim()" class="px-8 py-4 bg-[#00ff41] text-black font-black rounded-2xl text-[10px] uppercase">Claim Rewards</button>
-            <button onclick="App.signOut()" class="px-8 py-4 bg-red-950/20 text-red-500 border border-red-900/30 rounded-2xl text-[10px] uppercase">Sign Out</button>
+        <div class="pt-4 flex gap-2">
+            <button class="flex-1 py-4 bg-[#00ff41] text-black font-bold rounded-xl text-xs uppercase">Claim Rewards</button>
+            <button class="px-6 py-4 border border-zinc-800 text-zinc-500 rounded-xl text-xs uppercase" onclick="location.reload()">Sign Out</button>
         </div>
     </div>
 
     <script>
-        const App = {
-            biometricLogin: () => {
-                // Simulasi Fingerprint Founder
-                alert("Authenticating Fingerprint... Access Granted INDIE-Founder.");
-                App.showDashboard("INDIE-FOUNDER");
-            },
-            showRegister: () => {
-                document.getElementById('login-gate').classList.add('hidden');
-                document.getElementById('register-gate').classList.remove('hidden');
-            },
-            verifyUser: () => {
-                const dob = new Date(document.getElementById('dob').value);
-                const age = new Date().getFullYear() - dob.getFullYear();
-                if(age < 17) {
-                    alert("Akses Terbatas: Akun Anak terhubung ke IID Orang Tua.");
-                    App.showDashboard("CHILD ACCOUNT (SUB)");
-                } else {
-                    alert("ID Nationality Verified. Original data destroyed.");
-                    App.showDashboard("SOVEREIGN CITIZEN");
-                }
-            },
-            showDashboard: (role) => {
-                document.getElementById('login-gate').classList.add('hidden');
-                document.getElementById('register-gate').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-                document.getElementById('user-title').innerText = role;
-            },
-            claim: () => alert("Daily Claim Success: € 1.000 & 10 LUV Distributed."),
-            signOut: () => location.reload()
-        };
+        let p = 0;
+        const bar = document.getElementById('bar');
+        const interval = setInterval(() => {
+            p += 2; bar.style.width = p + '%';
+            if(p >= 100) {
+                clearInterval(interval);
+                document.getElementById('splash').classList.add('hidden');
+                document.getElementById('main-ui').classList.remove('hidden');
+            }
+        }, 30);
     </script>
 </body>
 </html>
