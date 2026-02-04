@@ -59,7 +59,7 @@
     </div>
 
     <div class="w-full max-w-md mt-8 grid grid-cols-2 gap-4">
-        <button class="p-4 bg-emerald-900/20 border border-emerald-900 rounded-2xl text-[10px] font-bold text-emerald-500 uppercase tracking-tighter hover:bg-emerald-900/40 transition">Distribute LUV</button>
+        <button class="p-4 bg-emerald-900/20 border border-emerald-900 rounded-2xl text-[10px] font-bold text-emerald-500 uppercase tracking-tighter hover:bg-emerald-900/40 transition" onclick="startDistribution()">Distribute LUV</button>
         <button class="p-4 bg-zinc-900/50 border border-zinc-800 rounded-2xl text-[10px] font-bold text-zinc-500 uppercase tracking-tighter hover:bg-zinc-800 transition">Network Stats</button>
     </div>
 
@@ -67,6 +67,26 @@
         <p class="text-[8px] text-zinc-800 uppercase tracking-[0.5em] mb-4">Auralang Interpreter v1.0 - NeuroSphere Core</p>
         <button onclick="window.location.href='index.html'" class="px-6 py-2 border border-zinc-900 rounded-full text-[9px] text-zinc-700 hover:text-red-900 hover:border-red-900 transition">DISCONNECT NODE</button>
     </footer>
+<script> 
+function startDistribution() { 
+    const btn = event.target; 
+    btn.disabled = true; 
+    btn.innerText = "EXECUTING PROTOCOL..."; 
+    
+    setTimeout(() => { 
+        const confirmation = confirm("MEMULAI DISTRIBUSI: 1 Triliun LUV (1% Founder Allocation) untuk 1 Juta orang. Lanjutkan?"); 
+        if (confirmation) { 
+            alert("SUCCESS: 1,000,000 LUV has been sent to 1,000,000 Pioneers. Remaining Founder Lock: 19%"); 
+            btn.innerText = "DISTRIBUTED SUCCESSFULLY"; 
+            btn.style.borderColor = "#059669"; 
+            btn.style.color = "#059669"; 
+        } else { 
+            btn.disabled = false; 
+            btn.innerText = "Distribute LUV"; 
+        } 
+    }, 1000); 
+} 
+</script>
 </body>
 </html>
 /* Update Stamp: Wed Feb  4 13:26:06 WIB 2026 */
