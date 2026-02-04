@@ -3,94 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INDIE-NATION AUTHORITY</title>
+    <title>INDIENATION | Sovereign Gateway</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #000; color: #fff; font-family: monospace; }
-        .secure-border { border: 2px solid #10b981; box-shadow: 0 0 15px #10b981; }
+        body { background: #000; color: #fff; font-family: 'Inter', sans-serif; overflow: hidden; }
+        .qr-frame { border: 2px solid #10b981; padding: 20px; background: #050505; box-shadow: 0 0 30px rgba(16, 185, 129, 0.2); }
+        .scan-line { width: 100%; height: 2px; background: #10b981; position: absolute; top: 0; left: 0; animation: scan 2s linear infinite; box-shadow: 0 0 10px #10b981; }
+        @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
-
-    <div id="app-frame" class="w-full max-w-md p-8 rounded-2xl secure-border bg-zinc-950">
-        
-        <div id="auth-view">
-            <h1 class="text-emerald-500 font-bold text-center mb-6 tracking-widest text-xl">Sovereign Login</h1>
-            <div class="space-y-4">
-                <input id="iid-field" type="text" placeholder="IID (INDIE-000...)" class="w-full bg-zinc-900 border border-emerald-900 p-4 rounded outline-none focus:border-emerald-400">
-                <input id="phone-field" type="tel" placeholder="Nomor Telepon" class="w-full bg-zinc-900 border border-emerald-900 p-4 rounded outline-none">
-                <div class="text-[10px] text-zinc-500 text-center py-4 border border-dashed border-zinc-800">
-                    SISTEM SIAP: PINDAI WAJAH & SIDIK JARI [BIOMETRIC READY]
-                </div>
-                <button onclick="handleAuth()" class="w-full bg-emerald-600 p-4 font-bold uppercase tracking-widest hover:bg-emerald-500 transition-all">Verifikasi & Masuk</button>
-            </div>
-        </div>
-
-        <div id="main-view" class="hidden space-y-8">
-            <div class="flex justify-between items-center border-b border-zinc-800 pb-4">
-                <span id="active-iid" class="text-emerald-500 font-bold"></span>
-                <button onclick="handleExit()" class="text-red-500 text-[10px] underline">SIGN OUT</button>
-            </div>
-            <div class="text-center">
-                <p class="text-[10px] text-zinc-500 uppercase tracking-widest">Saldo Hidup (IND-EUR)</p>
-                <h2 id="balance-val" class="text-5xl font-black mt-2">€ 0</h2>
-                <p class="text-emerald-400 text-[10px] mt-2 font-bold uppercase tracking-tighter">Status: Aura Aktif - Disiplin Terdeteksi</p>
-            </div>
-            <div class="space-y-3">
-                <button id="claim-btn" onclick="executeClaim()" class="w-full bg-emerald-700 py-4 rounded-xl font-bold uppercase hover:bg-emerald-600">Klaim Hak Hari Ini (€270)</button>
-                <button onclick="toggleCert(true)" class="w-full text-zinc-500 text-[10px] py-2 uppercase tracking-widest">Tampilkan Sertifikat Digital</button>
-            </div>
-        </div>
-
-        <div id="cert-view" class="hidden space-y-6">
-            <h3 class="text-center text-emerald-500 font-bold text-sm tracking-widest">GENESIS CERTIFICATE</h3>
-            <div class="bg-zinc-900 p-6 rounded-xl border border-zinc-800 text-[10px] font-mono leading-relaxed">
-                <p class="mb-2">IDENTITAS: <span id="cert-id" class="text-white"></span></p>
-                <p class="mb-2">JANGKAR NILAI: €100.000 (IND-EUR)</p>
-                <p class="mb-2">HAK AWAL: €1.000 [GRANTED]</p>
-                <p class="mb-2">DISTRIBUSI: €270/HARI [ACTIVE]</p>
-                <p class="mt-4 text-zinc-600">HASH: SHA256:7D8A29F3E1B9C5A7D8A29F3E1B9C5A0001</p>
-            </div>
-            <button onclick="toggleCert(false)" class="w-full text-zinc-500 text-[10px] uppercase font-bold">Kembali</button>
-        </div>
-
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="text-center mb-10">
+        <h1 class="text-3xl font-black tracking-tighter text-emerald-500 mb-2">INDIENATION</h1>
+        <p class="text-[10px] text-emerald-800 uppercase tracking-[0.5em]">Digital Sovereignty Protocol</p>
     </div>
 
-    <script>
-        const GENESIS = new Date('2026-02-01T00:00:00Z');
+    <div class="relative qr-frame rounded-3xl mb-12">
+        <div class="scan-line"></div>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=INDIE-0000000001&color=10b981&bgcolor=050505" 
+             alt="QR Gate" class="rounded-xl">
+    </div>
 
-        function handleAuth() {
-            const id = document.getElementById('iid-field').value;
-            if(!id.startsWith('INDIE-')) return alert('IID TIDAK VALID!');
-            document.getElementById('auth-view').classList.add('hidden');
-            document.getElementById('main-view').classList.remove('hidden');
-            document.getElementById('active-iid').innerText = id;
-            updateUI();
-        }
+    <div class="w-full max-w-xs space-y-4">
+        <button class="w-full py-4 bg-emerald-600/10 border border-emerald-500/50 text-emerald-400 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-emerald-600 hover:text-white transition-all">
+            Scan to Verify Identity
+        </button>
+        <p class="text-center text-[10px] text-slate-600 uppercase tracking-widest">Authorized: INDIE-FOUNDER</p>
+    </div>
 
-        function updateUI() {
-            const now = new Date();
-            const days = Math.floor((now - GENESIS) / (1000*60*60*24)) + 1;
-            const bal = 1000 + ((days - 1) * 270); // Day 1: 1000, Next: 270 [cite: 2026-02-01]
-            document.getElementById('balance-val').innerText = "€ " + bal.toLocaleString('de-DE');
-        }
-
-        function executeClaim() {
-            alert('Sukses! Hak ekonomi harian €270 telah divalidasi oleh AI Guard.');
-            document.getElementById('claim-btn').innerText = "KLAIM HARI INI SELESAI";
-            document.getElementById('claim-btn').disabled = true;
-            document.getElementById('claim-btn').classList.replace('bg-emerald-700', 'bg-zinc-800');
-        }
-
-        function toggleCert(show) {
-            document.getElementById('main-view').classList.toggle('hidden', show);
-            document.getElementById('cert-view').classList.toggle('hidden', !show);
-            document.getElementById('cert-id').innerText = document.getElementById('active-iid').innerText;
-        }
-
-        function handleExit() {
-            if(confirm('Hapus sesi biometrik dan keluar?')) location.reload();
-        }
-    </script>
+    <footer class="fixed bottom-8 text-[9px] text-slate-800 tracking-[0.3em]">
+        NEUROSPHERE GATEWAY SYSTEM © 2026
+    </footer>
 </body>
 </html>
