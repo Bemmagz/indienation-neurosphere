@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEUROSPHERE | Founder Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #000; color: #fff; font-family: 'Inter', sans-serif; }
+        .stat-card { background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 1.5rem; padding: 2rem; }
+        .glow-text { text-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
+    </style>
+</head>
+<body class="p-6">
+    <header class="flex justify-between items-center mb-12">
+        <div>
+            <h1 class="text-2xl font-black text-emerald-500 glow-text">NEUROSPHERE</h1>
+            <p class="text-[10px] text-emerald-800 tracking-widest uppercase">Sovereign Node: INDIE-FOUNDER</p>
+        </div>
+        <div class="px-4 py-2 bg-emerald-900/30 border border-emerald-500/50 rounded-full text-[10px] text-emerald-400">
+            SYSTEM ONLINE
+        </div>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div class="stat-card">
+            <h2 class="text-slate-400 text-xs uppercase tracking-widest mb-2">Total ENPE (E Coin)</h2>
+            <p class="text-4xl font-bold text-white mb-4">100.000.000.000.000</p>
+            <div class="flex justify-between text-[10px] text-emerald-500">
+                <span>STAKING: 20%</span>
+                <span>SWF: 80%</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <h2 class="text-slate-400 text-xs uppercase tracking-widest mb-2">Total LUV (Lovely Coin)</h2>
+            <p class="text-4xl font-bold text-white mb-4">100.000.000.000.000</p>
+            <div class="flex justify-between text-[10px] text-emerald-500">
+                <span>FOUNDER ALLOC: 20%</span>
+                <span>LOCKED: 2 YEARS</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="stat-card bg-emerald-600/10">
+        <h3 class="text-xs uppercase tracking-widest text-emerald-400 mb-4">Recent Protocol Logs</h3>
+        <ul class="text-[10px] font-mono text-emerald-700 space-y-2">
+            <li>[2026-02-04] QR Gateway Deployment: SUCCESS</li>
+            <li>[2026-02-02] Auralang Interpreter: ACTIVE</li>
+            <li>[2026-01-31] SWF Allocation: SECURED</li>
+        </ul>
+    </div>
+</body>
+</html>
