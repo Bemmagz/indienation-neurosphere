@@ -2,48 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sovereign Vault - IndieNation</title>
-    <meta name="robots" content="noindex, nofollow, noarchive">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Sovereign Vault - NeuroSphere</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=JetBrains+Mono:wght@300&display=swap');
-        body { font-family: 'Orbitron', sans-serif; background: #0a0a0a; color: #00ff41; }
-        .currency-card { background: rgba(0, 0, 0, 0.8); border: 1px solid #00ff41; backdrop-filter: blur(10px); }
+        body { background: #050505; color: #00ff41; font-family: monospace; padding: 40px; }
+        .card { border: 1px solid #00ff41; padding: 20px; margin-bottom: 20px; background: rgba(0,255,65,0.05); }
+        .locked { color: #ff3333; font-size: 0.8em; }
     </style>
 </head>
-<body class="min-h-screen p-6">
-    <div class="max-w-4xl mx-auto">
-        <header class="text-center mb-10">
-            <h1 class="text-3xl font-bold glow-text text-purple-500">INDIE-FOUNDER VAULT</h1>
-            <p class="font-mono text-xs mt-2 uppercase">Status: 100% Autonomous • AI Guard Active</p>
-        </header>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="currency-card p-6 rounded-lg">
-                <h3 class="text-yellow-400 font-bold uppercase mb-4">Lovely Coin (LUV)</h3>
-                <div class="text-4xl font-bold mb-2">100T</div>
-                <p class="text-[10px] font-mono opacity-60">FOUNDER ALLOCATION: LOCKED (3 YEARS)</p>
-                <p class="text-[10px] font-mono opacity-60">SOCIAL DIST: 1M LUV to 1M PEOPLE</p>
-            </div>
-            
-            <div class="currency-card p-6 rounded-lg">
-                <h3 class="text-green-400 font-bold uppercase mb-4">ENPE (E Coin)</h3>
-                <div class="text-4xl font-bold mb-2">20T</div>
-                <p class="text-[10px] font-mono opacity-60">STAKING STATUS: ACTIVE (20%)</p>
-                <p class="text-[10px] font-mono opacity-60">SWF ALLOCATION: 80T (LOCKED)</p>
-            </div>
-        </div>
-
-        <div class="mt-8 currency-card p-6 rounded-lg text-center">
-            <h3 class="text-blue-400 font-bold uppercase mb-2">IND-EUR (Stable Coin)</h3>
-            <div class="text-2xl font-bold">€100,000 / Person (Anchor)</div>
-            <p class="text-[10px] font-mono opacity-60 mt-2">TARGET: 10,000,000 SOVEREIGN CITIZENS</p>
-            <button onclick="location.href='/certificate'" class="mt-6 px-6 py-2 border border-blue-400 hover:bg-blue-400 hover:text-black transition uppercase text-xs font-bold">View Certificate</button>
-        </div>
+<body>
+    <h1>🔐 VAULT: INDIE-FOUNDER</h1>
+    <div class="card">
+        <h2>LOVELY COIN (LUV)</h2>
+        <div style="font-size: 2em;">100,000,000,000,000</div>
+        <p class="locked">[ STATUS: LOCKED FOR 3 YEARS ]</p>
+        <p>[ SOCIAL DIST: 1M LUV to 1M PEOPLE ]</p>
     </div>
-    <script>
-        if (navigator.userAgent.includes('Googlebot')) { document.body.innerHTML = ''; window.stop(); }
-    </script>
+    <div class="card">
+        <h2>ENPE (E COIN)</h2>
+        <div style="font-size: 2em;">20,000,000,000,000 E</div>
+        <p>[ STAKING: ACTIVE (20%) | SWF: 80T LOCKED ]</p>
+    </div>
+    <button onclick="location.href='/certificate'">VIEW NFT CONTAINER</button>
 </body>
 </html>

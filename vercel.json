@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "public": true,
   "cleanUrls": true,
+  "trailingSlash": false,
   "headers": [
     {
       "source": "/(.*)",
@@ -10,5 +10,9 @@
         { "key": "Cache-Control", "value": "no-store, max-age=0, must-revalidate" }
       ]
     }
+  ],
+  "rewrites": [
+    { "source": "/vault", "destination": "/vault.html" },
+    { "source": "/certificate", "destination": "/certificate.html" }
   ]
 }
