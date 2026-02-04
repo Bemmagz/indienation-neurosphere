@@ -8,3 +8,11 @@ async function claimIID() {
         loginSuccess(iid);
     }
 }
+
+function loginSuccess(iid) {
+    console.log("Akses Diberikan untuk IID: " + iid);
+    // Mengarahkan warga ke pusat kendali ARGI (Sektor 34) sebagai landing page pertama
+    setTimeout(() => {
+        window.location.href = "argi_control.html";
+    }, 1500);
+}
