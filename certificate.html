@@ -3,44 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NFT Walking Wallet - Sovereign Certificate</title>
+    <title>Sovereign Certificate - IndieNation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background: #000; color: #00ff41; font-family: 'JetBrains Mono', monospace; }
-        .nft-card { border: 2px solid #00ff41; box-shadow: 0 0 20px rgba(0,255,65,0.3); background: rgba(0,255,65,0.05); }
-        .progress-bg { background: #111; height: 10px; width: 100%; border-radius: 5px; overflow: hidden; }
-        .progress-fill { background: #00ff41; height: 100%; width: 1.54%; } /* 1.540 dari 100.000 */
+        .nft-card { border: 2px solid #00ff41; box-shadow: 0 0 20px rgba(0,255,65,0.3); }
+        .nav-btn { font-size: 8px; border: 1px solid #00ff41; padding: 5px 10px; }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-6">
-    <div id="cert-container" class="nft-card w-full max-w-sm p-8 text-center relative">
-        <div class="absolute top-2 right-4 text-[8px] text-yellow-500">IID VERIFIED</div>
-        
-        <h1 class="text-[12px] tracking-[0.6em] uppercase mb-8 font-bold text-white">SOVEREIGN IDENTITY</h1>
-        
-        <div class="text-left space-y-4 text-[11px]">
-            <p class="opacity-70">NAME: <span id="disp-name" class="text-white font-bold uppercase">...</span></p>
-            <p class="opacity-70">IID: <span id="disp-iid" class="text-yellow-500 font-bold">...</span></p>
-            
-            <hr class="border-green-900">
-            
-            <div class="py-2">
-                <p class="text-[9px] mb-1">ACCUMULATED BALANCE (IND-EUR)</p>
-                <p class="text-3xl font-bold text-white">€1.540,00</p>
-            </div>
+<body class="flex flex-col items-center justify-center min-h-screen p-6">
+    <div class="fixed top-6 flex gap-4 bg-black/80 p-2 border-b border-green-900 w-full justify-center z-50">
+        <a href="/" class="nav-btn">HOME</a>
+        <a href="/vault" class="nav-btn">VAULT</a>
+        <a href="/certificate" class="nav-btn bg-green-500 text-black">CERTIFICATE</a>
+    </div>
 
-            <div>
-                <p class="text-[8px] mb-1 opacity-70">TOTAL SOVEREIGN GRANT PROGRESS: €100.000</p>
-                <div class="progress-bg">
-                    <div class="progress-fill"></div>
-                </div>
-            </div>
+    <div id="cert-container" class="nft-card w-full max-w-sm p-8 text-center mt-12">
+        <h1 class="text-[12px] tracking-[0.6em] uppercase mb-8 font-bold text-white">SOVEREIGN IDENTITY</h1>
+        <div class="text-left space-y-4 text-[11px]">
+            <p>HOLDER: <span id="disp-name" class="text-white font-bold">...</span></p>
+            <p>IID: <span id="disp-iid" class="text-yellow-500 font-bold">...</span></p>
+            <hr class="border-green-900">
+            <p class="text-[9px]">TOTAL GRANT: <span class="text-white">€100.000,00</span></p>
+            <p class="text-[9px]">ACCUMULATED: <span class="text-white">€1.540,00</span></p>
         </div>
-        
-        <p class="text-[7px] mt-10 opacity-40 leading-relaxed">
-            ENPE NATIVE: 100T | LUV AURA: 100T<br>
-            SECURED BY NEUROSPHERE AI GUARD
-        </p>
     </div>
 
     <script>
@@ -49,7 +35,7 @@
             document.getElementById('disp-name').innerText = data.username;
             document.getElementById('disp-iid').innerText = data.iid;
         } else {
-            document.getElementById('cert-container').innerHTML = "<h1 class='text-xs'>IDENTITY NOT FOUND.<br>REGISTER AT /AUTH</h1>";
+            document.getElementById('cert-container').innerHTML = "<h1 class='text-xs'>IDENTITY NOT FOUND.<br><a href='/auth' class='underline'>REGISTER HERE</a></h1>";
         }
     </script>
 </body>
