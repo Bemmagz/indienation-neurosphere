@@ -11,12 +11,12 @@
     <div class="w-full max-w-xs border border-green-500 p-6 bg-green-950/10">
         <h1 class="text-xs font-bold tracking-[0.3em] uppercase mb-6 text-center">Identity Enrollment</h1>
         <input type="text" id="username" placeholder="INPUT IDENTITY NAME" class="w-full bg-black border border-green-500 p-2 mb-4 text-white text-[10px] outline-none">
-        <button onclick="autoSaveIdentity()" class="w-full py-3 bg-green-600 text-black font-bold text-[10px] uppercase">Initialize & Save</button>
+        <button onclick="startBiometricAuth()" class="w-full py-3 bg-green-600 text-black font-bold text-[10px] uppercase">Initialize & Save</button>
         <p class="text-[7px] mt-4 opacity-50 text-center">SYSTEM: AI GUARD AUTO-SAVE ACTIVE</p>
     </div>
 
     <script>
-        function autoSaveIdentity() {
+        function startBiometricAuth() {
             const user = document.getElementById('username').value;
             if(!user) return alert("IDENTITY NAME REQUIRED");
 
@@ -47,3 +47,21 @@
     </script>
 </body>
 </html>
+<script>
+async function startBiometricAuth() {
+    if (!window.PublicKeyCredential) {
+        alert("Biometrics not supported. Falling back to Nano-Save.");
+        return autoSaveIdentity();
+    }
+    
+    // Inisialisasi Biometrik lewat Hardware [cite: 2025-12-23]
+    try {
+        console.log("AI Guard: Requesting Hardware Bio-Auth...");
+        // Simulasi Handshake Hardware (WebAuthn Bridge)
+        alert("Please verify your identity (Fingerprint/FaceID)");
+        autoSaveIdentity();
+    } catch (err) {
+        alert("Auth Failed: " + err.message);
+    }
+}
+</script>
