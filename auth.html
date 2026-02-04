@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Register - IndieNation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
+        body { background: #050505; color: #00ff41; font-family: 'JetBrains Mono', monospace; }
+        input { background: #111; border: 1px solid #00ff41; color: white; padding: 10px; width: 100%; outline: none; }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-6">
+    <div class="w-full max-w-xs space-y-6">
+        <div class="text-center">
+            <h1 class="text-sm tracking-[0.4em] uppercase font-bold">New Identity</h1>
+            <p class="text-[8px] text-yellow-500 mt-2">SECURE ENROLLMENT BY AI GUARD</p>
+        </div>
+
+        <div class="space-y-4">
+            <div>
+                <label class="text-[9px] uppercase">Full Name / Alias</label>
+                <input type="text" id="username" placeholder="Enter Identity Name">
+            </div>
+            <button onclick="generateIdentity()" class="w-full py-3 bg-green-600 text-black font-bold text-[10px] uppercase">Initialize Claim</button>
+        </div>
+    </div>
+
+    <script>
+        function generateIdentity() {
+            const user = document.getElementById('username').value;
+            if(!user) return alert("Please enter a name");
+            
+            // Generate IID & TX_HASH simulasi (akan diganti Supabase real-link)
+            const iid = "NS-USER-" + Math.floor(1000 + Math.random() * 9000) + "-X";
+            alert("IDENTITY SECURED!\nIID: " + iid + "\nInitial Claim: €1,540 allocated.");
+            
+            // Simpan ke LocalStorage agar Vault bisa membaca data user
+            localStorage.setItem('iid', iid);
+            localStorage.setItem('username', user);
+            window.location.href = 'vault.html';
+        }
+    </script>
+</body>
+</html>
