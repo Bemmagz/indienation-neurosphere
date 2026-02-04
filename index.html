@@ -3,40 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEUROSPHERE | Founder Gateway</title>
+    <title>GATEWAY</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { background: #000; color: #fff; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; margin: 0; overflow: hidden; }
-        .qr-frame { border: 2px solid #10b981; padding: 20px; background: #fff; border-radius: 2rem; box-shadow: 0 0 40px rgba(16, 185, 129, 0.4); cursor: pointer; transition: all 0.3s; }
-        .qr-frame:hover { transform: scale(1.05); }
-        .status-text { font-family: 'Courier New', monospace; font-size: 10px; color: #065f46; margin-top: 20px; letter-spacing: 3px; }
-    </style>
 </head>
-<body>
-    <div class="text-center mb-8">
-        <h1 class="text-4xl font-black text-emerald-500 tracking-tighter">GATEWAY AUTH</h1>
-        <p class="text-[10px] text-emerald-700 tracking-[0.4em] uppercase">Security Level: Founder</p>
+<body class="bg-black flex flex-col items-center justify-center min-h-screen">
+    <div onclick="window.location.href='dashboard.html'" class="cursor-pointer border-4 border-emerald-500 p-4 bg-white rounded-3xl shadow-[0_0_50px_rgba(16,185,129,0.5)]">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=INDIE-0000000001" alt="QR">
     </div>
-
-    <div class="qr-frame" onclick="verifyAccess()">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=INDIE-0000000001&color=000000&bgcolor=ffffff" alt="Founder Key">
-    </div>
-
-    <div id="access-msg" class="status-text uppercase mt-6">Awaiting Founder Authentication...</div>
-
-    <script>
-        function verifyAccess() {
-            const msg = document.getElementById('access-msg');
-            msg.innerText = "VERIFYING IDENTITY...";
-            msg.style.color = "#10b981";
-            
-            // Simulasi Trespassing Logic
-            setTimeout(() => {
-                alert("IDENTITY CONFIRMED: Welcome INDIE-Founder");
-                msg.innerText = "ACCESS GRANTED - REDIRECTING TO NEUROSPHERE...";
-                window.location.href = "dashboard.html";
-            }, 1500);
-        }
-    </script>
+    <p class="text-emerald-500 mt-6 font-mono text-[10px] tracking-widest uppercase">Tap QR to Trespass</p>
 </body>
 </html>
