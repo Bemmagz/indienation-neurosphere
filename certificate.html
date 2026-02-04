@@ -1,95 +1,31 @@
-<!-- BLOCK ALL SEARCH ENGINES -->
-<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noodp, noimageindex">
-<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
-<meta name="googlebot-news" content="nosnippet">
-<meta name="slurp" content="noydir, noodp">
-<meta http-equiv="X-Robots-Tag" content="none">
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sovereign Certificate - IndieNation</title>
+    <title>Sovereign Certificate</title>
+    <meta name="robots" content="noindex, nofollow">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=JetBrains+Mono:wght@300&display=swap');
-        :root { --matrix-green: #00ff41; --dark-void: #050505; }
-        body { font-family: 'Orbitron', sans-serif; background: var(--dark-void); color: var(--matrix-green); }
-        .cert-frame { 
-            border: 2px solid var(--matrix-green); 
-            background: rgba(0, 255, 65, 0.02);
-            position: relative;
-            overflow: hidden;
-        }
-        .watermark {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 5rem; opacity: 0.05; white-space: nowrap; pointer-events: none;
-        }
-        .aura-mini {
-            width: 80px; height: 80px; border-radius: 50%;
-            background: radial-gradient(circle, rgba(0,255,65,0.4) 0%, transparent 70%);
-            animation: pulseAura 4s infinite ease-in-out;
-        }
-        @keyframes pulseAura { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+        body { font-family: 'Orbitron', sans-serif; background: #050505; color: #00ff41; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .cert { border: 2px solid #00ff41; padding: 40px; background: black; max-width: 600px; text-align: center; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center p-6">
-
-    <div class="w-full max-w-3xl mt-10">
-        <div class="cert-frame p-8 md:p-12 rounded-sm relative shadow-[0_0_30px_rgba(0,255,65,0.1)]">
-            <div class="watermark uppercase tracking-[1em]">SOVEREIGN IDENTITY</div>
-            
-            <div class="flex justify-between items-start mb-12">
-                <div>
-                    <h1 class="text-2xl font-bold tracking-tighter">CERTIFICATE OF KINDS</h1>
-                    <p class="text-[10px] font-mono opacity-60">NEUROSPHERE IMMUNE SYSTEM V4.3.0</p>
-                </div>
-                <div class="aura-mini"></div>
-            </div>
-
-            <div class="space-y-8 relative z-10">
-                <div class="border-b border-green-500/30 pb-4">
-                    <p class="text-[10px] uppercase opacity-50 mb-1">Holder Identity Hash</p>
-                    <p class="font-mono text-sm break-all">NEURO-IID-SHA256-8892-X102-INDIENATION</p>
-                </div>
-
-                <div class="grid grid-cols-2 gap-6">
-                    <div>
-                        <p class="text-[10px] uppercase opacity-50 mb-1">Status</p>
-                        <p class="text-sm font-bold uppercase">Sovereign Citizen</p>
-                    </div>
-                    <div>
-                        <p class="text-[10px] uppercase opacity-50 mb-1">Vesting Period</p>
-                        <p class="text-sm font-bold">2 Years (Locked)</p>
-                    </div>
-                </div>
-
-                <div class="mt-12 flex flex-col items-center">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=NEUROSPHERE-CERTIFICATE-VALIDATION" class="p-2 bg-white/10 rounded-sm mb-4" alt="Validation QR">
-                    <p class="text-[9px] font-mono opacity-40 uppercase tracking-widest text-center">
-                        Scan to verify digital birthright in the global ledger
-                    </p>
-                </div>
-            </div>
+<body>
+    <div class="cert">
+        <h1 class="text-2xl font-bold mb-4 uppercase">Certificate of Kinds</h1>
+        <div class="mb-6 flex justify-center">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=INDIE-FOUNDER-VALUE-INHERITANCE" alt="QR">
         </div>
-
-        <div class="mt-8 flex justify-center space-x-4">
-            <button onclick="window.print()" class="px-6 py-2 border border-green-500 text-[10px] hover:bg-green-500 hover:text-black transition uppercase font-bold tracking-widest">
-                [ PRINT CERTIFICATE ]
-            </button>
-            <button onclick="location.href='vault.html'" class="px-6 py-2 bg-green-600 text-black text-[10px] hover:bg-green-400 transition uppercase font-bold tracking-widest">
-                [ RETURN TO VAULT ]
-            </button>
+        <p class="font-mono text-xs mb-6">HOLDER: INDIE-FOUNDER</p>
+        <div class="text-left font-mono text-[10px] space-y-2 opacity-80">
+            <p>[+] METADATA ENPE: ATTACHED</p>
+            <p>[+] METADATA LUV: ATTACHED</p>
+            <p>[+] VALUE IDENTITY: TM-LOGIC-UNIT</p>
+            <p>[+] INHERITANCE: ENABLED</p>
         </div>
+        <button onclick="location.href='/vault'" class="mt-8 px-6 py-2 bg-green-600 text-black font-bold text-xs uppercase">Return to Vault</button>
     </div>
-
-    <footer class="mt-auto py-10">
-        <p class="text-[9px] tracking-[0.2em] font-mono opacity-50 uppercase text-center">
-            BY 1001NDONESIA INVESTMENT & INDIENATION FOUNDATION
-        </p>
-    </footer>
-
 </body>
 </html>
-

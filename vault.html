@@ -1,111 +1,49 @@
-<!-- BLOCK ALL SEARCH ENGINES -->
-<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noodp, noimageindex">
-<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
-<meta name="googlebot-news" content="nosnippet">
-<meta name="slurp" content="noydir, noodp">
-<meta http-equiv="X-Robots-Tag" content="none">
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sovereign Vault - Technology Money</title>
+    <title>Sovereign Vault - IndieNation</title>
+    <meta name="robots" content="noindex, nofollow, noarchive">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=JetBrains+Mono:wght@300&display=swap');
-        :root { --matrix-green: #00ff41; --dark-void: #050505; }
-        body { font-family: 'Orbitron', sans-serif; background: var(--dark-void); color: var(--matrix-green); overflow-x: hidden; }
-        .cyber-card { border: 1px solid rgba(0, 255, 65, 0.3); background: rgba(0, 255, 65, 0.02); backdrop-filter: blur(10px); }
-        .aura-sphere {
-            width: 200px; height: 200px; border-radius: 50%;
-            background: radial-gradient(circle, rgba(0,255,65,0.4) 0%, transparent 70%);
-            box-shadow: 0 0 50px rgba(0,255,65,0.2);
-            animation: pulseAura 8s infinite ease-in-out;
-            display: flex; align-items: center; justify-content: center; position: relative;
-        }
-        @keyframes pulseAura { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.15); opacity: 1; } }
-        .ticker-wrap { border-top: 1px solid var(--matrix-green); border-bottom: 1px solid var(--matrix-green); background: rgba(0,255,65,0.05); }
-        .qr-code-overlay { position: absolute; opacity: 0.15; width: 120px; filter: invert(1); mix-blend-mode: overlay; }
+        body { font-family: 'Orbitron', sans-serif; background: #0a0a0a; color: #00ff41; }
+        .currency-card { background: rgba(0, 0, 0, 0.8); border: 1px solid #00ff41; backdrop-filter: blur(10px); }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center p-4">
+<body class="min-h-screen p-6">
+    <div class="max-w-4xl mx-auto">
+        <header class="text-center mb-10">
+            <h1 class="text-3xl font-bold glow-text text-purple-500">INDIE-FOUNDER VAULT</h1>
+            <p class="font-mono text-xs mt-2 uppercase">Status: 100% Autonomous • AI Guard Active</p>
+        </header>
 
-    <div class="text-center mt-8 mb-4">
-        <h2 class="text-xs tracking-[0.5em] opacity-70 mb-2">TECHNOLOGY MONEY</h2>
-        <div class="flex justify-center mb-6">
-            <div class="aura-sphere">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=TM-IDENTITY-HASH" class="qr-code-overlay" alt="QR Identity">
-                <span class="text-xs font-bold tracking-widest z-10">N-AURA</span>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="currency-card p-6 rounded-lg">
+                <h3 class="text-yellow-400 font-bold uppercase mb-4">Lovely Coin (LUV)</h3>
+                <div class="text-4xl font-bold mb-2">100T</div>
+                <p class="text-[10px] font-mono opacity-60">FOUNDER ALLOCATION: LOCKED (3 YEARS)</p>
+                <p class="text-[10px] font-mono opacity-60">SOCIAL DIST: 1M LUV to 1M PEOPLE</p>
+            </div>
+            
+            <div class="currency-card p-6 rounded-lg">
+                <h3 class="text-green-400 font-bold uppercase mb-4">ENPE (E Coin)</h3>
+                <div class="text-4xl font-bold mb-2">20T</div>
+                <p class="text-[10px] font-mono opacity-60">STAKING STATUS: ACTIVE (20%)</p>
+                <p class="text-[10px] font-mono opacity-60">SWF ALLOCATION: 80T (LOCKED)</p>
             </div>
         </div>
-        <h1 class="text-3xl font-bold" id="total-tm">€100,000.00</h1>
-        <p class="text-[10px] tracking-widest opacity-60 mt-2 italic">PROMOTIONAL ALLOCATION</p>
-    </div>
 
-    <div class="w-full max-w-md grid grid-cols-2 gap-4 mb-6">
-        <div class="cyber-card p-4 rounded-md text-center">
-            <p class="text-[9px] opacity-60 mb-2 uppercase">ENPE (E-COIN)</p>
-            <p class="text-xl font-mono" id="enpe-val">0.00</p>
-            <p class="text-[8px] mt-2 opacity-40">SYNCING SUPABASE...</p>
-        </div>
-        <div class="cyber-card p-4 rounded-md text-center">
-            <p class="text-[9px] opacity-60 mb-2 uppercase">LOVELY COIN</p>
-            <p class="text-xl font-mono" id="luv-val">0.00</p>
-            <p class="text-[8px] mt-2 opacity-40">FOUNDER POOL</p>
-        </div>
-        <div class="cyber-card col-span-2 p-6 rounded-md text-center relative overflow-hidden">
-            <p class="text-[9px] opacity-60 mb-2 italic uppercase">STABLE COIN (IND-EUR)</p>
-            <p class="text-3xl font-bold" id="stable-val">€1,000.00</p>
-            <div id="increment-status" class="text-[9px] mt-2 text-green-400 font-mono"></div>
+        <div class="mt-8 currency-card p-6 rounded-lg text-center">
+            <h3 class="text-blue-400 font-bold uppercase mb-2">IND-EUR (Stable Coin)</h3>
+            <div class="text-2xl font-bold">€100,000 / Person (Anchor)</div>
+            <p class="text-[10px] font-mono opacity-60 mt-2">TARGET: 10,000,000 SOVEREIGN CITIZENS</p>
+            <button onclick="location.href='/certificate'" class="mt-6 px-6 py-2 border border-blue-400 hover:bg-blue-400 hover:text-black transition uppercase text-xs font-bold">View Certificate</button>
         </div>
     </div>
-
-    <div class="w-full max-w-md ticker-wrap py-2 mb-10 overflow-hidden whitespace-nowrap font-mono text-[10px]">
-        <div class="inline-block" id="price-ticker">LOADING MARKET DATA...</div>
-    </div>
-
-    <footer class="w-full text-center py-6 mt-auto border-t border-green-500/10">
-        <p class="text-[9px] tracking-[0.2em] font-mono opacity-50 uppercase">
-            BY 1001NDONESIA INVESTMENT & INDIENATION FOUNDATION
-        </p>
-    </footer>
-
     <script>
-        function calculateStable() {
-            const startDate = new Date("2026-02-01"); 
-            const now = new Date();
-            const diffTime = Math.abs(now - startDate);
-            const day = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
-            
-            let total;
-            if (day === 1) {
-                total = 1000;
-            } else if (day > 1 && day < 365) {
-                total = 1000 + (day - 1) * 270;
-            } else if (day >= 365) {
-                total = 100000; // Final-Grade Fix
-            }
-            
-            document.getElementById('stable-val').innerText = '€' + total.toLocaleString('de-DE', {minimumFractionDigits: 2});
-            document.getElementById('increment-status').innerText = `DAY ${day} / 365 | STATUS: ACTIVE DISTRIBUTION`;
-        }
-
-        async function updatePrices() {
-            try {
-                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether&vs_currencies=eur');
-                const data = await res.json();
-                const btc = data.bitcoin.eur;
-                const usdt = data.tether.eur;
-                document.getElementById('price-ticker').innerText = 
-                    `[ BTC: €${btc.toLocaleString()} ]  •  [ USDT: €${usdt.toFixed(2)} ]  •  [ SYSTEM STATUS: SECURE ]`;
-            } catch (e) { document.getElementById('price-ticker').innerText = "CONNECTING TO GLOBAL NODES..."; }
-        }
-
-        setInterval(updatePrices, 2000);
-        calculateStable();
-        updatePrices();
+        if (navigator.userAgent.includes('Googlebot')) { document.body.innerHTML = ''; window.stop(); }
     </script>
 </body>
 </html>
-
