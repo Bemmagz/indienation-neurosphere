@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sovereign Vault - Technology Money</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=JetBrains+Mono:wght@300&display=swap');
+        :root { --matrix-green: #00ff41; --dark-void: #050505; }
+        body { font-family: 'Orbitron', sans-serif; background: var(--dark-void); color: var(--matrix-green); overflow-x: hidden; }
+        .cyber-card { border: 1px solid rgba(0, 255, 65, 0.3); background: rgba(0, 255, 65, 0.02); backdrop-filter: blur(10px); }
+        .aura-sphere {
+            width: 200px; height: 200px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,255,65,0.4) 0%, transparent 70%);
+            box-shadow: 0 0 50px rgba(0,255,65,0.2);
+            animation: pulseAura 8s infinite ease-in-out;
+            display: flex; items-center; justify-content: center; position: relative;
+        }
+        @keyframes pulseAura { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.15); opacity: 1; } }
+        .ticker-wrap { border-top: 1px solid var(--matrix-green); border-bottom: 1px solid var(--matrix-green); background: rgba(0,255,65,0.05); }
+        .qr-code-overlay { position: absolute; opacity: 0.15; width: 120px; filter: invert(1); mix-blend-mode: overlay; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center p-4">
+
+    <div class="text-center mt-8 mb-4">
+        <h2 class="text-xs tracking-[0.5em] opacity-70 mb-2">TECHNOLOGY MONEY</h2>
+        <div class="flex justify-center mb-6">
+            <div class="aura-sphere">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=TM-IDENTITY-HASH" class="qr-code-overlay" alt="QR Identity">
+                <span class="text-xs font-bold tracking-widest z-10">N-AURA</span>
+            </div>
+        </div>
+        <h1 class="text-3xl font-bold neon-glow">€100,000.00</h1>
+        <p class="text-[10px] tracking-widest opacity-60 mt-2 italic">PROMOTIONAL ALLOCATION</p>
+    </div>
+
+    <div class="w-full max-w-md grid grid-cols-2 gap-4 mb-6">
+        <div class="cyber-card p-4 rounded-md text-center">
+            <p class="text-[9px] opacity-60 mb-2">ENPE (E-COIN)</p>
+            <p class="text-xl font-mono" id="enpe-val">0.00</p>
+            <p class="text-[8px] mt-2 opacity-40">SYNCING SUPABASE...</p>
+        </div>
+        <div class="cyber-card p-4 rounded-md text-center">
+            <p class="text-[9px] opacity-60 mb-2">LOVELY COIN</p>
+            <p class="text-xl font-mono" id="luv-val">0.00</p>
+            <p class="text-[8px] mt-2 opacity-40">FOUNDER POOL</p>
+        </div>
+        <div class="cyber-card col-span-2 p-6 rounded-md text-center relative overflow-hidden">
+            <p class="text-[9px] opacity-60 mb-2 italic">STABLE COIN (IND-EUR)</p>
+            <p class="text-3xl font-bold" id="stable-val">€1,000.00</p>
+            <div id="increment-status" class="text-[9px] mt-2 text-green-400 font-mono"></div>
+        </div>
+    </div>
+
+    <div class="w-full max-w-md ticker-wrap py-2 mb-10 overflow-hidden whitespace-nowrap font-mono text-[10px]">
+        <div class="inline-block animate-marquee" id="price-ticker">
+            BTC/EUR: LOADING... | USDT/EUR: LOADING... | TM-STABILITY: ACTIVE | 
+        </div>
+    </div>
+
+    <footer class="w-full text-center py-6 mt-auto">
+        <p class="text-[9px] tracking-[0.2em] font-mono opacity-50 uppercase">
+            BY 1001NDONESIA INVESTMENT & INDIENATION FOUNDATION
+        </p>
+    </footer>
+
+    <script>
+        // --- STABLE COIN LOGIC ---
+        function calculateStable() {
+            const startDate = new Date("2026-02-01"); // Kick-off date
+            const now = new Date();
+            const diffTime = Math.abs(now - startDate);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+            
+            let total = 1000; // Hari pertama
+            if (diffDays > 1 && diffDays < 365) {
+                total += (diffDays - 1) * 270; // Hari 2-364
+            } else if (diffDays >= 365) {
+                total = 98730 + 990; // Hari 365
+            }
+            
+            document.getElementById('stable-val').innerText = '€' + total.toLocaleString();
+            document.getElementById('increment-status').innerText = `DAY ${diffDays} / 365 | AUTO-YIELD: +€270`;
+        }
+
+        // --- TICKER LOGIC (CoinGecko) ---
+        async function updatePrices() {
+            try {
+                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether&vs_currencies=eur');
+                const data = await res.json();
+                const btc = data.bitcoin.eur;
+                const usdt = data.tether.eur;
+                document.getElementById('price-ticker').innerText = 
+                    `[ BTC: €${btc.toLocaleString()} ]  <->  [ USDT: €${usdt.toFixed(2)} ]  <->  [ NEUROSPHERE GLOBAL REACH ]`;
+            } catch (e) { console.log("Ticker failed"); }
+        }
+
+        setInterval(updatePrices, 2000); // Tiap 2 detik
+        calculateStable();
+        updatePrices();
+    </script>
+</body>
+</html>
