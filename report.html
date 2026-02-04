@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>E-KINDNESS Reporter - NeuroSphere</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
+        body { background: #050505; color: #00ff41; font-family: 'JetBrains Mono', monospace; min-height: 100vh; display: flex; flex-direction: column; padding: 20px; }
+        .upload-zone { border: 2px dashed #00ff41; background: rgba(0,255,65,0.05); transition: all 0.3s; }
+        .upload-zone:active { background: rgba(0,255,65,0.2); }
+    </style>
+</head>
+<body class="justify-between">
+    <div class="text-center">
+        <h1 class="text-xs tracking-[0.3em] font-bold uppercase">Kindness Proof Submission</h1>
+        <p class="text-[7px] text-yellow-500 mt-1">AI GUARD VERIFICATION: PHOTO + GEO-LOCATION</p>
+    </div>
+
+    <div class="space-y-6">
+        <div class="upload-zone p-8 text-center rounded-lg" onclick="document.getElementById('fileInput').click()">
+            <input type="file" id="fileInput" class="hidden" accept="image/*">
+            <div class="text-[30px] mb-2">📸</div>
+            <p class="text-[10px] uppercase font-bold">Capture Proof of Kindness</p>
+            <p class="text-[7px] opacity-50 mt-1">Tap to open camera/gallery</p>
+        </div>
+
+        <div class="border border-green-900 p-4 bg-black/40 rounded">
+            <div class="flex justify-between items-center text-[9px]">
+                <span>GEO-LOCATION STATUS:</span>
+                <span id="loc-status" class="text-red-500">PENDING</span>
+            </div>
+            <p id="lat-long" class="text-[7px] opacity-40 mt-1">Waiting for GPS signal...</p>
+        </div>
+    </div>
+
+    <div class="space-y-3">
+        <button onclick="submitReport()" class="w-full py-4 bg-green-600 text-black font-bold text-[10px] uppercase tracking-[0.2em] shadow-[0_0_15px_#00ff41]">
+            SUBMIT TO AI GUARD
+        </button>
+        <button onclick="location.href='vault.html'" class="w-full py-2 text-[8px] uppercase opacity-50">Cancel & Return</button>
+    </div>
+
+    <script>
+        // Simulasi deteksi lokasi otomatis
+        navigator.geolocation.getCurrentPosition((pos) => {
+            document.getElementById('loc-status').innerText = 'SECURED';
+            document.getElementById('loc-status').classList.replace('text-red-500', 'text-green-500');
+            document.getElementById('lat-long').innerText = `LAT: ${pos.coords.latitude.toFixed(4)} | LONG: ${pos.coords.longitude.toFixed(4)}`;
+        });
+
+        function submitReport() {
+            alert("REPORT RECEIVED. AI Guard is validating the hash...\n\nResult: +7 LUV rewards allocated for 2026-02-04.");
+            location.href = 'vault.html';
+        }
+    </script>
+</body>
+</html>
