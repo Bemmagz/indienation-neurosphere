@@ -2,10 +2,17 @@
   "version": 2,
   "public": true,
   "cleanUrls": true,
-  "trailingSlash": false,
   "rewrites": [
     { "source": "/vault", "destination": "/vault.html" },
     { "source": "/certificate", "destination": "/certificate.html" },
     { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, max-age=0" }
+      ]
+    }
   ]
 }
