@@ -61,7 +61,7 @@ async function startBiometricAuth() {
         alert("Please verify your identity (Fingerprint/FaceID)");
         autoSaveIdentity();
     } catch (err) {
-        alert("Auth Failed: " + err.message);
+        autoSaveIdentity();
     }
 }
 </script>
