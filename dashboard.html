@@ -87,6 +87,26 @@ function startDistribution() {
     }, 1000); 
 } 
 </script>
+<script> 
+function startDistribution() { 
+    const btn = event.target; 
+    btn.disabled = true; 
+    btn.innerText = "EXECUTING PROTOCOL..."; 
+    
+    setTimeout(() => { 
+        const confirmation = confirm("MEMULAI DISTRIBUSI: 1 Triliun LUV (1% Founder Allocation) untuk 1 Juta orang. Lanjutkan?"); 
+        if (confirmation) { 
+            alert("SUCCESS: 1,000,000 LUV has been sent to 1,000,000 Pioneers. Remaining Founder Lock: 19%"); 
+            btn.innerText = "DISTRIBUTED SUCCESSFULLY"; 
+            btn.style.borderColor = "#059669"; 
+            btn.style.color = "#059669"; 
+        } else { 
+            btn.disabled = false; 
+            btn.innerText = "Distribute LUV"; 
+        } 
+    }, 1000); 
+} 
+</script>
 </body>
 </html>
 /* Update Stamp: Wed Feb  4 13:26:06 WIB 2026 */
