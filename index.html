@@ -3,24 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INDIENATION | Sovereign Gateway</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>INDIENATION | V.1.0.1</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #000; color: #fff; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; min-height: screen; margin: 0; overflow: hidden; }
+        body { background: #000; color: #fff; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; flex-direction: column; }
         .qr-frame { border: 2px solid #10b981; padding: 20px; background: #050505; border-radius: 2rem; box-shadow: 0 0 30px rgba(16, 185, 129, 0.2); position: relative; }
         .scan-line { width: 100%; height: 2px; background: #10b981; position: absolute; top: 0; left: 0; animation: scan 2s linear infinite; }
         @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
     </style>
 </head>
-<body class="flex-col">
+<body>
     <div class="text-center mb-10">
-        <h1 class="text-3xl font-black text-emerald-500">INDIENATION</h1>
-        <p class="text-[10px] text-emerald-800 tracking-[0.5em]">DIGITAL SOVEREIGNTY</p>
+        <h1 class="text-3xl font-black text-emerald-500 tracking-tighter">INDIENATION</h1>
+        <p class="text-[10px] text-emerald-800 tracking-[0.5em] uppercase">Digital Sovereignty Gateway</p>
     </div>
     <div class="qr-frame">
         <div class="scan-line"></div>
         <img src="https://quickchart.io/qr?text=INDIE-0000000001&dark=10b981&light=050505&size=250" alt="QR Gate">
     </div>
-    <p class="mt-8 text-[10px] text-slate-600 tracking-widest uppercase">Authorized: INDIE-FOUNDER</p>
+    <p class="mt-8 text-[10px] text-slate-600 tracking-widest uppercase font-mono">ID: INDIE-FOUNDER-01</p>
 </body>
 </html>
