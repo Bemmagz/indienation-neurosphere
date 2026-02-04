@@ -15,7 +15,7 @@
             background: radial-gradient(circle, rgba(0,255,65,0.4) 0%, transparent 70%);
             box-shadow: 0 0 50px rgba(0,255,65,0.2);
             animation: pulseAura 8s infinite ease-in-out;
-            display: flex; items-center; justify-content: center; position: relative;
+            display: flex; align-items: center; justify-content: center; position: relative;
         }
         @keyframes pulseAura { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.15); opacity: 1; } }
         .ticker-wrap { border-top: 1px solid var(--matrix-green); border-bottom: 1px solid var(--matrix-green); background: rgba(0,255,65,0.05); }
@@ -32,60 +32,58 @@
                 <span class="text-xs font-bold tracking-widest z-10">N-AURA</span>
             </div>
         </div>
-        <h1 class="text-3xl font-bold neon-glow">€100,000.00</h1>
+        <h1 class="text-3xl font-bold" id="total-tm">€100,000.00</h1>
         <p class="text-[10px] tracking-widest opacity-60 mt-2 italic">PROMOTIONAL ALLOCATION</p>
     </div>
 
     <div class="w-full max-w-md grid grid-cols-2 gap-4 mb-6">
         <div class="cyber-card p-4 rounded-md text-center">
-            <p class="text-[9px] opacity-60 mb-2">ENPE (E-COIN)</p>
+            <p class="text-[9px] opacity-60 mb-2 uppercase">ENPE (E-COIN)</p>
             <p class="text-xl font-mono" id="enpe-val">0.00</p>
             <p class="text-[8px] mt-2 opacity-40">SYNCING SUPABASE...</p>
         </div>
         <div class="cyber-card p-4 rounded-md text-center">
-            <p class="text-[9px] opacity-60 mb-2">LOVELY COIN</p>
+            <p class="text-[9px] opacity-60 mb-2 uppercase">LOVELY COIN</p>
             <p class="text-xl font-mono" id="luv-val">0.00</p>
             <p class="text-[8px] mt-2 opacity-40">FOUNDER POOL</p>
         </div>
         <div class="cyber-card col-span-2 p-6 rounded-md text-center relative overflow-hidden">
-            <p class="text-[9px] opacity-60 mb-2 italic">STABLE COIN (IND-EUR)</p>
+            <p class="text-[9px] opacity-60 mb-2 italic uppercase">STABLE COIN (IND-EUR)</p>
             <p class="text-3xl font-bold" id="stable-val">€1,000.00</p>
             <div id="increment-status" class="text-[9px] mt-2 text-green-400 font-mono"></div>
         </div>
     </div>
 
     <div class="w-full max-w-md ticker-wrap py-2 mb-10 overflow-hidden whitespace-nowrap font-mono text-[10px]">
-        <div class="inline-block animate-marquee" id="price-ticker">
-            BTC/EUR: LOADING... | USDT/EUR: LOADING... | TM-STABILITY: ACTIVE | 
-        </div>
+        <div class="inline-block" id="price-ticker">LOADING MARKET DATA...</div>
     </div>
 
-    <footer class="w-full text-center py-6 mt-auto">
+    <footer class="w-full text-center py-6 mt-auto border-t border-green-500/10">
         <p class="text-[9px] tracking-[0.2em] font-mono opacity-50 uppercase">
             BY 1001NDONESIA INVESTMENT & INDIENATION FOUNDATION
         </p>
     </footer>
 
     <script>
-        // --- STABLE COIN LOGIC ---
         function calculateStable() {
-            const startDate = new Date("2026-02-01"); // Kick-off date
+            const startDate = new Date("2026-02-01"); 
             const now = new Date();
             const diffTime = Math.abs(now - startDate);
-            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+            const day = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
             
-            let total = 1000; // Hari pertama
-            if (diffDays > 1 && diffDays < 365) {
-                total += (diffDays - 1) * 270; // Hari 2-364
-            } else if (diffDays >= 365) {
-                total = 98730 + 990; // Hari 365
+            let total;
+            if (day === 1) {
+                total = 1000;
+            } else if (day > 1 && day < 365) {
+                total = 1000 + (day - 1) * 270;
+            } else if (day >= 365) {
+                total = 100000; // Final-Grade Fix
             }
             
-            document.getElementById('stable-val').innerText = '€' + total.toLocaleString();
-            document.getElementById('increment-status').innerText = `DAY ${diffDays} / 365 | AUTO-YIELD: +€270`;
+            document.getElementById('stable-val').innerText = '€' + total.toLocaleString('de-DE', {minimumFractionDigits: 2});
+            document.getElementById('increment-status').innerText = `DAY ${day} / 365 | STATUS: ACTIVE DISTRIBUTION`;
         }
 
-        // --- TICKER LOGIC (CoinGecko) ---
         async function updatePrices() {
             try {
                 const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether&vs_currencies=eur');
@@ -93,11 +91,11 @@
                 const btc = data.bitcoin.eur;
                 const usdt = data.tether.eur;
                 document.getElementById('price-ticker').innerText = 
-                    `[ BTC: €${btc.toLocaleString()} ]  <->  [ USDT: €${usdt.toFixed(2)} ]  <->  [ NEUROSPHERE GLOBAL REACH ]`;
-            } catch (e) { console.log("Ticker failed"); }
+                    `[ BTC: €${btc.toLocaleString()} ]  •  [ USDT: €${usdt.toFixed(2)} ]  •  [ SYSTEM STATUS: SECURE ]`;
+            } catch (e) { document.getElementById('price-ticker').innerText = "CONNECTING TO GLOBAL NODES..."; }
         }
 
-        setInterval(updatePrices, 2000); // Tiap 2 detik
+        setInterval(updatePrices, 2000);
         calculateStable();
         updatePrices();
     </script>
