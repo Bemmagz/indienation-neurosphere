@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background: #000; color: #fff; font-family: 'Inter', sans-serif; overflow: hidden; }
-        .qr-frame { border: 2px solid #10b981; padding: 20px; background: #050505; box-shadow: 0 0 30px rgba(16, 185, 129, 0.2); }
+        .qr-frame { border: 2px solid #10b981; padding: 20px; background: #050505; box-shadow: 0 0 30px rgba(16, 185, 129, 0.2); position: relative; }
         .scan-line { width: 100%; height: 2px; background: #10b981; position: absolute; top: 0; left: 0; animation: scan 2s linear infinite; box-shadow: 0 0 10px #10b981; }
         @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
     </style>
@@ -18,17 +18,17 @@
         <p class="text-[10px] text-emerald-800 uppercase tracking-[0.5em]">Digital Sovereignty Protocol</p>
     </div>
 
-    <div class="relative qr-frame rounded-3xl mb-12">
+    <div class="qr-frame rounded-3xl mb-12">
         <div class="scan-line"></div>
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=INDIE-0000000001&color=10b981&bgcolor=050505" 
+        <img src="https://quickchart.io/qr?text=INDIE-0000000001&dark=10b981&light=050505&ecLevel=H&size=300" 
              alt="QR Gate" class="rounded-xl">
     </div>
 
-    <div class="w-full max-w-xs space-y-4">
-        <button class="w-full py-4 bg-emerald-600/10 border border-emerald-500/50 text-emerald-400 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-emerald-600 hover:text-white transition-all">
-            Scan to Verify Identity
+    <div class="w-full max-w-xs space-y-4 text-center">
+        <button onclick="window.location.reload()" class="w-full py-4 bg-emerald-600/10 border border-emerald-500/50 text-emerald-400 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-emerald-600 hover:text-white transition-all">
+            Verify Identity
         </button>
-        <p class="text-center text-[10px] text-slate-600 uppercase tracking-widest">Authorized: INDIE-FOUNDER</p>
+        <p class="text-[10px] text-slate-600 uppercase tracking-widest">Authorized: INDIE-FOUNDER</p>
     </div>
 
     <footer class="fixed bottom-8 text-[9px] text-slate-800 tracking-[0.3em]">
