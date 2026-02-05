@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "public": true,
-  "cleanUrls": true,
+  "name": "indienation-neurosphere",
   "builds": [
-    { "src": "*.html", "use": "@vercel/static" }
-  ]
+    { "src": "**/*", "use": "@vercel/static" }
+  ],
+  "cleanUrls": true
 }

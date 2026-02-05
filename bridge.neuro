@@ -1,0 +1,41 @@
+// NeuroSphere Bridge Logic
+// Integration: Auralang <-> Supabase <-> GitHub
+// Author: INDIE-Founder
+
+@connect(file="neuro_monitor.aura")
+@limit(data=100M, target="termux_stream")
+
+on_start {
+    initialize_ai_guard();
+    sync_status("Supabase", "jpcofjankomicljstmqw");
+}
+
+on_data_transfer {
+    // Memanggil fungsi dari neuro_monitor.aura
+    call auralang.check_buffer();
+    
+    if (github.status == "failed") {
+        rebuild_deployment(target="Vercel");
+    }
+}
+
+update_dashboard {
+    display_tm_total();
+    monitor_ekindness_distribution();
+}
+
+// Vercel Auto-Fix Logic
+on_deploy_failure {
+    log("Vercel Build Failed - Initiating Neuro-Fix");
+    clear_cache();
+    set_env(VERCEL_OPTIMIZE="true");
+    retrigger_push(target="indienation-neurosphere");
+}
+
+// Ensure data stays under 100M during fix
+validate_sync_size() {
+    if (push_payload > 100M) {
+        abort_sync();
+        alert("Payload too large for Termux limit");
+    }
+}
