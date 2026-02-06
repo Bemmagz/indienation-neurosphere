@@ -1,0 +1,1 @@
+export const Narrative = "NeuroSphere adalah ekosistem identitas digital. Nilai yang tertera (TM) adalah manifestasi kedaulatan identitas (Living Value Identity) dan bukan merupakan instrumen investasi, efek, atau komoditas perdagangan spekulatif.";
