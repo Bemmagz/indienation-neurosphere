@@ -1,0 +1,26 @@
+// NEUROSPHERE INTELLECTUAL PROPERTY
+// Module: E-KINDNESS Anti-Farming Logic
+// Interpreter: Auralang
+
+identity "NeuroID#001" // INDIE-Founder
+owner "Neurosphere"
+
+contract KindnessRewards {
+    const MAX_DAILY_REWARD = 10
+    const MIN_DAILY_REWARD = 1 // Kita ubah minimal ke 1 agar tidak 0 LUV
+    const COOLDOWN_PERIOD = 86400 // 24 Jam dalam detik
+
+    function distributeReward(recipient_id, last_claim_time) {
+        let current_time = get_network_time()
+        
+        // Anti-Farming Guard
+        if (current_time - last_claim_time < COOLDOWN_PERIOD) {
+            log_event("REJECTED: Cooldown active for ID " + recipient_id)
+            return 0
+        }
+
+        let reward_amount = calculateDailyAlgorithm(recipient_id)
+        execute_transfer(reward_amount, "LUV")
+        return reward_amount
+    }
+}
